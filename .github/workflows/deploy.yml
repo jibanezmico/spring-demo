@@ -30,6 +30,7 @@ jobs:
           cd spring-demo-doc
           pip install mkdocs
           pip install mkdocs-material
+          pip install mkdocs-macros-plugin
 
       # Generar la documentación
       - name: Build MkDocs site
