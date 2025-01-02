@@ -1,0 +1,923 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentación sobre la demo de Spring">
+      
+      
+        <meta name="author" content="Javi Ibáñez">
+      
+      
+        <link rel="canonical" href="https://jibanezmico.github.io/spring-demo/1_configuracion/">
+      
+      
+        <link rel="prev" href="../0_introduccion/">
+      
+      
+        <link rel="next" href="../2_spring_web/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Configuración del Proyecto - Spring Demo Doc</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../styles/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#capitulo-1-introduccion-a-spring-boot-y-configuracion-del-proyecto" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Spring Demo Doc" class="md-header__button md-logo" aria-label="Spring Demo Doc" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Spring Demo Doc
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Configuración del Proyecto
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jibanezmico/spring-demo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    spring-demo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Spring Demo Doc" class="md-nav__button md-logo" aria-label="Spring Demo Doc" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Spring Demo Doc
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jibanezmico/spring-demo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    spring-demo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0_introduccion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introducción a Spring Boot y conceptos clave
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Configuración del Proyecto
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Configuración del Proyecto
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#capitulo-1-introduccion-a-spring-boot-y-configuracion-del-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capítulo 1: Introducción a Spring Boot y Configuración del Proyecto
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Capítulo 1: Introducción a Spring Boot y Configuración del Proyecto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducción
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actividad-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Actividad Práctica
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uso-de-logger-en-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uso de Logger en Spring Boot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracion-de-niveles-de-registro-en-applicationproperties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración de Niveles de Registro en application.properties
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplos-de-pruebas-unitarias" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ejemplos de Pruebas Unitarias
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicacion-del-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicación del Código
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beneficios-de-usar-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beneficios de Usar Spring Boot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actividad-practica_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Actividad Práctica
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#posibles-errores-comunes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Posibles Errores Comunes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_spring_web/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introducción a Spring Web
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_spring_data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gestión de Datos y Lógica de Negocio con Spring Data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_spring_security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Seguridad con Spring Security y JWT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_swagger/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Documentación con Swagger
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_servcios_red/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Implementación de Servicios en Red
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#capitulo-1-introduccion-a-spring-boot-y-configuracion-del-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capítulo 1: Introducción a Spring Boot y Configuración del Proyecto
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Capítulo 1: Introducción a Spring Boot y Configuración del Proyecto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducción
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actividad-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Actividad Práctica
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uso-de-logger-en-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uso de Logger en Spring Boot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracion-de-niveles-de-registro-en-applicationproperties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración de Niveles de Registro en application.properties
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplos-de-pruebas-unitarias" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ejemplos de Pruebas Unitarias
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicacion-del-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicación del Código
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beneficios-de-usar-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beneficios de Usar Spring Boot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actividad-practica_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Actividad Práctica
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#posibles-errores-comunes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Posibles Errores Comunes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/jibanezmico/spring-demo/edit/main/spring-demo-doc/docs/1_configuracion.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/jibanezmico/spring-demo/raw/main/spring-demo-doc/docs/1_configuracion.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+  <h1>Configuración del Proyecto</h1>
+
+<h2 id="capitulo-1-introduccion-a-spring-boot-y-configuracion-del-proyecto">Capítulo 1: Introducción a Spring Boot y Configuración del Proyecto<a class="headerlink" href="#capitulo-1-introduccion-a-spring-boot-y-configuracion-del-proyecto" title="Permanent link">&para;</a></h2>
+<h3 id="introduccion">Introducción<a class="headerlink" href="#introduccion" title="Permanent link">&para;</a></h3>
+<p>Spring Boot es un framework que facilita la creación de aplicaciones Java basadas en Spring. Proporciona configuración automática y servidores embebidos, lo que permite desarrollar aplicaciones rápidamente.</p>
+<h3 id="actividad-practica">Actividad Práctica<a class="headerlink" href="#actividad-practica" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Crear un proyecto Spring Boot</strong>:</li>
+<li>
+<p>Utiliza Spring Initializr para crear un nuevo proyecto llamado "spring-demo" con las dependencias necesarias, por ejemplo, puedes añadir Spring Web.</p>
+</li>
+<li>
+<p><strong>Estructura del Proyecto y Explicación de Componentes</strong>:</p>
+</li>
+<li>
+<p><strong>src/main/java</strong>: Contiene el código fuente de la aplicación.</p>
+<ul>
+<li><strong>com.example.springdemo</strong>: Paquete base donde se encuentra la clase principal.</li>
+<li><strong>SpringDemoApplication.java</strong>: Clase principal de la aplicación con la anotación <code>@SpringBootApplication</code>.
+     ```java
+     @SpringBootApplication
+     public class SpringDemoApplication {
+         private static final Logger logger = LoggerFactory.getLogger(SpringDemoApplication.class);<div class="codehilite"><pre><span></span><code> public static void main(String[] args) {
+     logger.info(&quot;Iniciando la aplicación Spring Boot&quot;);
+     SpringApplication.run(SpringDemoApplication.class, args);
+     logger.info(&quot;Aplicación Spring Boot iniciada&quot;);
+ }
+</code></pre></div>
+
+<p>}
+ <code>La anotación `@SpringBootApplication` es una combinación de tres anotaciones: `@Configuration`, `@EnableAutoConfiguration`, y `@ComponentScan`. Esta anotación marca la clase como la principal para la configuración de Spring Boot. El método `main` utiliza `SpringApplication.run` para lanzar la aplicación.
+   - **src/main/resources**: Contiene recursos estáticos y archivos de configuración.
+     - **application.properties**: Archivo de configuración de la aplicación.</code>properties
+       # Configuración de ejemplo
+       server.port=8080
+       spring.application.name=spring-demo
+       <code>El archivo `application.properties` se utiliza para configurar diversas propiedades de la aplicación, como el puerto del servidor y el nombre de la aplicación.
+   - **src/test/java**: Contiene las pruebas unitarias de la aplicación.
+   - **pom.xml**: Archivo de configuración de Maven que gestiona las dependencias del proyecto.</code>xml
+     <dependencies>
+ <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-web</artifactId>
+ </dependency>
+ <!-- Otras dependencias -->
+     </dependencies>
+     <code>``
+     El archivo</code>pom.xml<code>es utilizado por Maven para gestionar las dependencias del proyecto. En este ejemplo, se incluye la dependencia</code>spring-boot-starter-web` para añadir soporte para aplicaciones web.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Poner en ejecución el proyecto</strong>:</p>
+</li>
+<li>Abre una terminal en el directorio raíz del proyecto.</li>
+<li>Ejecuta el siguiente comando para compilar y ejecutar la aplicación:
+     <code>sh
+     ./mvnw spring-boot:run</code></li>
+<li>La aplicación estará disponible en <code>http://localhost:8080</code>.</li>
+</ol>
+<h3 id="uso-de-logger-en-spring-boot">Uso de Logger en Spring Boot<a class="headerlink" href="#uso-de-logger-en-spring-boot" title="Permanent link">&para;</a></h3>
+<p>El uso de un Logger es esencial para registrar eventos importantes y errores en la aplicación. Spring Boot utiliza <code>SLF4J</code> como interfaz de registro y <code>Logback</code> como implementación predeterminada. Aquí se muestra cómo configurar y usar un Logger en una clase de servicio:</p>
+<ol>
+<li>
+<p><strong>Agregar la dependencia de SLF4J en <code>pom.xml</code></strong>:
+   <code>xml
+   &lt;dependency&gt;
+       &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+       &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
+   &lt;/dependency&gt;
+   &lt;dependency&gt;
+       &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+       &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+   &lt;/dependency&gt;</code></p>
+</li>
+<li>
+<p><strong>Configurar el Logger en una clase de servicio</strong>:
+   ```java
+   import org.slf4j.Logger;
+   import org.slf4j.LoggerFactory;
+   import org.springframework.stereotype.Service;</p>
+</li>
+</ol>
+<p>@Service
+   public class ExampleService {
+       private static final Logger logger = LoggerFactory.getLogger(ExampleService.class);</p>
+<div class="codehilite"><pre><span></span><code>   public void exampleMethod() {
+       logger.info(&quot;Método exampleMethod ejecutado&quot;);
+       logger.debug(&quot;Debugging exampleMethod&quot;);
+       try {
+           // ...existing code...
+       } catch (Exception e) {
+           logger.error(&quot;Error en exampleMethod: {}&quot;, e.getMessage());
+       }
+   }
+</code></pre></div>
+
+<p>}
+   ```</p>
+<h3 id="configuracion-de-niveles-de-registro-en-applicationproperties">Configuración de Niveles de Registro en <code>application.properties</code><a class="headerlink" href="#configuracion-de-niveles-de-registro-en-applicationproperties" title="Permanent link">&para;</a></h3>
+<p>Para configurar diferentes niveles de registro (INFO, DEBUG, ERROR) en <code>application.properties</code>, se pueden añadir las siguientes propiedades:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">logging.level.root</span><span class="o">=</span><span class="s">INFO</span>
+<span class="na">logging.level.com.example.springdemo</span><span class="o">=</span><span class="s">DEBUG</span>
+<span class="na">logging.file.name</span><span class="o">=</span><span class="s">logs/spring-demo.log</span>
+</code></pre></div>
+
+<h3 id="ejemplos-de-pruebas-unitarias">Ejemplos de Pruebas Unitarias<a class="headerlink" href="#ejemplos-de-pruebas-unitarias" title="Permanent link">&para;</a></h3>
+<p>Las pruebas unitarias son esenciales para asegurar que el código funcione correctamente y para detectar errores de manera temprana. Aquí se muestra cómo escribir y ejecutar pruebas unitarias en Spring Boot:</p>
+<ol>
+<li>
+<p><strong>Agregar Dependencias de Pruebas en <code>pom.xml</code></strong>:
+   <code>xml
+   &lt;dependency&gt;
+       &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+       &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+       &lt;scope&gt;test&lt;/scope&gt;
+   &lt;/dependency&gt;</code></p>
+</li>
+<li>
+<p><strong>Escribir una Prueba Unitaria para un Controlador</strong>:
+   ```java
+   import org.junit.jupiter.api.Test;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+   import org.springframework.test.web.servlet.MockMvc;</p>
+</li>
+</ol>
+<p>import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+   import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+   import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;</p>
+<p>@WebMvcTest(HolaMundoController.class)
+   public class HolaMundoControllerTest {</p>
+<div class="codehilite"><pre><span></span><code>   @Autowired
+   private MockMvc mockMvc;
+
+   @Test
+   public void testHolaMundo() throws Exception {
+       mockMvc.perform(get(&quot;/api/hola&quot;))
+               .andExpect(status().isOk())
+               .andExpect(content().string(&quot;Hola Mundo&quot;));
+   }
+</code></pre></div>
+
+<p>}
+   ```</p>
+<ol>
+<li><strong>Escribir una Prueba Unitaria para un Servicio</strong>:
+   ```java
+   import org.junit.jupiter.api.Test;
+   import org.springframework.beans.factory.annotation.Autowired;
+   import org.springframework.boot.test.context.SpringBootTest;</li>
+</ol>
+<p>import static org.assertj.core.api.Assertions.assertThat;</p>
+<p>@SpringBootTest
+   public class ExampleServiceTest {</p>
+<div class="codehilite"><pre><span></span><code>   @Autowired
+   private ExampleService exampleService;
+
+   @Test
+   public void testExampleMethod() {
+       exampleService.exampleMethod();
+       // Verificar el comportamiento esperado
+       assertThat(true).isTrue();
+   }
+</code></pre></div>
+
+<p>}
+   ```</p>
+<h3 id="explicacion-del-codigo">Explicación del Código<a class="headerlink" href="#explicacion-del-codigo" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>@SpringBootApplication</code>: Esta anotación es una combinación de tres anotaciones: <code>@Configuration</code>, <code>@EnableAutoConfiguration</code>, y <code>@ComponentScan</code>. Marca la clase como la principal para la configuración de Spring Boot.</li>
+<li><code>SpringApplication.run(SpringDemoApplication.class, args)</code>: Este método lanza la aplicación Spring Boot.</li>
+<li><code>Logger</code>: Utilizado para registrar eventos importantes y errores en la aplicación.</li>
+<li><code>@WebMvcTest</code>: Anotación utilizada para pruebas unitarias de controladores.</li>
+<li><code>MockMvc</code>: Utilizado para realizar solicitudes HTTP simuladas en pruebas unitarias.</li>
+<li><code>@SpringBootTest</code>: Anotación utilizada para pruebas unitarias de servicios.</li>
+</ul>
+<h3 id="beneficios-de-usar-spring-boot">Beneficios de Usar Spring Boot<a class="headerlink" href="#beneficios-de-usar-spring-boot" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Configuración Automática</strong>: Spring Boot configura automáticamente los componentes necesarios en función de las dependencias incluidas en el proyecto.</li>
+<li><strong>Servidores Embebidos</strong>: Integración con servidores como Tomcat o Jetty, lo que elimina la necesidad de configurarlos externamente.</li>
+<li><strong>Aplicaciones Listas para Producción</strong>: Incluye herramientas para monitoreo, métricas y análisis de rendimiento.</li>
+</ul>
+<h3 id="actividad-practica_1">Actividad Práctica<a class="headerlink" href="#actividad-practica_1" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Explorar la Estructura del Proyecto</strong>:</li>
+<li>Navegar por los directorios y archivos del proyecto para familiarizarse con la estructura del proyecto Spring Boot.</li>
+<li>Revisar el archivo <code>application.properties</code> y agregar configuraciones adicionales según sea necesario.</li>
+</ol>
+<h3 id="posibles-errores-comunes">Posibles Errores Comunes<a class="headerlink" href="#posibles-errores-comunes" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Error de Conexión al Servidor</strong>:</li>
+<li>
+<p><strong>Solución</strong>: Verificar que el puerto configurado en <code>application.properties</code> no esté en uso por otra aplicación.</p>
+</li>
+<li>
+<p><strong>Dependencias</strong>:</p>
+</li>
+<li><strong>Solución</strong>: Asegurarse de que todas las dependencias necesarias estén incluidas en el archivo <code>pom.xml</code> y ejecutar <code>mvn clean install</code> para actualizar el proyecto.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>

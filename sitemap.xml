@@ -4,4 +4,32 @@
          <loc>https://jibanezmico.github.io/spring-demo/</loc>
          <lastmod>2025-01-02</lastmod>
     </url>
+    <url>
+         <loc>https://jibanezmico.github.io/spring-demo/0_introduccion/</loc>
+         <lastmod>2025-01-02</lastmod>
+    </url>
+    <url>
+         <loc>https://jibanezmico.github.io/spring-demo/1_configuracion/</loc>
+         <lastmod>2025-01-02</lastmod>
+    </url>
+    <url>
+         <loc>https://jibanezmico.github.io/spring-demo/2_spring_web/</loc>
+         <lastmod>2025-01-02</lastmod>
+    </url>
+    <url>
+         <loc>https://jibanezmico.github.io/spring-demo/3_spring_data/</loc>
+         <lastmod>2025-01-02</lastmod>
+    </url>
+    <url>
+         <loc>https://jibanezmico.github.io/spring-demo/4_spring_security/</loc>
+         <lastmod>2025-01-02</lastmod>
+    </url>
+    <url>
+         <loc>https://jibanezmico.github.io/spring-demo/5_swagger/</loc>
+         <lastmod>2025-01-02</lastmod>
+    </url>
+    <url>
+         <loc>https://jibanezmico.github.io/spring-demo/6_servcios_red/</loc>
+         <lastmod>2025-01-02</lastmod>
+    </url>
 </urlset>

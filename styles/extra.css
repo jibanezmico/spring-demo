@@ -1,0 +1,34 @@
+/* Ajustar el ancho de la columna de navegación y el contenido principal */
+@media (min-width: 76.25rem) {
+    .md-sidebar--primary {
+      flex: 0 0 15%; /* Ajusta este valor según tus necesidades */
+    }
+    .md-content {
+      max-width: 85%; /* Ajusta este valor según tus necesidades */
+    }
+  }
+  
+  /* Reducir el tamaño de fuente para el contenido principal */
+  .md-content {
+    font-size: 14px; /* Ajusta el tamaño según lo necesario */
+  }
+  
+  /* Reducir el tamaño de los encabezados dentro del contenido */
+  .md-typeset h1 {
+    font-size: 1.8em;
+  }
+  .md-typeset h2 {
+    font-size: 1.6em;
+  }
+  .md-typeset h3 {
+    font-size: 1.4em;
+  }
+  .md-typeset h4 {
+    font-size: 1.2em;
+  }
+  .md-typeset h5 {
+    font-size: 1em;
+  }
+  .md-typeset h6 {
+    font-size: 0.8em;
+  }

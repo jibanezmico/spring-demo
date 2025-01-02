@@ -1,0 +1,1422 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentación sobre la demo de Spring">
+      
+      
+        <meta name="author" content="Javi Ibáñez">
+      
+      
+        <link rel="canonical" href="https://jibanezmico.github.io/spring-demo/0_introduccion/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../1_configuracion/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Introducción a Spring Boot y conceptos clave - Spring Demo Doc</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../styles/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduccion-a-spring-boot-y-conceptos-clave" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Spring Demo Doc" class="md-header__button md-logo" aria-label="Spring Demo Doc" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Spring Demo Doc
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Introducción a Spring Boot y conceptos clave
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jibanezmico/spring-demo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    spring-demo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Spring Demo Doc" class="md-nav__button md-logo" aria-label="Spring Demo Doc" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Spring Demo Doc
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jibanezmico/spring-demo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    spring-demo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Introducción a Spring Boot y conceptos clave
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Introducción a Spring Boot y conceptos clave
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Índice
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion-a-conceptos-basicos-de-spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducción a Conceptos Básicos de Spring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introducción a Conceptos Básicos de Spring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#que-es-spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      ¿Qué es Spring?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#framework-vs-libreria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Framework vs. Librería
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#historia-de-spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Historia de Spring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#introduccion-a-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducción a Spring Boot
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introducción a Spring Boot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-principales" class="md-nav__link">
+    <span class="md-ellipsis">
+      Características principales
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-practico-hello-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ejemplo práctico: "Hello World"
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uso-de-spring-initializr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uso de Spring Initializr
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#principales-proyectos-de-spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Principales Proyectos de Spring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Principales Proyectos de Spring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Boot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Web
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spring Web">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-principales_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Características principales
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spring Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-principales_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Características principales
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spring Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-principales_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Características principales
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Cloud
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spring Cloud">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-principales_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Características principales
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#material-avanzado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Material Avanzado
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Material Avanzado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracion-avanzada-de-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración Avanzada de Spring Boot
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuración Avanzada de Spring Boot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracion-de-perfiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración de Perfiles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracion-de-propiedades-externas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración de Propiedades Externas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoreo-y-metricas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoreo y Métricas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoreo y Métricas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#habilitar-actuator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Habilitar Actuator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoreo-de-la-salud-de-la-aplicacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoreo de la Salud de la Aplicación
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricas-de-rendimiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      Métricas de Rendimiento
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicacion-del-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicación del Código
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beneficios-de-usar-actuator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beneficios de Usar Actuator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actividad-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Actividad Práctica
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_configuracion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuración del Proyecto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_spring_web/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introducción a Spring Web
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_spring_data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gestión de Datos y Lógica de Negocio con Spring Data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_spring_security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Seguridad con Spring Security y JWT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_swagger/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Documentación con Swagger
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_servcios_red/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Implementación de Servicios en Red
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Índice
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion-a-conceptos-basicos-de-spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducción a Conceptos Básicos de Spring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introducción a Conceptos Básicos de Spring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#que-es-spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      ¿Qué es Spring?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#framework-vs-libreria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Framework vs. Librería
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#historia-de-spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Historia de Spring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#introduccion-a-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducción a Spring Boot
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introducción a Spring Boot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-principales" class="md-nav__link">
+    <span class="md-ellipsis">
+      Características principales
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-practico-hello-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ejemplo práctico: "Hello World"
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uso-de-spring-initializr" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uso de Spring Initializr
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#principales-proyectos-de-spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Principales Proyectos de Spring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Principales Proyectos de Spring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Boot
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-web" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Web
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spring Web">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-principales_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Características principales
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spring Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-principales_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Características principales
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spring Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-principales_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Características principales
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spring Cloud
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spring Cloud">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas-principales_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Características principales
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#material-avanzado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Material Avanzado
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Material Avanzado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracion-avanzada-de-spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración Avanzada de Spring Boot
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuración Avanzada de Spring Boot">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracion-de-perfiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración de Perfiles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracion-de-propiedades-externas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración de Propiedades Externas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoreo-y-metricas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoreo y Métricas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoreo y Métricas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#habilitar-actuator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Habilitar Actuator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoreo-de-la-salud-de-la-aplicacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoreo de la Salud de la Aplicación
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricas-de-rendimiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      Métricas de Rendimiento
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explicacion-del-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explicación del Código
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beneficios-de-usar-actuator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beneficios de Usar Actuator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#actividad-practica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Actividad Práctica
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/jibanezmico/spring-demo/edit/main/spring-demo-doc/docs/0_introduccion.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/jibanezmico/spring-demo/raw/main/spring-demo-doc/docs/0_introduccion.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="introduccion-a-spring-boot-y-conceptos-clave">Introducción a Spring Boot y conceptos clave<a class="headerlink" href="#introduccion-a-spring-boot-y-conceptos-clave" title="Permanent link">&para;</a></h1>
+<h2 id="indice">Índice<a class="headerlink" href="#indice" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#introducción-a-spring-boot-y-conceptos-clave">Introducción a Spring Boot y conceptos clave</a></li>
+<li><a href="#índice">Índice</a></li>
+<li><a href="#introducción-a-conceptos-básicos-de-spring">Introducción a Conceptos Básicos de Spring</a><ul>
+<li><a href="#qué-es-spring">¿Qué es Spring?</a></li>
+<li><a href="#framework-vs-librería">Framework vs. Librería</a></li>
+<li><a href="#historia-de-spring">Historia de Spring</a></li>
+<li><a href="#introducción-a-spring-boot">Introducción a Spring Boot</a></li>
+<li><a href="#características-principales">Características principales</a></li>
+<li><a href="#ejemplo-práctico-hello-world">Ejemplo práctico: "Hello World"</a></li>
+<li><a href="#uso-de-spring-initializr">Uso de Spring Initializr</a></li>
+</ul>
+</li>
+<li><a href="#principales-proyectos-de-spring">Principales Proyectos de Spring</a><ul>
+<li><a href="#spring-boot">Spring Boot</a></li>
+<li><a href="#spring-web">Spring Web</a></li>
+<li><a href="#características-principales-1">Características principales</a></li>
+<li><a href="#spring-data">Spring Data</a></li>
+<li><a href="#características-principales-2">Características principales</a></li>
+<li><a href="#spring-security">Spring Security</a></li>
+<li><a href="#características-principales-3">Características principales</a></li>
+<li><a href="#spring-cloud">Spring Cloud</a></li>
+<li><a href="#características-principales-4">Características principales</a></li>
+</ul>
+</li>
+<li><a href="#material-avanzado">Material Avanzado</a><ul>
+<li><a href="#configuración-avanzada-de-spring-boot">Configuración Avanzada de Spring Boot</a></li>
+<li><a href="#configuración-de-perfiles">Configuración de Perfiles</a></li>
+<li><a href="#configuración-de-propiedades-externas">Configuración de Propiedades Externas</a></li>
+<li><a href="#monitoreo-y-métricas">Monitoreo y Métricas</a></li>
+<li><a href="#habilitar-actuator">Habilitar Actuator</a></li>
+<li><a href="#monitoreo-de-la-salud-de-la-aplicación">Monitoreo de la Salud de la Aplicación</a></li>
+<li><a href="#métricas-de-rendimiento">Métricas de Rendimiento</a></li>
+<li><a href="#explicación-del-código">Explicación del Código</a></li>
+<li><a href="#beneficios-de-usar-actuator">Beneficios de Usar Actuator</a></li>
+<li><a href="#actividad-práctica">Actividad Práctica</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="introduccion-a-conceptos-basicos-de-spring">Introducción a Conceptos Básicos de Spring<a class="headerlink" href="#introduccion-a-conceptos-basicos-de-spring" title="Permanent link">&para;</a></h2>
+<h3 id="que-es-spring">¿Qué es Spring?<a class="headerlink" href="#que-es-spring" title="Permanent link">&para;</a></h3>
+<p>Spring es un framework de código abierto para el desarrollo de aplicaciones en Java que promueve buenas prácticas de diseño. Su propósito principal es reducir la complejidad en la configuración y el desarrollo de aplicaciones empresariales, permitiendo a los desarrolladores centrarse en la lógica de negocio.</p>
+<p>Spring es muy versátil y se puede usar para desarrollar aplicaciones de cualquier tipo, desde simples herramientas hasta sistemas empresariales complejos.</p>
+<h3 id="framework-vs-libreria">Framework vs. Librería<a class="headerlink" href="#framework-vs-libreria" title="Permanent link">&para;</a></h3>
+<p>Un framework como Spring establece un conjunto de reglas y estructuras que el desarrollador debe seguir, ofreciendo flexibilidad pero también dirección. A diferencia de una librería, que simplemente provee funciones reutilizables, un framework como Spring organiza y gestiona el flujo de control de la aplicación.</p>
+<h3 id="historia-de-spring">Historia de Spring<a class="headerlink" href="#historia-de-spring" title="Permanent link">&para;</a></h3>
+<p>Spring fue creado en 2003 por Rod Johnson como una alternativa más sencilla y modular a las especificaciones complejas de Java EE. Su objetivo inicial era facilitar el desarrollo de aplicaciones empresariales al proporcionar un enfoque más ligero y flexible.</p>
+<h3 id="introduccion-a-spring-boot">Introducción a Spring Boot<a class="headerlink" href="#introduccion-a-spring-boot" title="Permanent link">&para;</a></h3>
+<p>Spring Boot es una extensión del framework Spring diseñada para simplificar el desarrollo y despliegue de aplicaciones. Es ideal tanto para principiantes como para desarrolladores experimentados que deseen reducir la complejidad de configuración.</p>
+<h4 id="caracteristicas-principales">Características principales<a class="headerlink" href="#caracteristicas-principales" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Configuración automática</strong>: Spring Boot configura automáticamente los componentes necesarios en función de las dependencias incluidas en el proyecto.</li>
+<li><strong>Servidores embebidos</strong>: Integración con servidores como Tomcat o Jetty, lo que elimina la necesidad de configurarlos externamente.</li>
+<li><strong>Aplicaciones listas para producción</strong>: Incluye herramientas para monitoreo, métricas y análisis de rendimiento.</li>
+</ul>
+<h4 id="ejemplo-practico-hello-world">Ejemplo práctico: "Hello World"<a class="headerlink" href="#ejemplo-practico-hello-world" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="nd">@SpringBootApplication</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HelloWorldApplication</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">SpringApplication</span><span class="p">.</span><span class="na">run</span><span class="p">(</span><span class="n">HelloWorldApplication</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="uso-de-spring-initializr">Uso de Spring Initializr<a class="headerlink" href="#uso-de-spring-initializr" title="Permanent link">&para;</a></h3>
+<p>Spring Initializr es una herramienta que permite generar proyectos Spring Boot con las dependencias necesarias. Aquí se explica cómo utilizar Spring Initializr para crear un nuevo proyecto:</p>
+<ol>
+<li><strong>Acceder a Spring Initializr</strong>:</li>
+<li>
+<p>Abre un navegador web y navega a <a href="https://start.spring.io/">Spring Initializr</a>.</p>
+</li>
+<li>
+<p><strong>Configurar el Proyecto</strong>:</p>
+</li>
+<li>Selecciona las opciones de configuración del proyecto, como el nombre del grupo, el nombre del artefacto, la versión de Java, etc.</li>
+<li>
+<p>Añade las dependencias necesarias, como <code>Spring Web</code>, <code>Spring Data JPA</code>, <code>Spring Boot DevTools</code>, etc. Por ahora basta con Spring Web</p>
+</li>
+<li>
+<p><strong>Generar el Proyecto</strong>:</p>
+</li>
+<li>Haz clic en el botón "Generate" para descargar el proyecto generado.</li>
+<li>Descomprime el archivo descargado y abre el proyecto en tu IDE favorito.</li>
+</ol>
+<h2 id="principales-proyectos-de-spring">Principales Proyectos de Spring<a class="headerlink" href="#principales-proyectos-de-spring" title="Permanent link">&para;</a></h2>
+<h3 id="spring-boot">Spring Boot<a class="headerlink" href="#spring-boot" title="Permanent link">&para;</a></h3>
+<p>Spring Boot es una herramienta que simplifica significativamente el desarrollo con Spring, eliminando la necesidad de configuraciones extensas y repetitivas. Está diseñado para agilizar la creación de aplicaciones listas para producción, especialmente en entornos de microservicios.</p>
+<h3 id="spring-web">Spring Web<a class="headerlink" href="#spring-web" title="Permanent link">&para;</a></h3>
+<p>Spring Web es un módulo de Spring que facilita la creación de aplicaciones web y servicios RESTful. Proporciona soporte para controladores, vistas y modelos, y permite manejar solicitudes HTTP de manera sencilla.</p>
+<h4 id="caracteristicas-principales_1">Características principales<a class="headerlink" href="#caracteristicas-principales_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Controladores RESTful</strong>: Facilita la creación de APIs RESTful mediante anotaciones como <code>@RestController</code>.</li>
+<li><strong>Manejo de solicitudes HTTP</strong>: Permite manejar solicitudes HTTP GET, POST, PUT, DELETE, etc.</li>
+<li><strong>Soporte para vistas</strong>: Integra con tecnologías de vistas como Thymeleaf, JSP, etc.</li>
+</ul>
+<h3 id="spring-data">Spring Data<a class="headerlink" href="#spring-data" title="Permanent link">&para;</a></h3>
+<p>Spring Data facilita la interacción con bases de datos mediante la definición de repositorios que encapsulan las operaciones CRUD y consultas personalizadas. Su objetivo es reducir la cantidad de código repetitivo en las capas de acceso a datos.</p>
+<h4 id="caracteristicas-principales_2">Características principales<a class="headerlink" href="#caracteristicas-principales_2" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Repositorios predefinidos</strong>: Proporciona interfaces como <code>JpaRepository</code> que permiten realizar operaciones estándar sin necesidad de implementación manual.</li>
+<li><strong>Consultas personalizadas</strong>: Permite definir consultas específicas mediante nombres de métodos o anotaciones como <code>@Query</code>.</li>
+<li><strong>Compatibilidad con múltiples bases de datos</strong>: Incluye soporte para MySQL, PostgreSQL, MongoDB, Cassandra, entre otras.</li>
+<li><strong>Auditoría</strong>: Proporciona soporte para auditoría de entidades, permitiendo rastrear cambios en los datos.</li>
+<li><strong>Paginación y ordenación</strong>: Facilita la paginación y ordenación de resultados de consultas.</li>
+</ul>
+<h3 id="spring-security">Spring Security<a class="headerlink" href="#spring-security" title="Permanent link">&para;</a></h3>
+<p>Spring Security es un marco que proporciona herramientas avanzadas para garantizar la autenticación, autorización y protección contra ataques comunes en aplicaciones Java.</p>
+<h4 id="caracteristicas-principales_3">Características principales<a class="headerlink" href="#caracteristicas-principales_3" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Gestión de roles y permisos</strong>: Controla el acceso a diferentes partes de la aplicación según roles definidos.</li>
+<li><strong>Protección avanzada</strong>: Incluye medidas contra ataques de fuerza bruta, CSRF y XSS.</li>
+<li><strong>Compatibilidad</strong>: Funciona con autenticación tradicional basada en formularios y sistemas modernos como OAuth2 o JWT.</li>
+<li><strong>Integración con Spring Boot</strong>: Se integra fácilmente con aplicaciones Spring Boot para proporcionar seguridad de manera rápida y sencilla.</li>
+<li><strong>Personalización</strong>: Permite personalizar la configuración de seguridad según las necesidades específicas de la aplicación.</li>
+</ul>
+<h3 id="spring-cloud">Spring Cloud<a class="headerlink" href="#spring-cloud" title="Permanent link">&para;</a></h3>
+<p>Spring Cloud extiende las funcionalidades de Spring para abordar los desafíos de arquitecturas distribuidas y microservicios. Este marco se enfoca en la gestión de configuración, descubrimiento de servicios, balanceo de carga y comunicación entre servicios.</p>
+<h4 id="caracteristicas-principales_4">Características principales<a class="headerlink" href="#caracteristicas-principales_4" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Gestión de configuración</strong>: Centraliza la configuración de aplicaciones distribuidas.</li>
+<li><strong>Descubrimiento de servicios</strong>: Permite que los servicios se registren y descubran entre sí.</li>
+<li><strong>Balanceo de carga</strong>: Distribuye el tráfico de manera equitativa entre instancias de servicios.</li>
+<li><strong>Comunicación entre servicios</strong>: Facilita la comunicación entre servicios mediante herramientas como Feign y Ribbon.</li>
+</ul>
+<h2 id="material-avanzado">Material Avanzado<a class="headerlink" href="#material-avanzado" title="Permanent link">&para;</a></h2>
+<h3 id="configuracion-avanzada-de-spring-boot">Configuración Avanzada de Spring Boot<a class="headerlink" href="#configuracion-avanzada-de-spring-boot" title="Permanent link">&para;</a></h3>
+<p>Spring Boot permite configurar perfiles para gestionar diferentes configuraciones en distintos entornos (desarrollo, producción, etc.). Aquí se explica cómo configurar perfiles y propiedades externas.</p>
+<h4 id="configuracion-de-perfiles">Configuración de Perfiles<a class="headerlink" href="#configuracion-de-perfiles" title="Permanent link">&para;</a></h4>
+<ol>
+<li><strong>Crear Archivos de Configuración por Perfil</strong>:</li>
+<li>Crear archivos de configuración específicos para cada perfil, como <code>application-dev.properties</code> y <code>application-prod.properties</code>.</li>
+</ol>
+<p><code>properties
+   # application-dev.properties
+   server.port=8081
+   spring.datasource.url=jdbc:h2:mem:devdb</code></p>
+<p><code>properties
+   # application-prod.properties
+   server.port=8080
+   spring.datasource.url=jdbc:mysql://localhost/proddb</code></p>
+<ol>
+<li><strong>Activar un Perfil</strong>:</li>
+<li>Activar un perfil específico utilizando la propiedad <code>spring.profiles.active</code> en el archivo <code>application.properties</code> o mediante una variable de entorno.</li>
+</ol>
+<p><code>properties
+   # application.properties
+   spring.profiles.active=dev</code></p>
+<h4 id="configuracion-de-propiedades-externas">Configuración de Propiedades Externas<a class="headerlink" href="#configuracion-de-propiedades-externas" title="Permanent link">&para;</a></h4>
+<p>Spring Boot permite cargar propiedades desde archivos externos o variables de entorno.</p>
+<ol>
+<li><strong>Cargar Propiedades desde un Archivo Externo</strong>:</li>
+<li>Especificar la ubicación del archivo de propiedades externo utilizando la propiedad <code>spring.config.location</code>.</li>
+</ol>
+<p><code>properties
+   # application.properties
+   spring.config.location=classpath:/config/application-external.properties</code></p>
+<ol>
+<li><strong>Utilizar Variables de Entorno</strong>:</li>
+<li>Definir variables de entorno en el sistema operativo y acceder a ellas en el archivo de configuración.</li>
+</ol>
+<p><code>properties
+   # application.properties
+   spring.datasource.url=${DATASOURCE_URL}</code></p>
+<h3 id="monitoreo-y-metricas">Monitoreo y Métricas<a class="headerlink" href="#monitoreo-y-metricas" title="Permanent link">&para;</a></h3>
+<p>Spring Boot Actuator proporciona funcionalidades para monitorear y gestionar aplicaciones en producción. Aquí se explica cómo habilitar y configurar Actuator.</p>
+<h4 id="habilitar-actuator">Habilitar Actuator<a class="headerlink" href="#habilitar-actuator" title="Permanent link">&para;</a></h4>
+<ol>
+<li><strong>Agregar la Dependencia de Actuator</strong>:</li>
+<li>Añadir la dependencia <code>spring-boot-starter-actuator</code> en el archivo <code>pom.xml</code>.</li>
+</ol>
+<p><code>xml
+   &lt;dependency&gt;
+       &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+       &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+   &lt;/dependency&gt;</code></p>
+<ol>
+<li><strong>Configurar Actuator</strong>:</li>
+<li>Configurar Actuator en el archivo <code>application.properties</code>.</li>
+</ol>
+<p><code>properties
+   management.endpoints.web.exposure.include=*
+   management.endpoint.health.show-details=always</code></p>
+<h4 id="monitoreo-de-la-salud-de-la-aplicacion">Monitoreo de la Salud de la Aplicación<a class="headerlink" href="#monitoreo-de-la-salud-de-la-aplicacion" title="Permanent link">&para;</a></h4>
+<p>Actuator proporciona un endpoint <code>/actuator/health</code> para monitorear la salud de la aplicación.</p>
+<ol>
+<li><strong>Acceder al Endpoint de Salud</strong>:</li>
+<li>Iniciar la aplicación Spring Boot.</li>
+<li>Acceder al endpoint de salud en <code>http://localhost:8080/actuator/health</code>.</li>
+</ol>
+<h4 id="metricas-de-rendimiento">Métricas de Rendimiento<a class="headerlink" href="#metricas-de-rendimiento" title="Permanent link">&para;</a></h4>
+<p>Actuator proporciona un endpoint <code>/actuator/metrics</code> para acceder a métricas de rendimiento.</p>
+<ol>
+<li><strong>Acceder al Endpoint de Métricas</strong>:</li>
+<li>Iniciar la aplicación Spring Boot.</li>
+<li>Acceder al endpoint de métricas en <code>http://localhost:8080/actuator/metrics</code>.</li>
+</ol>
+<h4 id="explicacion-del-codigo">Explicación del Código<a class="headerlink" href="#explicacion-del-codigo" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>spring.profiles.active</code>: Propiedad utilizada para activar un perfil específico.</li>
+<li><code>spring.config.location</code>: Propiedad utilizada para especificar la ubicación de un archivo de propiedades externo.</li>
+<li><code>management.endpoints.web.exposure.include</code>: Propiedad utilizada para exponer todos los endpoints de Actuator.</li>
+<li><code>management.endpoint.health.show-details</code>: Propiedad utilizada para mostrar detalles en el endpoint de salud.</li>
+</ul>
+<h4 id="beneficios-de-usar-actuator">Beneficios de Usar Actuator<a class="headerlink" href="#beneficios-de-usar-actuator" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Monitoreo en Tiempo Real</strong>: Proporciona información en tiempo real sobre la salud y el rendimiento de la aplicación.</li>
+<li><strong>Gestión Simplificada</strong>: Facilita la gestión de aplicaciones en producción mediante endpoints de administración.</li>
+<li><strong>Integración con Herramientas de Monitoreo</strong>: Se integra fácilmente con herramientas de monitoreo como Prometheus y Grafana.</li>
+</ul>
+<h4 id="actividad-practica">Actividad Práctica<a class="headerlink" href="#actividad-practica" title="Permanent link">&para;</a></h4>
+<ol>
+<li><strong>Configurar Perfiles en Spring Boot</strong>:</li>
+<li>Crear archivos de configuración específicos para cada perfil.</li>
+<li>
+<p>Activar un perfil específico utilizando la propiedad <code>spring.profiles.active</code>.</p>
+</li>
+<li>
+<p><strong>Habilitar y Configurar Actuator</strong>:</p>
+</li>
+<li>Añadir la dependencia <code>spring-boot-starter-actuator</code>.</li>
+<li>Configurar Actuator en el archivo <code>application.properties</code>.</li>
+<li>Acceder a los endpoints de salud y métricas para monitorear la aplicación.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>
