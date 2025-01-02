@@ -11,76 +11,76 @@ La configuración de seguridad se realiza en una clase anotada con `@Configurati
 ### Actividad Práctica
 
 1. **Configurar Spring Security**:
-   ```java
-   @Configuration
-   @EnableWebSecurity
-   public class SecurityConfig extends WebSecurityConfigurerAdapter {
-       private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
-       @Autowired
-       private JwtEntryPoint jwtEntryPoint;
+    @Autowired
+    private JwtEntryPoint jwtEntryPoint;
 
-       @Autowired
-       private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
-       @Bean
-       public JwtAuthenticationFilter jwtAuthenticationFilter() {
-           return new JwtAuthenticationFilter();
-       }
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
 
-       /**
-        * Configura el AuthenticationManagerBuilder con el UserDetailsService y el PasswordEncoder.
-        * @param auth el AuthenticationManagerBuilder
-        * @throws Exception en caso de error
-        */
-       @Override
-       protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-           logger.info("Configurando AuthenticationManagerBuilder");
-           auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-       }
+    /**
+    * Configura el AuthenticationManagerBuilder con el UserDetailsService y el PasswordEncoder.
+    * @param auth el AuthenticationManagerBuilder
+    * @throws Exception en caso de error
+    */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        logger.info("Configurando AuthenticationManagerBuilder");
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
 
-       /**
-        * Configura la seguridad HTTP, deshabilitando CSRF, permitiendo el acceso público a las rutas de autenticación,
-        * y requiriendo autenticación para otras rutas. También configura el manejo de excepciones y la política de creación de sesiones.
-        * @param http el HttpSecurity
-        * @throws Exception en caso de error
-        */
-       @Override
-       protected void configure(HttpSecurity http) throws Exception {
-           logger.info("Configurando HttpSecurity");
-           http.csrf().disable()
-               .authorizeRequests()
-               .antMatchers("/auth/**").permitAll()
-               .anyRequest().authenticated()
-               .and()
-               .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
-               .and()
-               .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    /**
+    * Configura la seguridad HTTP, deshabilitando CSRF, permitiendo el acceso público a las rutas de autenticación,
+    * y requiriendo autenticación para otras rutas. También configura el manejo de excepciones y la política de creación de sesiones.
+    * @param http el HttpSecurity
+    * @throws Exception en caso de error
+    */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        logger.info("Configurando HttpSecurity");
+        http.csrf().disable()
+            .authorizeRequests()
+            .antMatchers("/auth/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
+            .and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-           http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-       }
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
 
-       /**
-        * Define el PasswordEncoder que se utilizará para codificar las contraseñas.
-        * @return el PasswordEncoder
-        */
-       @Bean
-       public PasswordEncoder passwordEncoder() {
-           return new BCryptPasswordEncoder();
-       }
+    /**
+    * Define el PasswordEncoder que se utilizará para codificar las contraseñas.
+    * @return el PasswordEncoder
+    */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-       /**
-        * Define el AuthenticationManager que se utilizará para la autenticación.
-        * @return el AuthenticationManager
-        * @throws Exception en caso de error
-        */
-       @Bean
-       @Override
-       public AuthenticationManager authenticationManagerBean() throws Exception {
-           return super.authenticationManagerBean();
-       }
-   }
-   ```
+    /**
+    * Define el AuthenticationManager que se utilizará para la autenticación.
+    * @return el AuthenticationManager
+    * @throws Exception en caso de error
+    */
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+}
+```
 
 Esta clase `SecurityConfig` extiende `WebSecurityConfigurerAdapter` y se encarga de la configuración de seguridad de la aplicación. Aquí se configuran varios aspectos importantes y se utiliza un Logger para registrar eventos importantes:
 
@@ -102,12 +102,12 @@ La implementación de cifrado de contraseñas y datos se realiza utilizando Spri
 ### Actividad Práctica
 
 1. **Implementar cifrado de contraseñas**:
-   ```java
-   @Bean
-   public PasswordEncoder passwordEncoder() {
-       return new BCryptPasswordEncoder();
-   }
-   ```
+```java
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+```
 
 ### Gestión de JWT
 
@@ -288,58 +288,58 @@ La implementación de JWT en Spring Security incluye la creación de un proveedo
 ### Actividad Práctica
 
 1. **Crear el proveedor de JWT `JwtProvider`**:
-   ```java
-   @Component
-   public class JwtProvider {
-       private String secret = "secret";
+```java
+@Component
+public class JwtProvider {
+    private String secret = "secret";
 
-       public String generateToken(Authentication authentication) {
-           UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-           return Jwts.builder()
-                   .setSubject(userDetails.getUsername())
-                   .setIssuedAt(new Date())
-                   .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 horas de expiración
-                   .signWith(SignatureAlgorithm.HS256, secret)
-                   .compact();
-       }
+    public String generateToken(Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return Jwts.builder()
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 horas de expiración
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+    }
 
-       public String extractUsername(String token) {
-           return extractClaim(token, Claims::getSubject);
-       }
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
 
-       public Date extractExpiration(String token) {
-           return extractClaim(token, Claims::getExpiration);
-       }
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
 
-       public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-           final Claims claims = extractAllClaims(token);
-           return claimsResolver.apply(claims);
-       }
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
 
-       private Claims extractAllClaims(String token) {
-           return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-       }
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    }
 
-       private Boolean isTokenExpired(String token) {
-           return extractExpiration(token).before(new Date());
-       }
+    private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
 
-       public boolean validateToken(String token) {
-           try {
-               Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-               return true;
-           } catch (JwtException | IllegalArgumentException e) {
-               System.err.println("Token JWT inválido");
-           }
-           return false;
-       }
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            System.err.println("Token JWT inválido");
+        }
+        return false;
+    }
 
-       public Boolean validateToken(String token, UserDetails userDetails) {
-           final String username = extractUsername(token);
-           return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-       }
-   }
-   ```
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+}
+```
 
 ### Proteger Endpoints con Roles
 
@@ -347,29 +347,29 @@ Para proteger endpoints con roles, se pueden utilizar las anotaciones `@PreAutho
 
 1. **Habilitar la Seguridad basada en Anotaciones**:
    - Añadir la anotación `@EnableGlobalMethodSecurity` en la clase de configuración de seguridad:
-     ```java
-     @Configuration
-     @EnableWebSecurity
-     @EnableGlobalMethodSecurity(prePostEnabled = true)
-     public class SecurityConfig extends WebSecurityConfigurerAdapter {
-         // ...existing code...
-     }
-     ```
+```java
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    // ...existing code...
+}
+```
 
 2. **Proteger un Endpoint con `@PreAuthorize`**:
    - Utilizar la anotación `@PreAuthorize` en el controlador para proteger un endpoint:
-     ```java
-     @RestController
-     @RequestMapping("/api/admin")
-     public class AdminController {
+```java
+@RestController
+@RequestMapping("/api/admin")
+public class AdminController {
 
-         @PreAuthorize("hasRole('ADMIN')")
-         @GetMapping("/dashboard")
-         public String getAdminDashboard() {
-             return "Admin Dashboard";
-         }
-     }
-     ```
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/dashboard")
+    public String getAdminDashboard() {
+        return "Admin Dashboard";
+    }
+}
+```
 
 En este ejemplo, el endpoint `/api/admin/dashboard` solo será accesible para usuarios con el rol `ADMIN`.
 

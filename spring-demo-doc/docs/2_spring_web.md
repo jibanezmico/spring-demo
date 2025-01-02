@@ -6,15 +6,15 @@ Spring Web es un módulo de Spring que facilita la creación de aplicaciones web
 
 ### Principales Anotaciones
 
-- **@RestController**: Indica que la clase es un controlador RESTful.
-- **@RequestMapping**: Mapea solicitudes HTTP a métodos específicos en un controlador.
-- **@GetMapping**: Maneja solicitudes HTTP GET.
-- **@PostMapping**: Maneja solicitudes HTTP POST.
-- **@PutMapping**: Maneja solicitudes HTTP PUT.
-- **@DeleteMapping**: Maneja solicitudes HTTP DELETE.
-- **@PathVariable**: Vincula una variable de ruta a un parámetro de método.
-- **@RequestParam**: Vincula un parámetro de solicitud a un parámetro de método.
-- **@RequestBody**: Vincula el cuerpo de una solicitud a un parámetro de método.
+- **`@RestController`**: Indica que la clase es un controlador RESTful.
+- **`@RequestMapping`**: Mapea solicitudes HTTP a métodos específicos en un controlador.
+- **`@GetMapping`**: Maneja solicitudes HTTP GET.
+- **`@PostMapping`**: Maneja solicitudes HTTP POST.
+- **`@PutMapping`**: Maneja solicitudes HTTP PUT.
+- **`@DeleteMapping`**: Maneja solicitudes HTTP DELETE.
+- **`@PathVariable`**: Vincula una variable de ruta a un parámetro de método.
+- **`@RequestParam`**: Vincula un parámetro de solicitud a un parámetro de método.
+- **`@RequestBody`**: Vincula el cuerpo de una solicitud a un parámetro de método.
 
 ### Ejemplos de Anotaciones
 
@@ -92,41 +92,41 @@ public class ExampleController {
 1. **Crear un servicio REST "Hola Mundo"**:
    - Crear un controlador RESTful que maneje una solicitud GET y devuelva un mensaje "Hola Mundo".
 
-   ```java
-   @RestController
-   @RequestMapping("/api")
-   public class HolaMundoController {
-       private static final Logger logger = LoggerFactory.getLogger(HolaMundoController.class);
+```java
+@RestController
+@RequestMapping("/api")
+public class HolaMundoController {
+    private static final Logger logger = LoggerFactory.getLogger(HolaMundoController.class);
 
-       @GetMapping("/hola")
-       public String holaMundo() {
-           logger.info("holaMundo endpoint llamado");
-           return "Hola Mundo";
-       }
-   }
-   ```
+    @GetMapping("/hola")
+    public String holaMundo() {
+        logger.info("holaMundo endpoint llamado");
+        return "Hola Mundo";
+    }
+}
+```
 
 ### Ejemplo Práctico
 
 1. **Crear un controlador RESTful que maneje una solicitud POST con parámetros y cuerpo**:
    - Crear un controlador RESTful que maneje una solicitud POST, reciba parámetros en la URL y un cuerpo en la solicitud.
 
-   ```java
-   @RestController
-   @RequestMapping("/api")
-   public class ComplexController {
-       private static final Logger logger = LoggerFactory.getLogger(ComplexController.class);
+```java
+@RestController
+@RequestMapping("/api")
+public class ComplexController {
+    private static final Logger logger = LoggerFactory.getLogger(ComplexController.class);
 
-       @PostMapping("/process")
-       public ResponseEntity<String> processRequest(
-               @RequestParam String param,
-               @RequestBody Map<String, Object> body) {
-           logger.info("processRequest endpoint llamado con param: {} y body: {}", param, body);
-           String response = "Received param: " + param + " and body: " + body.toString();
-           return ResponseEntity.ok(response);
-       }
-   }
-   ```
+    @PostMapping("/process")
+    public ResponseEntity<String> processRequest(
+            @RequestParam String param,
+            @RequestBody Map<String, Object> body) {
+        logger.info("processRequest endpoint llamado con param: {} y body: {}", param, body);
+        String response = "Received param: " + param + " and body: " + body.toString();
+        return ResponseEntity.ok(response);
+    }
+}
+```
 
 ### Explicación del Código
 

@@ -12,69 +12,69 @@ La implementación de un servicio de envío de correos electrónicos se realiza 
 
 1. **Configurar las Dependencias de JavaMailSender**:
    - Añadir las dependencias necesarias en el archivo `pom.xml`:
-     ```xml
-     <dependency>
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter-mail</artifactId>
-     </dependency>
-     ```
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-mail</artifactId>
+</dependency>
+```
 
 2. **Configurar las Propiedades del Correo Electrónico**:
    - Configurar las propiedades del correo electrónico en el archivo `application.properties`:
-     ```properties
-     spring.mail.host=smtp.mailtrap.io
-     spring.mail.port=2525
-     spring.mail.username=your-mailtrap-username
-     spring.mail.password=your-mailtrap-password
-     spring.mail.properties.mail.smtp.auth=true
-     spring.mail.properties.mail.smtp.starttls.enable=true
-     ```
+```properties
+spring.mail.host=smtp.mailtrap.io
+spring.mail.port=2525
+spring.mail.username=your-mailtrap-username
+spring.mail.password=your-mailtrap-password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+```
 
 3. **Crear el Servicio de Envío de Correos Electrónicos**:
    - Crear una clase `EmailService` en el paquete `service`:
-     ```java
-     @Service
-     public class EmailService {
-         private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
+```java
+@Service
+public class EmailService {
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
 
-         @Autowired
-         private JavaMailSender mailSender;
+    @Autowired
+    private JavaMailSender mailSender;
 
-         public void sendEmail(String to, String subject, String text) {
-             try {
-                 logger.info("Enviando correo a: {}", to);
-                 SimpleMailMessage message = new SimpleMailMessage();
-                 message.setTo(to);
-                 message.setSubject(subject);
-                 message.setText(text);
-                 mailSender.send(message);
-                 logger.info("Correo enviado a: {}", to);
-             } catch (MailException e) {
-                 logger.error("Error al enviar el correo: {}", e.getMessage());
-             }
-         }
+    public void sendEmail(String to, String subject, String text) {
+        try {
+            logger.info("Enviando correo a: {}", to);
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(text);
+            mailSender.send(message);
+            logger.info("Correo enviado a: {}", to);
+        } catch (MailException e) {
+            logger.error("Error al enviar el correo: {}", e.getMessage());
+        }
+    }
 
-         public void sendEmailWithAttachment(String to, String subject, String text, String pathToAttachment) {
-             try {
-                 logger.info("Enviando correo con adjunto a: {}", to);
-                 MimeMessage message = mailSender.createMimeMessage();
-                 MimeMessageHelper helper = new MimeMessageHelper(message, true);
+    public void sendEmailWithAttachment(String to, String subject, String text, String pathToAttachment) {
+        try {
+            logger.info("Enviando correo con adjunto a: {}", to);
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-                 helper.setTo(to);
-                 helper.setSubject(subject);
-                 helper.setText(text);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(text);
 
-                 FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
-                 helper.addAttachment("Adjunto", file);
+            FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
+            helper.addAttachment("Adjunto", file);
 
-                 mailSender.send(message);
-                 logger.info("Correo con adjunto enviado a: {}", to);
-             } catch (MessagingException | MailException e) {
-                 logger.error("Error al enviar el correo con adjunto: {}", e.getMessage());
-             }
-         }
-     }
-     ```
+            mailSender.send(message);
+            logger.info("Correo con adjunto enviado a: {}", to);
+        } catch (MessagingException | MailException e) {
+            logger.error("Error al enviar el correo con adjunto: {}", e.getMessage());
+        }
+    }
+}
+```
 
 ### Explicación del Código
 
@@ -95,14 +95,14 @@ Mailtrap es una herramienta que permite probar el envío de correos electrónico
 
 3. **Configurar las Propiedades del Correo Electrónico**:
    - Configura las propiedades del correo electrónico en el archivo `application.properties` utilizando las credenciales de Mailtrap:
-     ```properties
-     spring.mail.host=smtp.mailtrap.io
-     spring.mail.port=2525
-     spring.mail.username=your-mailtrap-username
-     spring.mail.password=your-mailtrap-password
-     spring.mail.properties.mail.smtp.auth=true
-     spring.mail.properties.mail.smtp.starttls.enable=true
-     ```
+```properties
+spring.mail.host=smtp.mailtrap.io
+spring.mail.port=2525
+spring.mail.username=your-mailtrap-username
+spring.mail.password=your-mailtrap-password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+```
 
 ### Beneficios de Usar JavaMailSender
 
@@ -114,26 +114,26 @@ Mailtrap es una herramienta que permite probar el envío de correos electrónico
 
 1. **Enviar un Correo Electrónico de Prueba**:
    - Crear un controlador REST para probar el envío de correos electrónicos:
-     ```java
-     @RestController
-     @RequestMapping("/api/email")
-     public class EmailController {
-         @Autowired
-         private EmailService emailService;
+```java
+@RestController
+@RequestMapping("/api/email")
+public class EmailController {
+    @Autowired
+    private EmailService emailService;
 
-         @PostMapping("/send")
-         public ResponseEntity<String> sendEmail(@RequestParam String to, @RequestParam String subject, @RequestParam String text) {
-             emailService.sendEmail(to, subject, text);
-             return ResponseEntity.ok("Email sent successfully");
-         }
+    @PostMapping("/send")
+    public ResponseEntity<String> sendEmail(@RequestParam String to, @RequestParam String subject, @RequestParam String text) {
+        emailService.sendEmail(to, subject, text);
+        return ResponseEntity.ok("Email sent successfully");
+    }
 
-         @PostMapping("/sendWithAttachment")
-         public ResponseEntity<String> sendEmailWithAttachment(@RequestParam String to, @RequestParam String subject, @RequestParam String text, @RequestParam String pathToAttachment) {
-             emailService.sendEmailWithAttachment(to, subject, text, pathToAttachment);
-             return ResponseEntity.ok("Email with attachment sent successfully");
-         }
-     }
-     ```
+    @PostMapping("/sendWithAttachment")
+    public ResponseEntity<String> sendEmailWithAttachment(@RequestParam String to, @RequestParam String subject, @RequestParam String text, @RequestParam String pathToAttachment) {
+        emailService.sendEmailWithAttachment(to, subject, text, pathToAttachment);
+        return ResponseEntity.ok("Email with attachment sent successfully");
+    }
+}
+```
 
 2. **Probar el Envío de Correos Electrónicos**:
    - Iniciar la aplicación Spring Boot.

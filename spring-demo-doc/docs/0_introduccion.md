@@ -1,39 +1,5 @@
 # Introducción a Spring Boot y conceptos clave
 
-## Índice
-
-- [Introducción a Spring Boot y conceptos clave](#introducción-a-spring-boot-y-conceptos-clave)
-  - [Índice](#índice)
-  - [Introducción a Conceptos Básicos de Spring](#introducción-a-conceptos-básicos-de-spring)
-    - [¿Qué es Spring?](#qué-es-spring)
-    - [Framework vs. Librería](#framework-vs-librería)
-    - [Historia de Spring](#historia-de-spring)
-    - [Introducción a Spring Boot](#introducción-a-spring-boot)
-      - [Características principales](#características-principales)
-      - [Ejemplo práctico: "Hello World"](#ejemplo-práctico-hello-world)
-    - [Uso de Spring Initializr](#uso-de-spring-initializr)
-  - [Principales Proyectos de Spring](#principales-proyectos-de-spring)
-    - [Spring Boot](#spring-boot)
-    - [Spring Web](#spring-web)
-      - [Características principales](#características-principales-1)
-    - [Spring Data](#spring-data)
-      - [Características principales](#características-principales-2)
-    - [Spring Security](#spring-security)
-      - [Características principales](#características-principales-3)
-    - [Spring Cloud](#spring-cloud)
-      - [Características principales](#características-principales-4)
-  - [Material Avanzado](#material-avanzado)
-    - [Configuración Avanzada de Spring Boot](#configuración-avanzada-de-spring-boot)
-      - [Configuración de Perfiles](#configuración-de-perfiles)
-      - [Configuración de Propiedades Externas](#configuración-de-propiedades-externas)
-    - [Monitoreo y Métricas](#monitoreo-y-métricas)
-      - [Habilitar Actuator](#habilitar-actuator)
-      - [Monitoreo de la Salud de la Aplicación](#monitoreo-de-la-salud-de-la-aplicación)
-      - [Métricas de Rendimiento](#métricas-de-rendimiento)
-      - [Explicación del Código](#explicación-del-código)
-      - [Beneficios de Usar Actuator](#beneficios-de-usar-actuator)
-      - [Actividad Práctica](#actividad-práctica)
-
 ## Introducción a Conceptos Básicos de Spring
 
 ### ¿Qué es Spring?
@@ -80,7 +46,7 @@ Spring Initializr es una herramienta que permite generar proyectos Spring Boot c
 
 2. **Configurar el Proyecto**:
    - Selecciona las opciones de configuración del proyecto, como el nombre del grupo, el nombre del artefacto, la versión de Java, etc.
-   - Añade las dependencias necesarias, como `Spring Web`, `Spring Data JPA`, `Spring Boot DevTools`, etc. Por ahora basta con Spring Web
+   - Añade las dependencias necesarias, como `Spring Web`, `Spring Data JPA`, `Spring Boot DevTools`, etc. Por ahora basta con Spring Web.
 
 3. **Generar el Proyecto**:
    - Haz clic en el botón "Generate" para descargar el proyecto generado.
@@ -148,25 +114,25 @@ Spring Boot permite configurar perfiles para gestionar diferentes configuracione
 1. **Crear Archivos de Configuración por Perfil**:
    - Crear archivos de configuración específicos para cada perfil, como `application-dev.properties` y `application-prod.properties`.
 
-   ```properties
-   # application-dev.properties
-   server.port=8081
-   spring.datasource.url=jdbc:h2:mem:devdb
-   ```
+```properties
+# application-dev.properties
+server.port=8081
+spring.datasource.url=jdbc:h2:mem:devdb
+```
 
-   ```properties
-   # application-prod.properties
-   server.port=8080
-   spring.datasource.url=jdbc:mysql://localhost/proddb
-   ```
+```properties
+# application-prod.properties
+server.port=8080
+spring.datasource.url=jdbc:mysql://localhost/proddb
+```
 
 2. **Activar un Perfil**:
    - Activar un perfil específico utilizando la propiedad `spring.profiles.active` en el archivo `application.properties` o mediante una variable de entorno.
 
-   ```properties
-   # application.properties
-   spring.profiles.active=dev
-   ```
+```properties
+# application.properties
+spring.profiles.active=dev
+```
 
 #### Configuración de Propiedades Externas
 
@@ -175,18 +141,18 @@ Spring Boot permite cargar propiedades desde archivos externos o variables de en
 1. **Cargar Propiedades desde un Archivo Externo**:
    - Especificar la ubicación del archivo de propiedades externo utilizando la propiedad `spring.config.location`.
 
-   ```properties
-   # application.properties
-   spring.config.location=classpath:/config/application-external.properties
-   ```
+```properties
+# application.properties
+spring.config.location=classpath:/config/application-external.properties
+```
 
 2. **Utilizar Variables de Entorno**:
    - Definir variables de entorno en el sistema operativo y acceder a ellas en el archivo de configuración.
 
-   ```properties
-   # application.properties
-   spring.datasource.url=${DATASOURCE_URL}
-   ```
+```properties
+# application.properties
+spring.datasource.url=${DATASOURCE_URL}
+```
 
 ### Monitoreo y Métricas
 
@@ -197,20 +163,20 @@ Spring Boot Actuator proporciona funcionalidades para monitorear y gestionar apl
 1. **Agregar la Dependencia de Actuator**:
    - Añadir la dependencia `spring-boot-starter-actuator` en el archivo `pom.xml`.
 
-   ```xml
-   <dependency>
-       <groupId>org.springframework.boot</groupId>
-       <artifactId>spring-boot-starter-actuator</artifactId>
-   </dependency>
-   ```
+```xml
+<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
 
 2. **Configurar Actuator**:
    - Configurar Actuator en el archivo `application.properties`.
 
-   ```properties
-   management.endpoints.web.exposure.include=*
-   management.endpoint.health.show-details=always
-   ```
+```properties
+management.endpoints.web.exposure.include=*
+management.endpoint.health.show-details=always
+```
 
 #### Monitoreo de la Salud de la Aplicación
 

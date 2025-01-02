@@ -13,33 +13,33 @@ La configuración de Swagger se realiza en una clase anotada con `@Configuration
 1. **Configurar Swagger**:
    - Crear una clase de configuración para Swagger en el paquete `config`.
 
-   ```java
-   @Configuration
-   @EnableSwagger2
-   public class SwaggerConfig {
-       private static final Logger logger = LoggerFactory.getLogger(SwaggerConfig.class);
+```java
+@Configuration
+@EnableSwagger2
+public class SwaggerConfig {
+    private static final Logger logger = LoggerFactory.getLogger(SwaggerConfig.class);
 
-       @Bean
-       public Docket api() {
-           logger.info("Configurando Swagger Docket");
-           return new Docket(DocumentationType.SWAGGER_2)
-                   .select()
-                   .apis(RequestHandlerSelectors.basePackage("com.demospring.security.controller"))
-                   .paths(PathSelectors.any())
-                   .build()
-                   .apiInfo(apiInfo());
-       }
+    @Bean
+    public Docket api() {
+        logger.info("Configurando Swagger Docket");
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.demospring.security.controller"))
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(apiInfo());
+    }
 
-       private ApiInfo apiInfo() {
-           logger.debug("Configurando ApiInfo");
-           return new ApiInfoBuilder()
-                   .title("API de Seguridad")
-                   .description("Documentación de la API de Seguridad con Spring Boot y Swagger")
-                   .version("1.0.0")
-                   .build();
-       }
-   }
-   ```
+    private ApiInfo apiInfo() {
+        logger.debug("Configurando ApiInfo");
+        return new ApiInfoBuilder()
+                .title("API de Seguridad")
+                .description("Documentación de la API de Seguridad con Spring Boot y Swagger")
+                .version("1.0.0")
+                .build();
+    }
+}
+```
 
    En esta configuración:
    - La anotación `@EnableSwagger2` habilita Swagger en la aplicación.

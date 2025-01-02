@@ -68,18 +68,18 @@ public class Order {
 Además de las operaciones CRUD estándar, Spring Data JPA permite definir consultas personalizadas utilizando la anotación `@Query`. Aquí hay un ejemplo de cómo definir y utilizar consultas personalizadas en un repositorio:
 
 1. **Definir una Consulta Personalizada**:
-   ```java
-   @Repository
-   public interface UserRepository extends JpaRepository<User, Long> {
-       Optional<User> findByUserName(String userName);
+```java
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUserName(String userName);
 
-       @Query("SELECT u FROM User u WHERE u.role = :role")
-       List<User> findUsersByRole(@Param("role") String role);
+    @Query("SELECT u FROM User u WHERE u.role = :role")
+    List<User> findUsersByRole(@Param("role") String role);
 
-       @Query("SELECT u FROM User u WHERE u.userName LIKE %:userName%")
-       List<User> findUsersByUserNameContaining(@Param("userName") String userName);
-   }
-   ```
+    @Query("SELECT u FROM User u WHERE u.userName LIKE %:userName%")
+    List<User> findUsersByUserNameContaining(@Param("userName") String userName);
+}
+```
 
    En este ejemplo:
    - `@Query("SELECT u FROM User u WHERE u.role = :role")`: Define una consulta personalizada que selecciona usuarios por su rol.
@@ -87,25 +87,25 @@ Además de las operaciones CRUD estándar, Spring Data JPA permite definir consu
    - `@Param("role")` y `@Param("userName")`: Vinculan los parámetros de la consulta a los parámetros del método.
 
 2. **Utilizar la Consulta Personalizada en un Servicio**:
-   ```java
-   @Service
-   public class UserService {
-       private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+```java
+@Service
+public class UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-       @Autowired
-       private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-       public List<User> getUsersByRole(String role) {
-           logger.info("Buscando usuarios con rol: {}", role);
-           return userRepository.findUsersByRole(role);
-       }
+    public List<User> getUsersByRole(String role) {
+        logger.info("Buscando usuarios con rol: {}", role);
+        return userRepository.findUsersByRole(role);
+    }
 
-       public List<User> getUsersByUserNameContaining(String userName) {
-           logger.info("Buscando usuarios cuyo nombre contiene: {}", userName);
-           return userRepository.findUsersByUserNameContaining(userName);
-       }
-   }
-   ```
+    public List<User> getUsersByUserNameContaining(String userName) {
+        logger.info("Buscando usuarios cuyo nombre contiene: {}", userName);
+        return userRepository.findUsersByUserNameContaining(userName);
+    }
+}
+```
 
    En este ejemplo:
    - `getUsersByRole(String role)`: Método del servicio que utiliza la consulta personalizada para obtener usuarios por su rol.
@@ -117,30 +117,30 @@ Además de las operaciones CRUD estándar, Spring Data JPA permite definir consu
 Spring Data JPA permite definir consultas nativas y utilizar Criteria API para consultas dinámicas.
 
 1. **Consultas Nativas**:
-   ```java
-   @Repository
-   public interface UserRepository extends JpaRepository<User, Long> {
-       @Query(value = "SELECT * FROM users WHERE role = ?1", nativeQuery = true)
-       List<User> findUsersByRoleNative(String role);
-   }
-   ```
+```java
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    @Query(value = "SELECT * FROM users WHERE role = ?1", nativeQuery = true)
+    List<User> findUsersByRoleNative(String role);
+}
+```
 
 2. **Criteria API**:
-   ```java
-   @Service
-   public class UserService {
-       @PersistenceContext
-       private EntityManager entityManager;
+```java
+@Service
+public class UserService {
+    @PersistenceContext
+    private EntityManager entityManager;
 
-       public List<User> findUsersByCriteria(String role) {
-           CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-           CriteriaQuery<User> query = cb.createQuery(User.class);
-           Root<User> user = query.from(User.class);
-           query.select(user).where(cb.equal(user.get("role"), role));
-           return entityManager.createQuery(query).getResultList();
-       }
-   }
-   ```
+    public List<User> findUsersByCriteria(String role) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> query = cb.createQuery(User.class);
+        Root<User> user = query.from(User.class);
+        query.select(user).where(cb.equal(user.get("role"), role));
+        return entityManager.createQuery(query).getResultList();
+    }
+}
+```
 
 ### Explicación del Código
 
@@ -177,129 +177,129 @@ Antes de probar el repositorio, es necesario configurar una base de datos local.
 
 2. **Configurar y ejecutar el contenedor MariaDB**:
    - Clonar el repositorio que contiene el archivo `docker-compose.yml`:
-     ```sh
-     git clone https://github.com/jibanezmico/DockerUtils.git
-     cd DockerUtils/MariaDB
-     ```
+```sh
+git clone https://github.com/jibanezmico/DockerUtils.git
+cd DockerUtils/MariaDB
+```
    - Ejecutar el contenedor:
-     ```sh
-     docker-compose up -d
-     ```
+```sh
+docker-compose up -d
+```
 
 3. **Verificar que el contenedor está en ejecución**:
    - Usar el comando `docker ps` para asegurarse de que el contenedor MariaDB está en ejecución.
 
 4. **Configurar el archivo `application.properties`**:
-   ```properties
-   spring.datasource.url=jdbc:mariadb://localhost:3306/demo_db
-   spring.datasource.username=mariadbuser
-   spring.datasource.password=mariadbpass
-   spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
-   spring.jpa.hibernate.ddl-auto=update
-   ```
+```properties
+spring.datasource.url=jdbc:mariadb://localhost:3306/demo_db
+spring.datasource.username=mariadbuser
+spring.datasource.password=mariadbpass
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+```
 
 5. **Probar la conexión**:
    - Ejecutar la aplicación Spring Boot y verificar que se conecta correctamente a la base de datos.
 
 1. **Crear la entidad `User`**:
-   ```java
-   @Entity
-   public class User {
-       @Id
-       @GeneratedValue(strategy = GenerationType.AUTO)
-       private Long id;
+```java
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-       @NotNull(message = "El nombre de usuario no puede ser nulo")
-       @Size(min = 3, max = 50, message = "El nombre de usuario debe tener entre 3 y 50 caracteres")
-       private String userName;
+    @NotNull(message = "El nombre de usuario no puede ser nulo")
+    @Size(min = 3, max = 50, message = "El nombre de usuario debe tener entre 3 y 50 caracteres")
+    private String userName;
 
-       @NotNull(message = "La contraseña no puede ser nula")
-       @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
-       private String password;
+    @NotNull(message = "La contraseña no puede ser nula")
+    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
+    private String password;
 
-       @NotNull(message = "El rol no puede ser nulo")
-       private String role;
+    @NotNull(message = "El rol no puede ser nulo")
+    private String role;
 
-       // Getters y setters...
-   }
-   ```
+    // Getters y setters...
+}
+```
    Esta clase `User` representa una entidad en la base de datos. La anotación `@Entity` indica que esta clase es una entidad JPA. La anotación `@Id` se utiliza para especificar el identificador de la entidad, y `@GeneratedValue` se utiliza para generar automáticamente el valor del identificador.
 
 2. **Crear el repositorio `UserRepository`**:
-   ```java
-   @Repository
-   public interface UserRepository extends JpaRepository<User, Long> {
-       Optional<User> findByUserName(String userName);
+```java
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUserName(String userName);
 
-       @Query("SELECT u FROM User u WHERE u.role = :role")
-       List<User> findUsersByRole(@Param("role") String role);
+    @Query("SELECT u FROM User u WHERE u.role = :role")
+    List<User> findUsersByRole(@Param("role") String role);
 
-       @Query("SELECT u FROM User u WHERE u.userName LIKE %:userName%")
-       List<User> findUsersByUserNameContaining(@Param("userName") String userName);
-   }
-   ```
+    @Query("SELECT u FROM User u WHERE u.userName LIKE %:userName%")
+    List<User> findUsersByUserNameContaining(@Param("userName") String userName);
+}
+```
    Esta interfaz `UserRepository` extiende `JpaRepository`, lo que proporciona métodos CRUD estándar para la entidad `User`. Además, se define un método personalizado `findByUserName` para buscar usuarios por nombre de usuario y consultas personalizadas `findUsersByRole` y `findUsersByUserNameContaining` para buscar usuarios por rol y por nombre de usuario, respectivamente.
 
 3. **Configurar el archivo `application.properties`**:
-   ```properties
-   spring.datasource.url=jdbc:mariadb://localhost:3306/demo_db
-   spring.datasource.username=mariadbuser
-   spring.datasource.password=mariadbpass
-   spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
-   spring.jpa.hibernate.ddl-auto=update
-   ```
+```properties
+spring.datasource.url=jdbc:mariadb://localhost:3306/demo_db
+spring.datasource.username=mariadbuser
+spring.datasource.password=mariadbpass
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+```
    Este archivo `application.properties` contiene la configuración de la base de datos. Se especifica la URL de la base de datos, el nombre de usuario, la contraseña y el controlador JDBC. La propiedad `spring.jpa.hibernate.ddl-auto=update` indica que Hibernate debe actualizar el esquema de la base de datos en función de las entidades definidas.
 
 4. **Crear el servicio `UserService`**:
-   ```java
-   @Service
-   @Validated
-   public class UserService implements UserDetailsService {
-       private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+```java
+@Service
+@Validated
+public class UserService implements UserDetailsService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-       @Autowired
-       private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-       @Override
-       public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-           logger.info("Cargando usuario por nombre de usuario: {}", username);
-           User user = userRepository.findByUserName(username)
-               .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-           logger.info("Usuario encontrado: {}", username);
-           return new org.springframework.security.core.userdetails.User(
-               user.getUserName(),
-               user.getPassword(),
-               Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
-           );
-       }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        logger.info("Cargando usuario por nombre de usuario: {}", username);
+        User user = userRepository.findByUserName(username)
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        logger.info("Usuario encontrado: {}", username);
+        return new org.springframework.security.core.userdetails.User(
+            user.getUserName(),
+            user.getPassword(),
+            Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+        );
+    }
 
-       public List<User> getAllUsers() {
-           logger.info("Obteniendo todos los usuarios");
-           return userRepository.findAll();
-       }
+    public List<User> getAllUsers() {
+        logger.info("Obteniendo todos los usuarios");
+        return userRepository.findAll();
+    }
 
-       public User saveUser(@Valid User user) {
-           logger.info("Guardando usuario: {}", user.getUserName());
-           logger.debug("Datos del usuario: {}", user);
-           return userRepository.save(user);
-       }
+    public User saveUser(@Valid User user) {
+        logger.info("Guardando usuario: {}", user.getUserName());
+        logger.debug("Datos del usuario: {}", user);
+        return userRepository.save(user);
+    }
 
-       public Optional<User> getByUserName(String userName) {
-           logger.info("Buscando usuario por nombre de usuario: {}", userName);
-           return userRepository.findByUserName(userName);
-       }
+    public Optional<User> getByUserName(String userName) {
+        logger.info("Buscando usuario por nombre de usuario: {}", userName);
+        return userRepository.findByUserName(userName);
+    }
 
-       public List<User> getUsersByRole(String role) {
-           logger.info("Buscando usuarios con rol: {}", role);
-           return userRepository.findUsersByRole(role);
-       }
+    public List<User> getUsersByRole(String role) {
+        logger.info("Buscando usuarios con rol: {}", role);
+        return userRepository.findUsersByRole(role);
+    }
 
-       public List<User> getUsersByUserNameContaining(String userName) {
-           logger.info("Buscando usuarios cuyo nombre contiene: {}", userName);
-           return userRepository.findUsersByUserNameContaining(userName);
-       }
-   }
-   ```
+    public List<User> getUsersByUserNameContaining(String userName) {
+        logger.info("Buscando usuarios cuyo nombre contiene: {}", userName);
+        return userRepository.findUsersByUserNameContaining(userName);
+    }
+}
+```
 
    Esta clase `UserService` implementa `UserDetailsService` para proporcionar detalles de usuario a Spring Security. El método `loadUserByUsername` carga un usuario por nombre de usuario y lanza una excepción si el usuario no se encuentra. Además, se proporcionan métodos para obtener todos los usuarios, guardar un usuario, buscar un usuario por nombre de usuario, buscar usuarios por rol y buscar usuarios cuyo nombre de usuario contiene una cadena específica. Se utiliza un Logger para registrar eventos importantes y se aplican validaciones a la entidad `User`.
 
@@ -312,78 +312,78 @@ Spring Data JPA proporciona soporte para auditoría de entidades, permitiendo ra
 1. **Habilitar la Auditoría**:
    - Añadir la anotación `@EnableJpaAuditing` en una clase de configuración.
 
-   ```java
-   @Configuration
-   @EnableJpaAuditing
-   public class JpaConfig {
-       // ...existing code...
-   }
-   ```
+```java
+@Configuration
+@EnableJpaAuditing
+public class JpaConfig {
+    // ...existing code...
+}
+```
 
 2. **Configurar las Entidades para Auditoría**:
    - Añadir las anotaciones `@CreatedDate`, `@LastModifiedDate`, `@CreatedBy` y `@LastModifiedBy` en las entidades.
 
-   ```java
-   @Entity
-   @EntityListeners(AuditingEntityListener.class)
-   public class User {
-       @Id
-       @GeneratedValue(strategy = GenerationType.AUTO)
-       private Long id;
+```java
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-       @CreatedDate
-       private LocalDateTime createdDate;
+    @CreatedDate
+    private LocalDateTime createdDate;
 
-       @LastModifiedDate
-       private LocalDateTime lastModifiedDate;
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
 
-       @CreatedBy
-       private String createdBy;
+    @CreatedBy
+    private String createdBy;
 
-       @LastModifiedBy
-       private String lastModifiedBy;
+    @LastModifiedBy
+    private String lastModifiedBy;
 
-       // ...existing code...
-   }
-   ```
+    // ...existing code...
+}
+```
 
 #### Uso de Specification para Consultas Dinámicas
 
 Spring Data JPA proporciona la interfaz `Specification` para crear consultas dinámicas.
 
 1. **Definir una Especificación**:
-   ```java
-   public class UserSpecification {
-       public static Specification<User> hasRole(String role) {
-           return (root, query, cb) -> cb.equal(root.get("role"), role);
-       }
+```java
+public class UserSpecification {
+    public static Specification<User> hasRole(String role) {
+        return (root, query, cb) -> cb.equal(root.get("role"), role);
+    }
 
-       public static Specification<User> userNameContains(String userName) {
-           return (root, query, cb) -> cb.like(root.get("userName"), "%" + userName + "%");
-       }
-   }
-   ```
+    public static Specification<User> userNameContains(String userName) {
+        return (root, query, cb) -> cb.like(root.get("userName"), "%" + userName + "%");
+    }
+}
+```
 
 2. **Utilizar la Especificación en un Repositorio**:
-   ```java
-   @Repository
-   public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-   }
-   ```
+```java
+@Repository
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
+}
+```
 
 3. **Utilizar la Especificación en un Servicio**:
-   ```java
-   @Service
-   public class UserService {
-       @Autowired
-       private UserRepository userRepository;
+```java
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
 
-       public List<User> findUsersByRoleAndUserName(String role, String userName) {
-           return userRepository.findAll(Specification.where(UserSpecification.hasRole(role))
-                   .and(UserSpecification.userNameContains(userName)));
-       }
-   }
-   ```
+    public List<User> findUsersByRoleAndUserName(String role, String userName) {
+        return userRepository.findAll(Specification.where(UserSpecification.hasRole(role))
+                .and(UserSpecification.userNameContains(userName)));
+    }
+}
+```
 
 ### Explicación del Código
 
