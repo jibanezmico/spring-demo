@@ -884,15 +884,15 @@
 <p>Spring Web es un módulo de Spring que facilita la creación de aplicaciones web y servicios RESTful. Proporciona soporte para controladores, vistas y modelos, y permite manejar solicitudes HTTP de manera sencilla.</p>
 <h3 id="principales-anotaciones">Principales Anotaciones<a class="headerlink" href="#principales-anotaciones" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>@RestController</strong>: Indica que la clase es un controlador RESTful.</li>
-<li><strong>@RequestMapping</strong>: Mapea solicitudes HTTP a métodos específicos en un controlador.</li>
-<li><strong>@GetMapping</strong>: Maneja solicitudes HTTP GET.</li>
-<li><strong>@PostMapping</strong>: Maneja solicitudes HTTP POST.</li>
-<li><strong>@PutMapping</strong>: Maneja solicitudes HTTP PUT.</li>
-<li><strong>@DeleteMapping</strong>: Maneja solicitudes HTTP DELETE.</li>
-<li><strong>@PathVariable</strong>: Vincula una variable de ruta a un parámetro de método.</li>
-<li><strong>@RequestParam</strong>: Vincula un parámetro de solicitud a un parámetro de método.</li>
-<li><strong>@RequestBody</strong>: Vincula el cuerpo de una solicitud a un parámetro de método.</li>
+<li><strong><code>@RestController</code></strong>: Indica que la clase es un controlador RESTful.</li>
+<li><strong><code>@RequestMapping</code></strong>: Mapea solicitudes HTTP a métodos específicos en un controlador.</li>
+<li><strong><code>@GetMapping</code></strong>: Maneja solicitudes HTTP GET.</li>
+<li><strong><code>@PostMapping</code></strong>: Maneja solicitudes HTTP POST.</li>
+<li><strong><code>@PutMapping</code></strong>: Maneja solicitudes HTTP PUT.</li>
+<li><strong><code>@DeleteMapping</code></strong>: Maneja solicitudes HTTP DELETE.</li>
+<li><strong><code>@PathVariable</code></strong>: Vincula una variable de ruta a un parámetro de método.</li>
+<li><strong><code>@RequestParam</code></strong>: Vincula un parámetro de solicitud a un parámetro de método.</li>
+<li><strong><code>@RequestBody</code></strong>: Vincula el cuerpo de una solicitud a un parámetro de método.</li>
 </ul>
 <h3 id="ejemplos-de-anotaciones">Ejemplos de Anotaciones<a class="headerlink" href="#ejemplos-de-anotaciones" title="Permanent link">&para;</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="nd">@RestController</span>
@@ -968,42 +968,40 @@
 <li><strong>Crear un servicio REST "Hola Mundo"</strong>:</li>
 <li>Crear un controlador RESTful que maneje una solicitud GET y devuelva un mensaje "Hola Mundo".</li>
 </ol>
-<p>```java
-   @RestController
-   @RequestMapping("/api")
-   public class HolaMundoController {
-       private static final Logger logger = LoggerFactory.getLogger(HolaMundoController.class);</p>
-<div class="codehilite"><pre><span></span><code>   @GetMapping(&quot;/hola&quot;)
-   public String holaMundo() {
-       logger.info(&quot;holaMundo endpoint llamado&quot;);
-       return &quot;Hola Mundo&quot;;
-   }
+<div class="codehilite"><pre><span></span><code><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="p">(</span><span class="s">&quot;/api&quot;</span><span class="p">)</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HolaMundoController</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">HolaMundoController</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+
+<span class="w">    </span><span class="nd">@GetMapping</span><span class="p">(</span><span class="s">&quot;/hola&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">holaMundo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;holaMundo endpoint llamado&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Hola Mundo&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
-<p>}
-   ```</p>
 <h3 id="ejemplo-practico">Ejemplo Práctico<a class="headerlink" href="#ejemplo-practico" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>Crear un controlador RESTful que maneje una solicitud POST con parámetros y cuerpo</strong>:</li>
 <li>Crear un controlador RESTful que maneje una solicitud POST, reciba parámetros en la URL y un cuerpo en la solicitud.</li>
 </ol>
-<p>```java
-   @RestController
-   @RequestMapping("/api")
-   public class ComplexController {
-       private static final Logger logger = LoggerFactory.getLogger(ComplexController.class);</p>
-<div class="codehilite"><pre><span></span><code>   @PostMapping(&quot;/process&quot;)
-   public ResponseEntity&lt;String&gt; processRequest(
-           @RequestParam String param,
-           @RequestBody Map&lt;String, Object&gt; body) {
-       logger.info(&quot;processRequest endpoint llamado con param: {} y body: {}&quot;, param, body);
-       String response = &quot;Received param: &quot; + param + &quot; and body: &quot; + body.toString();
-       return ResponseEntity.ok(response);
-   }
+<div class="codehilite"><pre><span></span><code><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="p">(</span><span class="s">&quot;/api&quot;</span><span class="p">)</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ComplexController</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">ComplexController</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+
+<span class="w">    </span><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&quot;/process&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">processRequest</span><span class="p">(</span>
+<span class="w">            </span><span class="nd">@RequestParam</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">param</span><span class="p">,</span>
+<span class="w">            </span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">body</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;processRequest endpoint llamado con param: {} y body: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">param</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="p">);</span>
+<span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Received param: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">param</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; and body: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">body</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">ok</span><span class="p">(</span><span class="n">response</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
-<p>}
-   ```</p>
 <h3 id="explicacion-del-codigo_1">Explicación del Código<a class="headerlink" href="#explicacion-del-codigo_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>@RestController</code>: Indica que la clase es un controlador RESTful.</li>
@@ -1186,7 +1184,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>

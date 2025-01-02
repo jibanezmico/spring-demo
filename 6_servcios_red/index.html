@@ -657,76 +657,73 @@
 <h3 id="actividad-practica">Actividad Práctica<a class="headerlink" href="#actividad-practica" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>Configurar las Dependencias de JavaMailSender</strong>:</li>
-<li>
-<p>Añadir las dependencias necesarias en el archivo <code>pom.xml</code>:
-     <code>xml
-     &lt;dependency&gt;
-         &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-         &lt;artifactId&gt;spring-boot-starter-mail&lt;/artifactId&gt;
-     &lt;/dependency&gt;</code></p>
-</li>
-<li>
-<p><strong>Configurar las Propiedades del Correo Electrónico</strong>:</p>
-</li>
-<li>
-<p>Configurar las propiedades del correo electrónico en el archivo <code>application.properties</code>:
-     <code>properties
-     spring.mail.host=smtp.mailtrap.io
-     spring.mail.port=2525
-     spring.mail.username=your-mailtrap-username
-     spring.mail.password=your-mailtrap-password
-     spring.mail.properties.mail.smtp.auth=true
-     spring.mail.properties.mail.smtp.starttls.enable=true</code></p>
-</li>
-<li>
-<p><strong>Crear el Servicio de Envío de Correos Electrónicos</strong>:</p>
-</li>
-<li>Crear una clase <code>EmailService</code> en el paquete <code>service</code>:
-     ```java
-     @Service
-     public class EmailService {
-         private static final Logger logger = LoggerFactory.getLogger(EmailService.class);<div class="codehilite"><pre><span></span><code> @Autowired
- private JavaMailSender mailSender;
-
- public void sendEmail(String to, String subject, String text) {
-     try {
-         logger.info(&quot;Enviando correo a: {}&quot;, to);
-         SimpleMailMessage message = new SimpleMailMessage();
-         message.setTo(to);
-         message.setSubject(subject);
-         message.setText(text);
-         mailSender.send(message);
-         logger.info(&quot;Correo enviado a: {}&quot;, to);
-     } catch (MailException e) {
-         logger.error(&quot;Error al enviar el correo: {}&quot;, e.getMessage());
-     }
- }
-
- public void sendEmailWithAttachment(String to, String subject, String text, String pathToAttachment) {
-     try {
-         logger.info(&quot;Enviando correo con adjunto a: {}&quot;, to);
-         MimeMessage message = mailSender.createMimeMessage();
-         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-         helper.setTo(to);
-         helper.setSubject(subject);
-         helper.setText(text);
-
-         FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
-         helper.addAttachment(&quot;Adjunto&quot;, file);
-
-         mailSender.send(message);
-         logger.info(&quot;Correo con adjunto enviado a: {}&quot;, to);
-     } catch (MessagingException | MailException e) {
-         logger.error(&quot;Error al enviar el correo con adjunto: {}&quot;, e.getMessage());
-     }
- }
+<li>Añadir las dependencias necesarias en el archivo <code>pom.xml</code>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;dependency&gt;</span>
+<span class="w">    </span><span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+<span class="w">    </span><span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-mail<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
 </code></pre></div>
 
-<p>}
- ```</p>
-</li>
+<ol>
+<li><strong>Configurar las Propiedades del Correo Electrónico</strong>:</li>
+<li>Configurar las propiedades del correo electrónico en el archivo <code>application.properties</code>:</li>
 </ol>
+<div class="codehilite"><pre><span></span><code><span class="na">spring.mail.host</span><span class="o">=</span><span class="s">smtp.mailtrap.io</span>
+<span class="na">spring.mail.port</span><span class="o">=</span><span class="s">2525</span>
+<span class="na">spring.mail.username</span><span class="o">=</span><span class="s">your-mailtrap-username</span>
+<span class="na">spring.mail.password</span><span class="o">=</span><span class="s">your-mailtrap-password</span>
+<span class="na">spring.mail.properties.mail.smtp.auth</span><span class="o">=</span><span class="s">true</span>
+<span class="na">spring.mail.properties.mail.smtp.starttls.enable</span><span class="o">=</span><span class="s">true</span>
+</code></pre></div>
+
+<ol>
+<li><strong>Crear el Servicio de Envío de Correos Electrónicos</strong>:</li>
+<li>Crear una clase <code>EmailService</code> en el paquete <code>service</code>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nd">@Service</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">EmailService</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">EmailService</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+
+<span class="w">    </span><span class="nd">@Autowired</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">JavaMailSender</span><span class="w"> </span><span class="n">mailSender</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">sendEmail</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">to</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">subject</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Enviando correo a: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="p">);</span>
+<span class="w">            </span><span class="n">SimpleMailMessage</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SimpleMailMessage</span><span class="p">();</span>
+<span class="w">            </span><span class="n">message</span><span class="p">.</span><span class="na">setTo</span><span class="p">(</span><span class="n">to</span><span class="p">);</span>
+<span class="w">            </span><span class="n">message</span><span class="p">.</span><span class="na">setSubject</span><span class="p">(</span><span class="n">subject</span><span class="p">);</span>
+<span class="w">            </span><span class="n">message</span><span class="p">.</span><span class="na">setText</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
+<span class="w">            </span><span class="n">mailSender</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+<span class="w">            </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Correo enviado a: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">MailException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">logger</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Error al enviar el correo: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">sendEmailWithAttachment</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">to</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">subject</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">pathToAttachment</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Enviando correo con adjunto a: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="p">);</span>
+<span class="w">            </span><span class="n">MimeMessage</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mailSender</span><span class="p">.</span><span class="na">createMimeMessage</span><span class="p">();</span>
+<span class="w">            </span><span class="n">MimeMessageHelper</span><span class="w"> </span><span class="n">helper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MimeMessageHelper</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span>
+
+<span class="w">            </span><span class="n">helper</span><span class="p">.</span><span class="na">setTo</span><span class="p">(</span><span class="n">to</span><span class="p">);</span>
+<span class="w">            </span><span class="n">helper</span><span class="p">.</span><span class="na">setSubject</span><span class="p">(</span><span class="n">subject</span><span class="p">);</span>
+<span class="w">            </span><span class="n">helper</span><span class="p">.</span><span class="na">setText</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
+
+<span class="w">            </span><span class="n">FileSystemResource</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">FileSystemResource</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="n">pathToAttachment</span><span class="p">));</span>
+<span class="w">            </span><span class="n">helper</span><span class="p">.</span><span class="na">addAttachment</span><span class="p">(</span><span class="s">&quot;Adjunto&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">);</span>
+
+<span class="w">            </span><span class="n">mailSender</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+<span class="w">            </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Correo con adjunto enviado a: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">MessagingException</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">MailException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">logger</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Error al enviar el correo con adjunto: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
 <h3 id="explicacion-del-codigo">Explicación del Código<a class="headerlink" href="#explicacion-del-codigo" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>@Service</code>: Indica que esta clase es un servicio de Spring.</li>
@@ -750,15 +747,16 @@
 <li>
 <p><strong>Configurar las Propiedades del Correo Electrónico</strong>:</p>
 </li>
-<li>Configura las propiedades del correo electrónico en el archivo <code>application.properties</code> utilizando las credenciales de Mailtrap:
-     <code>properties
-     spring.mail.host=smtp.mailtrap.io
-     spring.mail.port=2525
-     spring.mail.username=your-mailtrap-username
-     spring.mail.password=your-mailtrap-password
-     spring.mail.properties.mail.smtp.auth=true
-     spring.mail.properties.mail.smtp.starttls.enable=true</code></li>
+<li>Configura las propiedades del correo electrónico en el archivo <code>application.properties</code> utilizando las credenciales de Mailtrap:</li>
 </ol>
+<div class="codehilite"><pre><span></span><code><span class="na">spring.mail.host</span><span class="o">=</span><span class="s">smtp.mailtrap.io</span>
+<span class="na">spring.mail.port</span><span class="o">=</span><span class="s">2525</span>
+<span class="na">spring.mail.username</span><span class="o">=</span><span class="s">your-mailtrap-username</span>
+<span class="na">spring.mail.password</span><span class="o">=</span><span class="s">your-mailtrap-password</span>
+<span class="na">spring.mail.properties.mail.smtp.auth</span><span class="o">=</span><span class="s">true</span>
+<span class="na">spring.mail.properties.mail.smtp.starttls.enable</span><span class="o">=</span><span class="s">true</span>
+</code></pre></div>
+
 <h3 id="beneficios-de-usar-javamailsender">Beneficios de Usar JavaMailSender<a class="headerlink" href="#beneficios-de-usar-javamailsender" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Simplicidad</strong>: JavaMailSender simplifica el envío de correos electrónicos al proporcionar una API fácil de usar.</li>
@@ -768,33 +766,30 @@
 <h3 id="actividad-practica_1">Actividad Práctica<a class="headerlink" href="#actividad-practica_1" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>Enviar un Correo Electrónico de Prueba</strong>:</li>
-<li>
-<p>Crear un controlador REST para probar el envío de correos electrónicos:
-     ```java
-     @RestController
-     @RequestMapping("/api/email")
-     public class EmailController {
-         @Autowired
-         private EmailService emailService;</p>
-<div class="codehilite"><pre><span></span><code> @PostMapping(&quot;/send&quot;)
- public ResponseEntity&lt;String&gt; sendEmail(@RequestParam String to, @RequestParam String subject, @RequestParam String text) {
-     emailService.sendEmail(to, subject, text);
-     return ResponseEntity.ok(&quot;Email sent successfully&quot;);
- }
+<li>Crear un controlador REST para probar el envío de correos electrónicos:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="p">(</span><span class="s">&quot;/api/email&quot;</span><span class="p">)</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">EmailController</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nd">@Autowired</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">EmailService</span><span class="w"> </span><span class="n">emailService</span><span class="p">;</span>
 
- @PostMapping(&quot;/sendWithAttachment&quot;)
- public ResponseEntity&lt;String&gt; sendEmailWithAttachment(@RequestParam String to, @RequestParam String subject, @RequestParam String text, @RequestParam String pathToAttachment) {
-     emailService.sendEmailWithAttachment(to, subject, text, pathToAttachment);
-     return ResponseEntity.ok(&quot;Email with attachment sent successfully&quot;);
- }
+<span class="w">    </span><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&quot;/send&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">sendEmail</span><span class="p">(</span><span class="nd">@RequestParam</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">to</span><span class="p">,</span><span class="w"> </span><span class="nd">@RequestParam</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">subject</span><span class="p">,</span><span class="w"> </span><span class="nd">@RequestParam</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">emailService</span><span class="p">.</span><span class="na">sendEmail</span><span class="p">(</span><span class="n">to</span><span class="p">,</span><span class="w"> </span><span class="n">subject</span><span class="p">,</span><span class="w"> </span><span class="n">text</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">ok</span><span class="p">(</span><span class="s">&quot;Email sent successfully&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&quot;/sendWithAttachment&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">sendEmailWithAttachment</span><span class="p">(</span><span class="nd">@RequestParam</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">to</span><span class="p">,</span><span class="w"> </span><span class="nd">@RequestParam</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">subject</span><span class="p">,</span><span class="w"> </span><span class="nd">@RequestParam</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="nd">@RequestParam</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">pathToAttachment</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">emailService</span><span class="p">.</span><span class="na">sendEmailWithAttachment</span><span class="p">(</span><span class="n">to</span><span class="p">,</span><span class="w"> </span><span class="n">subject</span><span class="p">,</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">pathToAttachment</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="p">.</span><span class="na">ok</span><span class="p">(</span><span class="s">&quot;Email with attachment sent successfully&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
-<p>}
- ```</p>
-</li>
-<li>
-<p><strong>Probar el Envío de Correos Electrónicos</strong>:</p>
-</li>
+<ol>
+<li><strong>Probar el Envío de Correos Electrónicos</strong>:</li>
 <li>Iniciar la aplicación Spring Boot.</li>
 <li>Utilizar una herramienta como Postman para enviar una solicitud POST a <code>http://localhost:8080/api/email/send</code> con los parámetros <code>to</code>, <code>subject</code> y <code>text</code>.</li>
 <li>
@@ -902,7 +897,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>

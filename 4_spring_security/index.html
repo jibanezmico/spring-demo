@@ -832,74 +832,78 @@
 <p>La configuración de seguridad se realiza en una clase anotada con <code>@Configuration</code>. Esta clase extiende <code>WebSecurityConfigurerAdapter</code> y sobreescribe métodos para definir cómo se gestionará la seguridad en la aplicación.</p>
 <h3 id="actividad-practica">Actividad Práctica<a class="headerlink" href="#actividad-practica" title="Permanent link">&para;</a></h3>
 <ol>
-<li>
-<p><strong>Configurar Spring Security</strong>:
-   ```java
-   @Configuration
-   @EnableWebSecurity
-   public class SecurityConfig extends WebSecurityConfigurerAdapter {
-       private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);</p>
-<p>@Autowired
-   private JwtEntryPoint jwtEntryPoint;</p>
-<p>@Autowired
-   private UserDetailsServiceImpl userDetailsService;</p>
-<p>@Bean
-   public JwtAuthenticationFilter jwtAuthenticationFilter() {
-       return new JwtAuthenticationFilter();
-   }</p>
-<p>/*<em>
-    * Configura el AuthenticationManagerBuilder con el UserDetailsService y el PasswordEncoder.
-    * @param auth el AuthenticationManagerBuilder
-    * @throws Exception en caso de error
-    </em>/
-   @Override
-   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-       logger.info("Configurando AuthenticationManagerBuilder");
-       auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-   }</p>
-<p>/<strong>
-    * Configura la seguridad HTTP, deshabilitando CSRF, permitiendo el acceso público a las rutas de autenticación,
-    * y requiriendo autenticación para otras rutas. También configura el manejo de excepciones y la política de creación de sesiones.
-    * @param http el HttpSecurity
-    * @throws Exception en caso de error
-    */
-   @Override
-   protected void configure(HttpSecurity http) throws Exception {
-       logger.info("Configurando HttpSecurity");
-       http.csrf().disable()
-           .authorizeRequests()
-           .antMatchers("/auth/</strong>").permitAll()
-           .anyRequest().authenticated()
-           .and()
-           .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
-           .and()
-           .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);</p>
-<div class="codehilite"><pre><span></span><code>   http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+<li><strong>Configurar Spring Security</strong>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableWebSecurity</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SecurityConfig</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">WebSecurityConfigurerAdapter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">SecurityConfig</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+
+<span class="w">    </span><span class="nd">@Autowired</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">JwtEntryPoint</span><span class="w"> </span><span class="n">jwtEntryPoint</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nd">@Autowired</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">UserDetailsServiceImpl</span><span class="w"> </span><span class="n">userDetailsService</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nd">@Bean</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">JwtAuthenticationFilter</span><span class="w"> </span><span class="nf">jwtAuthenticationFilter</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">JwtAuthenticationFilter</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * Configura el AuthenticationManagerBuilder con el UserDetailsService y el PasswordEncoder.</span>
+<span class="cm">    * @param auth el AuthenticationManagerBuilder</span>
+<span class="cm">    * @throws Exception en caso de error</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">configure</span><span class="p">(</span><span class="n">AuthenticationManagerBuilder</span><span class="w"> </span><span class="n">auth</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Configurando AuthenticationManagerBuilder&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">auth</span><span class="p">.</span><span class="na">userDetailsService</span><span class="p">(</span><span class="n">userDetailsService</span><span class="p">).</span><span class="na">passwordEncoder</span><span class="p">(</span><span class="n">passwordEncoder</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * Configura la seguridad HTTP, deshabilitando CSRF, permitiendo el acceso público a las rutas de autenticación,</span>
+<span class="cm">    * y requiriendo autenticación para otras rutas. También configura el manejo de excepciones y la política de creación de sesiones.</span>
+<span class="cm">    * @param http el HttpSecurity</span>
+<span class="cm">    * @throws Exception en caso de error</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">configure</span><span class="p">(</span><span class="n">HttpSecurity</span><span class="w"> </span><span class="n">http</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Configurando HttpSecurity&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">http</span><span class="p">.</span><span class="na">csrf</span><span class="p">().</span><span class="na">disable</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="na">authorizeRequests</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="na">antMatchers</span><span class="p">(</span><span class="s">&quot;/auth/**&quot;</span><span class="p">).</span><span class="na">permitAll</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="na">anyRequest</span><span class="p">().</span><span class="na">authenticated</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="na">and</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="na">exceptionHandling</span><span class="p">().</span><span class="na">authenticationEntryPoint</span><span class="p">(</span><span class="n">jwtEntryPoint</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="na">and</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="na">sessionManagement</span><span class="p">().</span><span class="na">sessionCreationPolicy</span><span class="p">(</span><span class="n">SessionCreationPolicy</span><span class="p">.</span><span class="na">STATELESS</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">http</span><span class="p">.</span><span class="na">addFilterBefore</span><span class="p">(</span><span class="n">jwtAuthenticationFilter</span><span class="p">(),</span><span class="w"> </span><span class="n">UsernamePasswordAuthenticationFilter</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * Define el PasswordEncoder que se utilizará para codificar las contraseñas.</span>
+<span class="cm">    * @return el PasswordEncoder</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="nd">@Bean</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">PasswordEncoder</span><span class="w"> </span><span class="nf">passwordEncoder</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BCryptPasswordEncoder</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * Define el AuthenticationManager que se utilizará para la autenticación.</span>
+<span class="cm">    * @return el AuthenticationManager</span>
+<span class="cm">    * @throws Exception en caso de error</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="nd">@Bean</span>
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">AuthenticationManager</span><span class="w"> </span><span class="nf">authenticationManagerBean</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kd">super</span><span class="p">.</span><span class="na">authenticationManagerBean</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
-<p>}</p>
-<p>/*<em>
-    * Define el PasswordEncoder que se utilizará para codificar las contraseñas.
-    * @return el PasswordEncoder
-    </em>/
-   @Bean
-   public PasswordEncoder passwordEncoder() {
-       return new BCryptPasswordEncoder();
-   }</p>
-<p>/*<em>
-    * Define el AuthenticationManager que se utilizará para la autenticación.
-    * @return el AuthenticationManager
-    * @throws Exception en caso de error
-    </em>/
-   @Bean
-   @Override
-   public AuthenticationManager authenticationManagerBean() throws Exception {
-       return super.authenticationManagerBean();
-   }
-   }
-   ```</p>
-</li>
-</ol>
 <p>Esta clase <code>SecurityConfig</code> extiende <code>WebSecurityConfigurerAdapter</code> y se encarga de la configuración de seguridad de la aplicación. Aquí se configuran varios aspectos importantes y se utiliza un Logger para registrar eventos importantes:</p>
 <ul>
 <li><code>configure(AuthenticationManagerBuilder auth)</code>: Configura el <code>AuthenticationManagerBuilder</code> con el <code>UserDetailsService</code> y el <code>PasswordEncoder</code>. Esto asegura que el <code>AuthenticationManagerBuilder</code> pueda autenticar usuarios utilizando el <code>UserDetailsService</code> y el <code>PasswordEncoder</code> configurados.</li>
@@ -914,13 +918,14 @@
 <p>La implementación de cifrado de contraseñas y datos se realiza utilizando Spring Security y BCrypt. BCrypt es un algoritmo de hashing que incluye un factor de trabajo, lo que lo hace más seguro contra ataques de fuerza bruta.</p>
 <h3 id="actividad-practica_1">Actividad Práctica<a class="headerlink" href="#actividad-practica_1" title="Permanent link">&para;</a></h3>
 <ol>
-<li><strong>Implementar cifrado de contraseñas</strong>:
-   <code>java
-   @Bean
-   public PasswordEncoder passwordEncoder() {
-       return new BCryptPasswordEncoder();
-   }</code></li>
+<li><strong>Implementar cifrado de contraseñas</strong>:</li>
 </ol>
+<div class="codehilite"><pre><span></span><code><span class="nd">@Bean</span>
+<span class="kd">public</span><span class="w"> </span><span class="n">PasswordEncoder</span><span class="w"> </span><span class="nf">passwordEncoder</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BCryptPasswordEncoder</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+
 <h3 id="gestion-de-jwt">Gestión de JWT<a class="headerlink" href="#gestion-de-jwt" title="Permanent link">&para;</a></h3>
 <p>Para gestionar los JWT, necesitamos tres clases en el paquete <code>security.jwt</code>:</p>
 <ol>
@@ -1087,86 +1092,90 @@
 <p>La implementación de JWT en Spring Security incluye la creación de un proveedor de JWT, un filtro de autenticación y un punto de entrada de autenticación. Estos componentes se integran en la configuración de seguridad de Spring Security para proporcionar autenticación basada en tokens JWT.</p>
 <h3 id="actividad-practica_2">Actividad Práctica<a class="headerlink" href="#actividad-practica_2" title="Permanent link">&para;</a></h3>
 <ol>
-<li>
-<p><strong>Crear el proveedor de JWT <code>JwtProvider</code></strong>:
-   ```java
-   @Component
-   public class JwtProvider {
-       private String secret = "secret";</p>
-<p>public String generateToken(Authentication authentication) {
-       UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-       return Jwts.builder()
-               .setSubject(userDetails.getUsername())
-               .setIssuedAt(new Date())
-               .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 horas de expiración
-               .signWith(SignatureAlgorithm.HS256, secret)
-               .compact();
-   }</p>
-<p>public String extractUsername(String token) {
-       return extractClaim(token, Claims::getSubject);
-   }</p>
-<p>public Date extractExpiration(String token) {
-       return extractClaim(token, Claims::getExpiration);
-   }</p>
-<p>public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-       final Claims claims = extractAllClaims(token);
-       return claimsResolver.apply(claims);
-   }</p>
-<p>private Claims extractAllClaims(String token) {
-       return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-   }</p>
-<p>private Boolean isTokenExpired(String token) {
-       return extractExpiration(token).before(new Date());
-   }</p>
-<p>public boolean validateToken(String token) {
-       try {
-           Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-           return true;
-       } catch (JwtException | IllegalArgumentException e) {
-           System.err.println("Token JWT inválido");
-       }
-       return false;
-   }</p>
-<p>public Boolean validateToken(String token, UserDetails userDetails) {
-       final String username = extractUsername(token);
-       return (username.equals(userDetails.getUsername()) &amp;&amp; !isTokenExpired(token));
-   }
-   }
-   ```</p>
-</li>
+<li><strong>Crear el proveedor de JWT <code>JwtProvider</code></strong>:</li>
 </ol>
+<div class="codehilite"><pre><span></span><code><span class="nd">@Component</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">JwtProvider</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">secret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;secret&quot;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">generateToken</span><span class="p">(</span><span class="n">Authentication</span><span class="w"> </span><span class="n">authentication</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">UserDetails</span><span class="w"> </span><span class="n">userDetails</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">UserDetails</span><span class="p">)</span><span class="w"> </span><span class="n">authentication</span><span class="p">.</span><span class="na">getPrincipal</span><span class="p">();</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Jwts</span><span class="p">.</span><span class="na">builder</span><span class="p">()</span>
+<span class="w">                </span><span class="p">.</span><span class="na">setSubject</span><span class="p">(</span><span class="n">userDetails</span><span class="p">.</span><span class="na">getUsername</span><span class="p">())</span>
+<span class="w">                </span><span class="p">.</span><span class="na">setIssuedAt</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Date</span><span class="p">())</span>
+<span class="w">                </span><span class="p">.</span><span class="na">setExpiration</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Date</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">currentTimeMillis</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1000</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="p">))</span><span class="w"> </span><span class="c1">// 10 horas de expiración</span>
+<span class="w">                </span><span class="p">.</span><span class="na">signWith</span><span class="p">(</span><span class="n">SignatureAlgorithm</span><span class="p">.</span><span class="na">HS256</span><span class="p">,</span><span class="w"> </span><span class="n">secret</span><span class="p">)</span>
+<span class="w">                </span><span class="p">.</span><span class="na">compact</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">extractUsername</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">extractClaim</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">Claims</span><span class="p">::</span><span class="n">getSubject</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Date</span><span class="w"> </span><span class="nf">extractExpiration</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">extractClaim</span><span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">Claims</span><span class="p">::</span><span class="n">getExpiration</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="nf">extractClaim</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">Function</span><span class="o">&lt;</span><span class="n">Claims</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">claimsResolver</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">Claims</span><span class="w"> </span><span class="n">claims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extractAllClaims</span><span class="p">(</span><span class="n">token</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">claimsResolver</span><span class="p">.</span><span class="na">apply</span><span class="p">(</span><span class="n">claims</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Claims</span><span class="w"> </span><span class="nf">extractAllClaims</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Jwts</span><span class="p">.</span><span class="na">parser</span><span class="p">().</span><span class="na">setSigningKey</span><span class="p">(</span><span class="n">secret</span><span class="p">).</span><span class="na">parseClaimsJws</span><span class="p">(</span><span class="n">token</span><span class="p">).</span><span class="na">getBody</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Boolean</span><span class="w"> </span><span class="nf">isTokenExpired</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">extractExpiration</span><span class="p">(</span><span class="n">token</span><span class="p">).</span><span class="na">before</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Date</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">validateToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Jwts</span><span class="p">.</span><span class="na">parser</span><span class="p">().</span><span class="na">setSigningKey</span><span class="p">(</span><span class="n">secret</span><span class="p">).</span><span class="na">parseClaimsJws</span><span class="p">(</span><span class="n">token</span><span class="p">);</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">JwtException</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">IllegalArgumentException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">err</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Token JWT inválido&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Boolean</span><span class="w"> </span><span class="nf">validateToken</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">UserDetails</span><span class="w"> </span><span class="n">userDetails</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">extractUsername</span><span class="p">(</span><span class="n">token</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">username</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">userDetails</span><span class="p">.</span><span class="na">getUsername</span><span class="p">())</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">isTokenExpired</span><span class="p">(</span><span class="n">token</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
 <h3 id="proteger-endpoints-con-roles">Proteger Endpoints con Roles<a class="headerlink" href="#proteger-endpoints-con-roles" title="Permanent link">&para;</a></h3>
 <p>Para proteger endpoints con roles, se pueden utilizar las anotaciones <code>@PreAuthorize</code> o <code>@Secured</code>. A continuación se muestra un ejemplo de cómo proteger un endpoint utilizando <code>@PreAuthorize</code>:</p>
 <ol>
 <li><strong>Habilitar la Seguridad basada en Anotaciones</strong>:</li>
-<li>
-<p>Añadir la anotación <code>@EnableGlobalMethodSecurity</code> en la clase de configuración de seguridad:
-     <code>java
-     @Configuration
-     @EnableWebSecurity
-     @EnableGlobalMethodSecurity(prePostEnabled = true)
-     public class SecurityConfig extends WebSecurityConfigurerAdapter {
-         // ...existing code...
-     }</code></p>
-</li>
-<li>
-<p><strong>Proteger un Endpoint con <code>@PreAuthorize</code></strong>:</p>
-</li>
-<li>Utilizar la anotación <code>@PreAuthorize</code> en el controlador para proteger un endpoint:
-     ```java
-     @RestController
-     @RequestMapping("/api/admin")
-     public class AdminController {<div class="codehilite"><pre><span></span><code> @PreAuthorize(&quot;hasRole(&#39;ADMIN&#39;)&quot;)
- @GetMapping(&quot;/dashboard&quot;)
- public String getAdminDashboard() {
-     return &quot;Admin Dashboard&quot;;
- }
+<li>Añadir la anotación <code>@EnableGlobalMethodSecurity</code> en la clase de configuración de seguridad:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableWebSecurity</span>
+<span class="nd">@EnableGlobalMethodSecurity</span><span class="p">(</span><span class="n">prePostEnabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SecurityConfig</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">WebSecurityConfigurerAdapter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...existing code...</span>
+<span class="p">}</span>
 </code></pre></div>
 
-<p>}
- ```</p>
-</li>
+<ol>
+<li><strong>Proteger un Endpoint con <code>@PreAuthorize</code></strong>:</li>
+<li>Utilizar la anotación <code>@PreAuthorize</code> en el controlador para proteger un endpoint:</li>
 </ol>
+<div class="codehilite"><pre><span></span><code><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="p">(</span><span class="s">&quot;/api/admin&quot;</span><span class="p">)</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">AdminController</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="nd">@PreAuthorize</span><span class="p">(</span><span class="s">&quot;hasRole(&#39;ADMIN&#39;)&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nd">@GetMapping</span><span class="p">(</span><span class="s">&quot;/dashboard&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getAdminDashboard</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Admin Dashboard&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
 <p>En este ejemplo, el endpoint <code>/api/admin/dashboard</code> solo será accesible para usuarios con el rol <code>ADMIN</code>.</p>
 <h3 id="explicacion-del-codigo">Explicación del Código<a class="headerlink" href="#explicacion-del-codigo" title="Permanent link">&para;</a></h3>
 <ul>
@@ -1318,7 +1327,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>

@@ -297,15 +297,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#indice" class="md-nav__link">
-    <span class="md-ellipsis">
-      Índice
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#introduccion-a-conceptos-basicos-de-spring" class="md-nav__link">
     <span class="md-ellipsis">
       Introducción a Conceptos Básicos de Spring
@@ -781,15 +772,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#indice" class="md-nav__link">
-    <span class="md-ellipsis">
-      Índice
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#introduccion-a-conceptos-basicos-de-spring" class="md-nav__link">
     <span class="md-ellipsis">
       Introducción a Conceptos Básicos de Spring
@@ -1142,46 +1124,6 @@
 
 
 <h1 id="introduccion-a-spring-boot-y-conceptos-clave">Introducción a Spring Boot y conceptos clave<a class="headerlink" href="#introduccion-a-spring-boot-y-conceptos-clave" title="Permanent link">&para;</a></h1>
-<h2 id="indice">Índice<a class="headerlink" href="#indice" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="#introducción-a-spring-boot-y-conceptos-clave">Introducción a Spring Boot y conceptos clave</a></li>
-<li><a href="#índice">Índice</a></li>
-<li><a href="#introducción-a-conceptos-básicos-de-spring">Introducción a Conceptos Básicos de Spring</a><ul>
-<li><a href="#qué-es-spring">¿Qué es Spring?</a></li>
-<li><a href="#framework-vs-librería">Framework vs. Librería</a></li>
-<li><a href="#historia-de-spring">Historia de Spring</a></li>
-<li><a href="#introducción-a-spring-boot">Introducción a Spring Boot</a></li>
-<li><a href="#características-principales">Características principales</a></li>
-<li><a href="#ejemplo-práctico-hello-world">Ejemplo práctico: "Hello World"</a></li>
-<li><a href="#uso-de-spring-initializr">Uso de Spring Initializr</a></li>
-</ul>
-</li>
-<li><a href="#principales-proyectos-de-spring">Principales Proyectos de Spring</a><ul>
-<li><a href="#spring-boot">Spring Boot</a></li>
-<li><a href="#spring-web">Spring Web</a></li>
-<li><a href="#características-principales-1">Características principales</a></li>
-<li><a href="#spring-data">Spring Data</a></li>
-<li><a href="#características-principales-2">Características principales</a></li>
-<li><a href="#spring-security">Spring Security</a></li>
-<li><a href="#características-principales-3">Características principales</a></li>
-<li><a href="#spring-cloud">Spring Cloud</a></li>
-<li><a href="#características-principales-4">Características principales</a></li>
-</ul>
-</li>
-<li><a href="#material-avanzado">Material Avanzado</a><ul>
-<li><a href="#configuración-avanzada-de-spring-boot">Configuración Avanzada de Spring Boot</a></li>
-<li><a href="#configuración-de-perfiles">Configuración de Perfiles</a></li>
-<li><a href="#configuración-de-propiedades-externas">Configuración de Propiedades Externas</a></li>
-<li><a href="#monitoreo-y-métricas">Monitoreo y Métricas</a></li>
-<li><a href="#habilitar-actuator">Habilitar Actuator</a></li>
-<li><a href="#monitoreo-de-la-salud-de-la-aplicación">Monitoreo de la Salud de la Aplicación</a></li>
-<li><a href="#métricas-de-rendimiento">Métricas de Rendimiento</a></li>
-<li><a href="#explicación-del-código">Explicación del Código</a></li>
-<li><a href="#beneficios-de-usar-actuator">Beneficios de Usar Actuator</a></li>
-<li><a href="#actividad-práctica">Actividad Práctica</a></li>
-</ul>
-</li>
-</ul>
 <h2 id="introduccion-a-conceptos-basicos-de-spring">Introducción a Conceptos Básicos de Spring<a class="headerlink" href="#introduccion-a-conceptos-basicos-de-spring" title="Permanent link">&para;</a></h2>
 <h3 id="que-es-spring">¿Qué es Spring?<a class="headerlink" href="#que-es-spring" title="Permanent link">&para;</a></h3>
 <p>Spring es un framework de código abierto para el desarrollo de aplicaciones en Java que promueve buenas prácticas de diseño. Su propósito principal es reducir la complejidad en la configuración y el desarrollo de aplicaciones empresariales, permitiendo a los desarrolladores centrarse en la lógica de negocio.</p>
@@ -1219,7 +1161,7 @@
 </li>
 <li>Selecciona las opciones de configuración del proyecto, como el nombre del grupo, el nombre del artefacto, la versión de Java, etc.</li>
 <li>
-<p>Añade las dependencias necesarias, como <code>Spring Web</code>, <code>Spring Data JPA</code>, <code>Spring Boot DevTools</code>, etc. Por ahora basta con Spring Web</p>
+<p>Añade las dependencias necesarias, como <code>Spring Web</code>, <code>Spring Data JPA</code>, <code>Spring Boot DevTools</code>, etc. Por ahora basta con Spring Web.</p>
 </li>
 <li>
 <p><strong>Generar el Proyecto</strong>:</p>
@@ -1275,37 +1217,42 @@
 <li><strong>Crear Archivos de Configuración por Perfil</strong>:</li>
 <li>Crear archivos de configuración específicos para cada perfil, como <code>application-dev.properties</code> y <code>application-prod.properties</code>.</li>
 </ol>
-<p><code>properties
-   # application-dev.properties
-   server.port=8081
-   spring.datasource.url=jdbc:h2:mem:devdb</code></p>
-<p><code>properties
-   # application-prod.properties
-   server.port=8080
-   spring.datasource.url=jdbc:mysql://localhost/proddb</code></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># application-dev.properties</span>
+<span class="na">server.port</span><span class="o">=</span><span class="s">8081</span>
+<span class="na">spring.datasource.url</span><span class="o">=</span><span class="s">jdbc:h2:mem:devdb</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># application-prod.properties</span>
+<span class="na">server.port</span><span class="o">=</span><span class="s">8080</span>
+<span class="na">spring.datasource.url</span><span class="o">=</span><span class="s">jdbc:mysql://localhost/proddb</span>
+</code></pre></div>
+
 <ol>
 <li><strong>Activar un Perfil</strong>:</li>
 <li>Activar un perfil específico utilizando la propiedad <code>spring.profiles.active</code> en el archivo <code>application.properties</code> o mediante una variable de entorno.</li>
 </ol>
-<p><code>properties
-   # application.properties
-   spring.profiles.active=dev</code></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># application.properties</span>
+<span class="na">spring.profiles.active</span><span class="o">=</span><span class="s">dev</span>
+</code></pre></div>
+
 <h4 id="configuracion-de-propiedades-externas">Configuración de Propiedades Externas<a class="headerlink" href="#configuracion-de-propiedades-externas" title="Permanent link">&para;</a></h4>
 <p>Spring Boot permite cargar propiedades desde archivos externos o variables de entorno.</p>
 <ol>
 <li><strong>Cargar Propiedades desde un Archivo Externo</strong>:</li>
 <li>Especificar la ubicación del archivo de propiedades externo utilizando la propiedad <code>spring.config.location</code>.</li>
 </ol>
-<p><code>properties
-   # application.properties
-   spring.config.location=classpath:/config/application-external.properties</code></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># application.properties</span>
+<span class="na">spring.config.location</span><span class="o">=</span><span class="s">classpath:/config/application-external.properties</span>
+</code></pre></div>
+
 <ol>
 <li><strong>Utilizar Variables de Entorno</strong>:</li>
 <li>Definir variables de entorno en el sistema operativo y acceder a ellas en el archivo de configuración.</li>
 </ol>
-<p><code>properties
-   # application.properties
-   spring.datasource.url=${DATASOURCE_URL}</code></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># application.properties</span>
+<span class="na">spring.datasource.url</span><span class="o">=</span><span class="s">${DATASOURCE_URL}</span>
+</code></pre></div>
+
 <h3 id="monitoreo-y-metricas">Monitoreo y Métricas<a class="headerlink" href="#monitoreo-y-metricas" title="Permanent link">&para;</a></h3>
 <p>Spring Boot Actuator proporciona funcionalidades para monitorear y gestionar aplicaciones en producción. Aquí se explica cómo habilitar y configurar Actuator.</p>
 <h4 id="habilitar-actuator">Habilitar Actuator<a class="headerlink" href="#habilitar-actuator" title="Permanent link">&para;</a></h4>
@@ -1313,18 +1260,20 @@
 <li><strong>Agregar la Dependencia de Actuator</strong>:</li>
 <li>Añadir la dependencia <code>spring-boot-starter-actuator</code> en el archivo <code>pom.xml</code>.</li>
 </ol>
-<p><code>xml
-   &lt;dependency&gt;
-       &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-       &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
-   &lt;/dependency&gt;</code></p>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;dependency&gt;</span>
+<span class="w">      </span><span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+<span class="w">      </span><span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-actuator<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div>
+
 <ol>
 <li><strong>Configurar Actuator</strong>:</li>
 <li>Configurar Actuator en el archivo <code>application.properties</code>.</li>
 </ol>
-<p><code>properties
-   management.endpoints.web.exposure.include=*
-   management.endpoint.health.show-details=always</code></p>
+<div class="codehilite"><pre><span></span><code><span class="na">management.endpoints.web.exposure.include</span><span class="o">=</span><span class="s">*</span>
+<span class="na">management.endpoint.health.show-details</span><span class="o">=</span><span class="s">always</span>
+</code></pre></div>
+
 <h4 id="monitoreo-de-la-salud-de-la-aplicacion">Monitoreo de la Salud de la Aplicación<a class="headerlink" href="#monitoreo-de-la-salud-de-la-aplicacion" title="Permanent link">&para;</a></h4>
 <p>Actuator proporciona un endpoint <code>/actuator/health</code> para monitorear la salud de la aplicación.</p>
 <ol>
@@ -1412,7 +1361,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>

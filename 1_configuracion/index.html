@@ -681,91 +681,100 @@
 <li>
 <p><strong>Estructura del Proyecto y Explicación de Componentes</strong>:</p>
 </li>
-<li>
-<p><strong>src/main/java</strong>: Contiene el código fuente de la aplicación.</p>
-<ul>
+<li><strong>src/main/java</strong>: Contiene el código fuente de la aplicación.<ul>
 <li><strong>com.example.springdemo</strong>: Paquete base donde se encuentra la clase principal.</li>
-<li><strong>SpringDemoApplication.java</strong>: Clase principal de la aplicación con la anotación <code>@SpringBootApplication</code>.
-     ```java
-     @SpringBootApplication
-     public class SpringDemoApplication {
-         private static final Logger logger = LoggerFactory.getLogger(SpringDemoApplication.class);<div class="codehilite"><pre><span></span><code> public static void main(String[] args) {
-     logger.info(&quot;Iniciando la aplicación Spring Boot&quot;);
-     SpringApplication.run(SpringDemoApplication.class, args);
-     logger.info(&quot;Aplicación Spring Boot iniciada&quot;);
- }
-</code></pre></div>
-
-<p>}
- <code>La anotación `@SpringBootApplication` es una combinación de tres anotaciones: `@Configuration`, `@EnableAutoConfiguration`, y `@ComponentScan`. Esta anotación marca la clase como la principal para la configuración de Spring Boot. El método `main` utiliza `SpringApplication.run` para lanzar la aplicación.
-   - **src/main/resources**: Contiene recursos estáticos y archivos de configuración.
-     - **application.properties**: Archivo de configuración de la aplicación.</code>properties
-       # Configuración de ejemplo
-       server.port=8080
-       spring.application.name=spring-demo
-       <code>El archivo `application.properties` se utiliza para configurar diversas propiedades de la aplicación, como el puerto del servidor y el nombre de la aplicación.
-   - **src/test/java**: Contiene las pruebas unitarias de la aplicación.
-   - **pom.xml**: Archivo de configuración de Maven que gestiona las dependencias del proyecto.</code>xml
-     <dependencies>
- <dependency>
-     <groupId>org.springframework.boot</groupId>
-     <artifactId>spring-boot-starter-web</artifactId>
- </dependency>
- <!-- Otras dependencias -->
-     </dependencies>
-     <code>``
-     El archivo</code>pom.xml<code>es utilizado por Maven para gestionar las dependencias del proyecto. En este ejemplo, se incluye la dependencia</code>spring-boot-starter-web` para añadir soporte para aplicaciones web.</p>
-</li>
+<li><strong>SpringDemoApplication.java</strong>: Clase principal de la aplicación con la anotación <code>@SpringBootApplication</code>.</li>
 </ul>
 </li>
-<li>
-<p><strong>Poner en ejecución el proyecto</strong>:</p>
-</li>
-<li>Abre una terminal en el directorio raíz del proyecto.</li>
-<li>Ejecuta el siguiente comando para compilar y ejecutar la aplicación:
-     <code>sh
-     ./mvnw spring-boot:run</code></li>
-<li>La aplicación estará disponible en <code>http://localhost:8080</code>.</li>
 </ol>
+<div class="codehilite"><pre><span></span><code><span class="nd">@SpringBootApplication</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SpringDemoApplication</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">SpringDemoApplication</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Iniciando la aplicación Spring Boot&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">SpringApplication</span><span class="p">.</span><span class="na">run</span><span class="p">(</span><span class="n">SpringDemoApplication</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">);</span>
+<span class="w">        </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Aplicación Spring Boot iniciada&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>La anotación <code>@SpringBootApplication</code> es una combinación de tres anotaciones: <code>@Configuration</code>, <code>@EnableAutoConfiguration</code>, y <code>@ComponentScan</code>. Esta anotación marca la clase como la principal para la configuración de Spring Boot. El método <code>main</code> utiliza <code>SpringApplication.run</code> para lanzar la aplicación.</p>
+<ul>
+<li><strong>src/main/resources</strong>: Contiene recursos estáticos y archivos de configuración.<ul>
+<li><strong>application.properties</strong>: Archivo de configuración de la aplicación.</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Configuración de ejemplo</span>
+<span class="na">server.port</span><span class="o">=</span><span class="s">8080</span>
+<span class="na">spring.application.name</span><span class="o">=</span><span class="s">spring-demo</span>
+</code></pre></div>
+
+<p>El archivo <code>application.properties</code> se utiliza para configurar diversas propiedades de la aplicación, como el puerto del servidor y el nombre de la aplicación.</p>
+<ul>
+<li><strong>src/test/java</strong>: Contiene las pruebas unitarias de la aplicación.</li>
+<li><strong>pom.xml</strong>: Archivo de configuración de Maven que gestiona las dependencias del proyecto.</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;dependencies&gt;</span>
+<span class="w">    </span><span class="nt">&lt;dependency&gt;</span>
+<span class="w">        </span><span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+<span class="w">        </span><span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-web<span class="nt">&lt;/artifactId&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/dependency&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- Otras dependencias --&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div>
+
+<p>El archivo <code>pom.xml</code> es utilizado por Maven para gestionar las dependencias del proyecto. En este ejemplo, se incluye la dependencia <code>spring-boot-starter-web</code> para añadir soporte para aplicaciones web.</p>
+<ol>
+<li><strong>Poner en ejecución el proyecto</strong>:</li>
+<li>Abre una terminal en el directorio raíz del proyecto.</li>
+<li>Ejecuta el siguiente comando para compilar y ejecutar la aplicación:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>./mvnw<span class="w"> </span>spring-boot:run
+</code></pre></div>
+
+<ul>
+<li>La aplicación estará disponible en <code>http://localhost:8080</code>.</li>
+</ul>
 <h3 id="uso-de-logger-en-spring-boot">Uso de Logger en Spring Boot<a class="headerlink" href="#uso-de-logger-en-spring-boot" title="Permanent link">&para;</a></h3>
 <p>El uso de un Logger es esencial para registrar eventos importantes y errores en la aplicación. Spring Boot utiliza <code>SLF4J</code> como interfaz de registro y <code>Logback</code> como implementación predeterminada. Aquí se muestra cómo configurar y usar un Logger en una clase de servicio:</p>
 <ol>
-<li>
-<p><strong>Agregar la dependencia de SLF4J en <code>pom.xml</code></strong>:
-   <code>xml
-   &lt;dependency&gt;
-       &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
-       &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;
-   &lt;/dependency&gt;
-   &lt;dependency&gt;
-       &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
-       &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
-   &lt;/dependency&gt;</code></p>
-</li>
-<li>
-<p><strong>Configurar el Logger en una clase de servicio</strong>:
-   ```java
-   import org.slf4j.Logger;
-   import org.slf4j.LoggerFactory;
-   import org.springframework.stereotype.Service;</p>
-</li>
+<li><strong>Agregar la dependencia de SLF4J en <code>pom.xml</code></strong>:</li>
 </ol>
-<p>@Service
-   public class ExampleService {
-       private static final Logger logger = LoggerFactory.getLogger(ExampleService.class);</p>
-<div class="codehilite"><pre><span></span><code>   public void exampleMethod() {
-       logger.info(&quot;Método exampleMethod ejecutado&quot;);
-       logger.debug(&quot;Debugging exampleMethod&quot;);
-       try {
-           // ...existing code...
-       } catch (Exception e) {
-           logger.error(&quot;Error en exampleMethod: {}&quot;, e.getMessage());
-       }
-   }
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;dependency&gt;</span>
+<span class="w">    </span><span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>
+<span class="w">    </span><span class="nt">&lt;artifactId&gt;</span>slf4j-api<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+<span class="w">    </span><span class="nt">&lt;groupId&gt;</span>ch.qos.logback<span class="nt">&lt;/groupId&gt;</span>
+<span class="w">    </span><span class="nt">&lt;artifactId&gt;</span>logback-classic<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
 </code></pre></div>
 
-<p>}
-   ```</p>
+<ol>
+<li><strong>Configurar el Logger en una clase de servicio</strong>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">org.slf4j.Logger</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.slf4j.LoggerFactory</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.stereotype.Service</span><span class="p">;</span>
+
+<span class="nd">@Service</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ExampleService</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Logger</span><span class="w"> </span><span class="n">logger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoggerFactory</span><span class="p">.</span><span class="na">getLogger</span><span class="p">(</span><span class="n">ExampleService</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">exampleMethod</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;Método exampleMethod ejecutado&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">logger</span><span class="p">.</span><span class="na">debug</span><span class="p">(</span><span class="s">&quot;Debugging exampleMethod&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// ...existing code...</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">logger</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Error en exampleMethod: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
 <h3 id="configuracion-de-niveles-de-registro-en-applicationproperties">Configuración de Niveles de Registro en <code>application.properties</code><a class="headerlink" href="#configuracion-de-niveles-de-registro-en-applicationproperties" title="Permanent link">&para;</a></h3>
 <p>Para configurar diferentes niveles de registro (INFO, DEBUG, ERROR) en <code>application.properties</code>, se pueden añadir las siguientes propiedades:</p>
 <div class="codehilite"><pre><span></span><code><span class="na">logging.level.root</span><span class="o">=</span><span class="s">INFO</span>
@@ -776,65 +785,66 @@
 <h3 id="ejemplos-de-pruebas-unitarias">Ejemplos de Pruebas Unitarias<a class="headerlink" href="#ejemplos-de-pruebas-unitarias" title="Permanent link">&para;</a></h3>
 <p>Las pruebas unitarias son esenciales para asegurar que el código funcione correctamente y para detectar errores de manera temprana. Aquí se muestra cómo escribir y ejecutar pruebas unitarias en Spring Boot:</p>
 <ol>
-<li>
-<p><strong>Agregar Dependencias de Pruebas en <code>pom.xml</code></strong>:
-   <code>xml
-   &lt;dependency&gt;
-       &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
-       &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
-       &lt;scope&gt;test&lt;/scope&gt;
-   &lt;/dependency&gt;</code></p>
-</li>
-<li>
-<p><strong>Escribir una Prueba Unitaria para un Controlador</strong>:
-   ```java
-   import org.junit.jupiter.api.Test;
-   import org.springframework.beans.factory.annotation.Autowired;
-   import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-   import org.springframework.test.web.servlet.MockMvc;</p>
-</li>
+<li><strong>Agregar Dependencias de Pruebas en <code>pom.xml</code></strong>:</li>
 </ol>
-<p>import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-   import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-   import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;</p>
-<p>@WebMvcTest(HolaMundoController.class)
-   public class HolaMundoControllerTest {</p>
-<div class="codehilite"><pre><span></span><code>   @Autowired
-   private MockMvc mockMvc;
-
-   @Test
-   public void testHolaMundo() throws Exception {
-       mockMvc.perform(get(&quot;/api/hola&quot;))
-               .andExpect(status().isOk())
-               .andExpect(content().string(&quot;Hola Mundo&quot;));
-   }
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;dependency&gt;</span>
+<span class="w">    </span><span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+<span class="w">    </span><span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-test<span class="nt">&lt;/artifactId&gt;</span>
+<span class="w">    </span><span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
 </code></pre></div>
 
-<p>}
-   ```</p>
 <ol>
-<li><strong>Escribir una Prueba Unitaria para un Servicio</strong>:
-   ```java
-   import org.junit.jupiter.api.Test;
-   import org.springframework.beans.factory.annotation.Autowired;
-   import org.springframework.boot.test.context.SpringBootTest;</li>
+<li><strong>Escribir una Prueba Unitaria para un Controlador</strong>:</li>
 </ol>
-<p>import static org.assertj.core.api.Assertions.assertThat;</p>
-<p>@SpringBootTest
-   public class ExampleServiceTest {</p>
-<div class="codehilite"><pre><span></span><code>   @Autowired
-   private ExampleService exampleService;
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">org.junit.jupiter.api.Test</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.beans.factory.annotation.Autowired</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.test.web.servlet.MockMvc</span><span class="p">;</span>
 
-   @Test
-   public void testExampleMethod() {
-       exampleService.exampleMethod();
-       // Verificar el comportamiento esperado
-       assertThat(true).isTrue();
-   }
+<span class="kn">import static</span><span class="w"> </span><span class="nn">org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get</span><span class="p">;</span>
+<span class="kn">import static</span><span class="w"> </span><span class="nn">org.springframework.test.web.servlet.result.MockMvcResultMatchers.content</span><span class="p">;</span>
+<span class="kn">import static</span><span class="w"> </span><span class="nn">org.springframework.test.web.servlet.result.MockMvcResultMatchers.status</span><span class="p">;</span>
+
+<span class="nd">@WebMvcTest</span><span class="p">(</span><span class="n">HolaMundoController</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HolaMundoControllerTest</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="nd">@Autowired</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">MockMvc</span><span class="w"> </span><span class="n">mockMvc</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nd">@Test</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testHolaMundo</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">mockMvc</span><span class="p">.</span><span class="na">perform</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/api/hola&quot;</span><span class="p">))</span>
+<span class="w">                </span><span class="p">.</span><span class="na">andExpect</span><span class="p">(</span><span class="n">status</span><span class="p">().</span><span class="na">isOk</span><span class="p">())</span>
+<span class="w">                </span><span class="p">.</span><span class="na">andExpect</span><span class="p">(</span><span class="n">content</span><span class="p">().</span><span class="na">string</span><span class="p">(</span><span class="s">&quot;Hola Mundo&quot;</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
-<p>}
-   ```</p>
+<ol>
+<li><strong>Escribir una Prueba Unitaria para un Servicio</strong>:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">org.junit.jupiter.api.Test</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.beans.factory.annotation.Autowired</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.springframework.boot.test.context.SpringBootTest</span><span class="p">;</span>
+
+<span class="kn">import static</span><span class="w"> </span><span class="nn">org.assertj.core.api.Assertions.assertThat</span><span class="p">;</span>
+
+<span class="nd">@SpringBootTest</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ExampleServiceTest</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="nd">@Autowired</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">ExampleService</span><span class="w"> </span><span class="n">exampleService</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nd">@Test</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testExampleMethod</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">exampleService</span><span class="p">.</span><span class="na">exampleMethod</span><span class="p">();</span>
+<span class="w">        </span><span class="c1">// Verificar el comportamiento esperado</span>
+<span class="w">        </span><span class="n">assertThat</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="na">isTrue</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
 <h3 id="explicacion-del-codigo">Explicación del Código<a class="headerlink" href="#explicacion-del-codigo" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>@SpringBootApplication</code>: Esta anotación es una combinación de tres anotaciones: <code>@Configuration</code>, <code>@EnableAutoConfiguration</code>, y <code>@ComponentScan</code>. Marca la clase como la principal para la configuración de Spring Boot.</li>
@@ -913,7 +923,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
