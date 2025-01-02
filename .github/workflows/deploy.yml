@@ -1,0 +1,45 @@
+# filepath: /Users/javi-prof/git/spring-demo/.github/workflows/deploy.yml
+name: Deploy MkDocs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Cambia esto a la rama donde editas la documentación.
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Configurar el repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Cambiar al directorio de documentación
+      - name: Change to documentation directory
+        run: cd spring-demo-doc
+
+      # Instalar Python y las dependencias necesarias
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          cd spring-demo-doc
+          pip install mkdocs
+          pip install mkdocs-material
+
+      # Generar la documentación
+      - name: Build MkDocs site
+        run: |
+          cd spring-demo-doc
+          mkdocs build
+
+      # Publicar en GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: spring-demo-doc/site
