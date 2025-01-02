@@ -22,18 +22,20 @@ theme:
 
 nav:
   - Home: index.md
-  # - Guía de Instalación: guias/instalacion.md
-  # - Nuevo proyecto: guias/nuevo_proyecto.md
-  # - Configuración: configuracion/configuracion.md
-  # - Personalización: personalizacion/estilos.md
-  # - Extensiones: extensiones/admonitions.md
+  - Introducción a Spring Boot y conceptos clave: 0_introduccion.md
+  - Configuración del Proyecto: 1_configuracion.md
+  - Introducción a Spring Web: 2_spring_web.md
+  - Gestión de Datos y Lógica de Negocio con Spring Data: 3_spring_data.md
+  - Seguridad con Spring Security y JWT: 4_spring_security.md
+  - Documentación con Swagger: 5_swagger.md
+  - Implementación de Servicios en Red: 6_servcios_red.md
 
 plugins:
   - search
   - macros
 
-# extra_css:
-#   - 'styles/extra.css'
+extra_css:
+  - 'styles/extra.css'
 # extra_javascript:
 #   - 'js/custom.js'
 
@@ -45,8 +47,8 @@ markdown_extensions:
       guess_lang: false
 
 repo_url: 'https://github.com/jibanezmico/spring-demo'
-repo_name: 'GitHub'
-edit_uri: 'edit/main/docs/'
+repo_name: 'spring-demo'
+edit_uri: 'edit/main/spring-demo-doc/docs/'
 
 use_directory_urls: true
 strict: true
