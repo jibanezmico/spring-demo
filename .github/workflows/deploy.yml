@@ -1,4 +1,3 @@
-# filepath: /Users/javi-prof/git/spring-demo/.github/workflows/deploy.yml
 name: Deploy MkDocs to GitHub Pages
 
 on:
@@ -42,5 +41,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.MY_GITHUB_TOKEN }}
           publish_dir: spring-demo-doc/site
