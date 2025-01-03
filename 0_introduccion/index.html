@@ -1141,34 +1141,37 @@
 <li><strong>Aplicaciones listas para producción</strong>: Incluye herramientas para monitoreo, métricas y análisis de rendimiento.</li>
 </ul>
 <h4 id="ejemplo-practico-hello-world">Ejemplo práctico: "Hello World"<a class="headerlink" href="#ejemplo-practico-hello-world" title="Permanent link">&para;</a></h4>
-<div class="codehilite"><pre><span></span><code><span class="nd">@SpringBootApplication</span>
-<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HelloWorldApplication</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">SpringApplication</span><span class="p">.</span><span class="na">run</span><span class="p">(</span><span class="n">HelloWorldApplication</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@SpringBootApplication</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HelloWorldApplication</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="n">SpringApplication</span><span class="p">.</span><span class="na">run</span><span class="p">(</span><span class="n">HelloWorldApplication</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">);</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">}</span>
+</span></code></pre></div>
 <h3 id="uso-de-spring-initializr">Uso de Spring Initializr<a class="headerlink" href="#uso-de-spring-initializr" title="Permanent link">&para;</a></h3>
 <p>Spring Initializr es una herramienta que permite generar proyectos Spring Boot con las dependencias necesarias. Aquí se explica cómo utilizar Spring Initializr para crear un nuevo proyecto:</p>
-<ol>
-<li><strong>Acceder a Spring Initializr</strong>:</li>
+<ul>
 <li>
-<p>Abre un navegador web y navega a <a href="https://start.spring.io/">Spring Initializr</a>.</p>
+<p><strong>Acceder a Spring Initializr</strong>:</p>
+<ul>
+<li>Abre un navegador web y navega a <a href="https://start.spring.io/">Spring Initializr</a>.</li>
+</ul>
 </li>
 <li>
 <p><strong>Configurar el Proyecto</strong>:</p>
-</li>
+<ul>
 <li>Selecciona las opciones de configuración del proyecto, como el nombre del grupo, el nombre del artefacto, la versión de Java, etc.</li>
-<li>
-<p>Añade las dependencias necesarias, como <code>Spring Web</code>, <code>Spring Data JPA</code>, <code>Spring Boot DevTools</code>, etc. Por ahora basta con Spring Web.</p>
+<li>Añade las dependencias necesarias, como <code>Spring Web</code>, <code>Spring Data JPA</code>, <code>Spring Boot DevTools</code>, etc. Por ahora basta con Spring Web.</li>
+</ul>
 </li>
 <li>
 <p><strong>Generar el Proyecto</strong>:</p>
-</li>
+<ul>
 <li>Haz clic en el botón "Generate" para descargar el proyecto generado.</li>
 <li>Descomprime el archivo descargado y abre el proyecto en tu IDE favorito.</li>
-</ol>
+</ul>
+</li>
+</ul>
 <h2 id="principales-proyectos-de-spring">Principales Proyectos de Spring<a class="headerlink" href="#principales-proyectos-de-spring" title="Permanent link">&para;</a></h2>
 <h3 id="spring-boot">Spring Boot<a class="headerlink" href="#spring-boot" title="Permanent link">&para;</a></h3>
 <p>Spring Boot es una herramienta que simplifica significativamente el desarrollo con Spring, eliminando la necesidad de configuraciones extensas y repetitivas. Está diseñado para agilizar la creación de aplicaciones listas para producción, especialmente en entornos de microservicios.</p>
@@ -1213,81 +1216,90 @@
 <h3 id="configuracion-avanzada-de-spring-boot">Configuración Avanzada de Spring Boot<a class="headerlink" href="#configuracion-avanzada-de-spring-boot" title="Permanent link">&para;</a></h3>
 <p>Spring Boot permite configurar perfiles para gestionar diferentes configuraciones en distintos entornos (desarrollo, producción, etc.). Aquí se explica cómo configurar perfiles y propiedades externas.</p>
 <h4 id="configuracion-de-perfiles">Configuración de Perfiles<a class="headerlink" href="#configuracion-de-perfiles" title="Permanent link">&para;</a></h4>
-<ol>
-<li><strong>Crear Archivos de Configuración por Perfil</strong>:</li>
+<ul>
+<li><strong>Crear Archivos de Configuración por Perfil</strong>:<ul>
 <li>Crear archivos de configuración específicos para cada perfil, como <code>application-dev.properties</code> y <code>application-prod.properties</code>.</li>
-</ol>
-<div class="codehilite"><pre><span></span><code><span class="c1"># application-dev.properties</span>
-<span class="na">server.port</span><span class="o">=</span><span class="s">8081</span>
-<span class="na">spring.datasource.url</span><span class="o">=</span><span class="s">jdbc:h2:mem:devdb</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="c1"># application-prod.properties</span>
-<span class="na">server.port</span><span class="o">=</span><span class="s">8080</span>
-<span class="na">spring.datasource.url</span><span class="o">=</span><span class="s">jdbc:mysql://localhost/proddb</span>
-</code></pre></div>
-
-<ol>
-<li><strong>Activar un Perfil</strong>:</li>
+</ul>
+</li>
+</ul>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># application-dev.properties</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="na">server.port</span><span class="o">=</span><span class="s">8081</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="na">spring.datasource.url</span><span class="o">=</span><span class="s">jdbc:h2:mem:devdb</span>
+</span></code></pre></div>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># application-prod.properties</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="na">server.port</span><span class="o">=</span><span class="s">8080</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="na">spring.datasource.url</span><span class="o">=</span><span class="s">jdbc:mysql://localhost/proddb</span>
+</span></code></pre></div>
+<ul>
+<li><strong>Activar un Perfil</strong>:<ul>
 <li>Activar un perfil específico utilizando la propiedad <code>spring.profiles.active</code> en el archivo <code>application.properties</code> o mediante una variable de entorno.</li>
-</ol>
-<div class="codehilite"><pre><span></span><code><span class="c1"># application.properties</span>
-<span class="na">spring.profiles.active</span><span class="o">=</span><span class="s">dev</span>
-</code></pre></div>
-
+</ul>
+</li>
+</ul>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># application.properties</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="na">spring.profiles.active</span><span class="o">=</span><span class="s">dev</span>
+</span></code></pre></div>
 <h4 id="configuracion-de-propiedades-externas">Configuración de Propiedades Externas<a class="headerlink" href="#configuracion-de-propiedades-externas" title="Permanent link">&para;</a></h4>
 <p>Spring Boot permite cargar propiedades desde archivos externos o variables de entorno.</p>
-<ol>
-<li><strong>Cargar Propiedades desde un Archivo Externo</strong>:</li>
+<ul>
+<li><strong>Cargar Propiedades desde un Archivo Externo</strong>:<ul>
 <li>Especificar la ubicación del archivo de propiedades externo utilizando la propiedad <code>spring.config.location</code>.</li>
-</ol>
-<div class="codehilite"><pre><span></span><code><span class="c1"># application.properties</span>
-<span class="na">spring.config.location</span><span class="o">=</span><span class="s">classpath:/config/application-external.properties</span>
-</code></pre></div>
-
-<ol>
-<li><strong>Utilizar Variables de Entorno</strong>:</li>
+</ul>
+</li>
+</ul>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># application.properties</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="na">spring.config.location</span><span class="o">=</span><span class="s">classpath:/config/application-external.properties</span>
+</span></code></pre></div>
+<ul>
+<li><strong>Utilizar Variables de Entorno</strong>:<ul>
 <li>Definir variables de entorno en el sistema operativo y acceder a ellas en el archivo de configuración.</li>
-</ol>
-<div class="codehilite"><pre><span></span><code><span class="c1"># application.properties</span>
-<span class="na">spring.datasource.url</span><span class="o">=</span><span class="s">${DATASOURCE_URL}</span>
-</code></pre></div>
-
+</ul>
+</li>
+</ul>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># application.properties</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="na">spring.datasource.url</span><span class="o">=</span><span class="s">${DATASOURCE_URL}</span>
+</span></code></pre></div>
 <h3 id="monitoreo-y-metricas">Monitoreo y Métricas<a class="headerlink" href="#monitoreo-y-metricas" title="Permanent link">&para;</a></h3>
 <p>Spring Boot Actuator proporciona funcionalidades para monitorear y gestionar aplicaciones en producción. Aquí se explica cómo habilitar y configurar Actuator.</p>
 <h4 id="habilitar-actuator">Habilitar Actuator<a class="headerlink" href="#habilitar-actuator" title="Permanent link">&para;</a></h4>
-<ol>
-<li><strong>Agregar la Dependencia de Actuator</strong>:</li>
+<ul>
+<li><strong>Agregar la Dependencia de Actuator</strong>:<ul>
 <li>Añadir la dependencia <code>spring-boot-starter-actuator</code> en el archivo <code>pom.xml</code>.</li>
-</ol>
-<div class="codehilite"><pre><span></span><code><span class="nt">&lt;dependency&gt;</span>
-<span class="w">      </span><span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
-<span class="w">      </span><span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-actuator<span class="nt">&lt;/artifactId&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
-</code></pre></div>
-
-<ol>
-<li><strong>Configurar Actuator</strong>:</li>
+</ul>
+</li>
+</ul>
+<div class="language-xml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">&lt;dependency&gt;</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">      </span><span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">      </span><span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-actuator<span class="nt">&lt;/artifactId&gt;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></div>
+<ul>
+<li><strong>Configurar Actuator</strong>:<ul>
 <li>Configurar Actuator en el archivo <code>application.properties</code>.</li>
-</ol>
-<div class="codehilite"><pre><span></span><code><span class="na">management.endpoints.web.exposure.include</span><span class="o">=</span><span class="s">*</span>
-<span class="na">management.endpoint.health.show-details</span><span class="o">=</span><span class="s">always</span>
-</code></pre></div>
-
+</ul>
+</li>
+</ul>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="na">management.endpoints.web.exposure.include</span><span class="o">=</span><span class="s">*</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="na">management.endpoint.health.show-details</span><span class="o">=</span><span class="s">always</span>
+</span></code></pre></div>
 <h4 id="monitoreo-de-la-salud-de-la-aplicacion">Monitoreo de la Salud de la Aplicación<a class="headerlink" href="#monitoreo-de-la-salud-de-la-aplicacion" title="Permanent link">&para;</a></h4>
 <p>Actuator proporciona un endpoint <code>/actuator/health</code> para monitorear la salud de la aplicación.</p>
-<ol>
-<li><strong>Acceder al Endpoint de Salud</strong>:</li>
+<ul>
+<li><strong>Acceder al Endpoint de Salud</strong>:<ul>
 <li>Iniciar la aplicación Spring Boot.</li>
 <li>Acceder al endpoint de salud en <code>http://localhost:8080/actuator/health</code>.</li>
-</ol>
+</ul>
+</li>
+</ul>
 <h4 id="metricas-de-rendimiento">Métricas de Rendimiento<a class="headerlink" href="#metricas-de-rendimiento" title="Permanent link">&para;</a></h4>
 <p>Actuator proporciona un endpoint <code>/actuator/metrics</code> para acceder a métricas de rendimiento.</p>
-<ol>
-<li><strong>Acceder al Endpoint de Métricas</strong>:</li>
+<ul>
+<li><strong>Acceder al Endpoint de Métricas</strong>:<ul>
 <li>Iniciar la aplicación Spring Boot.</li>
 <li>Acceder al endpoint de métricas en <code>http://localhost:8080/actuator/metrics</code>.</li>
-</ol>
+</ul>
+</li>
+</ul>
 <h4 id="explicacion-del-codigo">Explicación del Código<a class="headerlink" href="#explicacion-del-codigo" title="Permanent link">&para;</a></h4>
 <ul>
 <li><code>spring.profiles.active</code>: Propiedad utilizada para activar un perfil específico.</li>
@@ -1302,19 +1314,23 @@
 <li><strong>Integración con Herramientas de Monitoreo</strong>: Se integra fácilmente con herramientas de monitoreo como Prometheus y Grafana.</li>
 </ul>
 <h4 id="actividad-practica">Actividad Práctica<a class="headerlink" href="#actividad-practica" title="Permanent link">&para;</a></h4>
-<ol>
-<li><strong>Configurar Perfiles en Spring Boot</strong>:</li>
-<li>Crear archivos de configuración específicos para cada perfil.</li>
+<ul>
 <li>
-<p>Activar un perfil específico utilizando la propiedad <code>spring.profiles.active</code>.</p>
+<p><strong>Configurar Perfiles en Spring Boot</strong>:</p>
+<ul>
+<li>Crear archivos de configuración específicos para cada perfil.</li>
+<li>Activar un perfil específico utilizando la propiedad <code>spring.profiles.active</code>.</li>
+</ul>
 </li>
 <li>
 <p><strong>Habilitar y Configurar Actuator</strong>:</p>
-</li>
+<ul>
 <li>Añadir la dependencia <code>spring-boot-starter-actuator</code>.</li>
 <li>Configurar Actuator en el archivo <code>application.properties</code>.</li>
 <li>Acceder a los endpoints de salud y métricas para monitorear la aplicación.</li>
-</ol>
+</ul>
+</li>
+</ul>
 
 
 
