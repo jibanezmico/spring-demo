@@ -38,6 +38,9 @@ nav:
   - Seguridad con Spring Security y JWT: 4_spring_security.md
   - Documentación con Swagger: 5_swagger.md
   - Implementación de Servicios en Red: 6_servcios_red.md
+  - Pruebas y Depuración: 7_test.md
+  - Introducción a la programación distribuida: 8_distribuida.md
+  - Despliegue de Aplicaciones Spring Boot en Entornos de Producción: 9_despliegue.md
 
 plugins:
   - search

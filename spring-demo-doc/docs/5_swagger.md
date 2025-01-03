@@ -93,6 +93,45 @@ En este ejemplo:
 - `@ApiResponses` define las posibles respuestas del endpoint, incluyendo códigos de estado y mensajes.
 - `Logger`: Utilizado para registrar eventos importantes y errores en la aplicación.
 
+### Personalización Avanzada de la Documentación
+
+Swagger permite una personalización avanzada de la documentación mediante el uso de anotaciones adicionales y configuraciones específicas. Aquí hay algunos ejemplos:
+
+- **Incluir Ejemplos Detallados**:
+  Utiliza la anotación `@ApiModelProperty` para incluir ejemplos detallados en los modelos de datos.
+
+```java
+public class User {
+    @ApiModelProperty(value = "ID del usuario", example = "1")
+    private Long id;
+
+    @ApiModelProperty(value = "Nombre del usuario", example = "Juan Perez")
+    private String name;
+
+    @ApiModelProperty(value = "Correo electrónico del usuario", example = "juan.perez@example.com")
+    private String email;
+
+    // ...existing code...
+}
+```
+
+- **Agregar Descripciones a los Parámetros**:
+  Utiliza la anotación `@ApiParam` para agregar descripciones a los parámetros de los métodos del controlador.
+
+```java
+@GetMapping("/{id}")
+@ApiOperation(value = "Obtener usuario por ID")
+@ApiResponses(value = {
+    @ApiResponse(code = 200, message = "Usuario obtenido con éxito"),
+    @ApiResponse(code = 404, message = "Usuario no encontrado")
+})
+public ResponseEntity<User> getUserById(
+        @ApiParam(value = "ID del usuario", required = true, example = "1") @PathVariable Long id) {
+    logger.info("getUserById endpoint llamado con ID: {}", id);
+    // ...existing code...
+}
+```
+
 ### Generar un Cliente API desde la Documentación Swagger
 
 Swagger también permite generar clientes API automáticamente desde la documentación. Aquí hay un ejemplo de cómo hacerlo:
