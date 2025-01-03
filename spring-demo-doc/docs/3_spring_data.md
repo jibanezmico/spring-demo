@@ -4,6 +4,15 @@
 
 JPA (Java Persistence API) es una especificación para el acceso, persistencia y gestión de datos entre aplicaciones Java y bases de datos relacionales. Hibernate es una implementación de JPA. Spring Data facilita la interacción con bases de datos mediante la definición de repositorios que encapsulan las operaciones CRUD y consultas personalizadas.
 
+Para utilizar Spring Data JPA, es necesario incluir la siguiente dependencia en el archivo `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+```
+
 ### Modelado de Datos con Entidades
 
 Las entidades representan las tablas de la base de datos en el código Java. Cada entidad se mapea a una tabla en la base de datos y sus atributos se mapean a las columnas de la tabla.
@@ -81,19 +90,26 @@ public interface UserRepository extends JpaRepository<User, Long> {
 }
 ```
 
-   En este ejemplo:
-   - `@Query("SELECT u FROM User u WHERE u.role = :role")`: Define una consulta personalizada que selecciona usuarios por su rol.
-   - `@Query("SELECT u FROM User u WHERE u.userName LIKE %:userName%")`: Define una consulta personalizada que selecciona usuarios cuyo nombre de usuario contiene una cadena específica.
-   - `@Param("role")` y `@Param("userName")`: Vinculan los parámetros de la consulta a los parámetros del método.
+    En este ejemplo:
+
+    - `@Query("SELECT u FROM User u WHERE u.role = :role")`: Define una consulta personalizada que selecciona usuarios por su rol.
+    - `@Query("SELECT u FROM User u WHERE u.userName LIKE %:userName%")`: Define una consulta personalizada que selecciona usuarios cuyo nombre de usuario contiene una cadena específica.
+    - `@Param("role")` y `@Param("userName")`: Vinculan los parámetros de la consulta a los parámetros del método.
 
 - **Utilizar la Consulta Personalizada en un Servicio**:
 ```java
 @Service
+@Validated
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserRepository userRepository;
+
+    public User saveUser(@Valid User user) {
+        logger.info("Guardando usuario: {}", user.getUserName());
+        return userRepository.save(user);
+    }
 
     public List<User> getUsersByRole(String role) {
         logger.info("Buscando usuarios con rol: {}", role);
@@ -107,10 +123,11 @@ public class UserService {
 }
 ```
 
-   En este ejemplo:
-   - `getUsersByRole(String role)`: Método del servicio que utiliza la consulta personalizada para obtener usuarios por su rol.
-   - `getUsersByUserNameContaining(String userName)`: Método del servicio que utiliza la consulta personalizada para obtener usuarios cuyo nombre de usuario contiene una cadena específica.
-   - `Logger`: Utilizado para registrar eventos importantes y errores en la aplicación.
+    En este ejemplo:
+
+    - `getUsersByRole(String role)`: Método del servicio que utiliza la consulta personalizada para obtener usuarios por su rol.
+    - `getUsersByUserNameContaining(String userName)`: Método del servicio que utiliza la consulta personalizada para obtener usuarios cuyo nombre de usuario contiene una cadena específica.
+    - `Logger`: Utilizado para registrar eventos importantes y errores en la aplicación.
 
 ### Consultas Nativas y Criteria API
 
@@ -149,6 +166,63 @@ public class UserService {
 - `@OneToMany`, `@ManyToOne`: Define relaciones entre entidades.
 - `@Query`: Define consultas personalizadas.
 - `CriteriaBuilder`, `CriteriaQuery`: Utilizados para crear consultas dinámicas con Criteria API.
+
+### ¿Qué es Criteria API?
+
+Criteria API es una funcionalidad de JPA que permite construir consultas de manera programática utilizando una API de tipo seguro. Esto significa que las consultas se construyen utilizando métodos de Java en lugar de cadenas de texto, lo que proporciona varias ventajas:
+
+- **Tipo Seguro**: Las consultas se construyen utilizando clases y métodos de Java, lo que permite que el compilador verifique los tipos y reduzca los errores en tiempo de compilación.
+- **Consultas Dinámicas**: Criteria API permite construir consultas dinámicas de manera programática, lo que es útil cuando las condiciones de la consulta no se conocen de antemano.
+- **Mantenimiento**: Las consultas construidas con Criteria API son más fáciles de mantener y refactorizar, ya que están escritas en Java y no en cadenas de texto.
+
+### Funcionalidades de Criteria API
+
+- **Construcción de Consultas**: Criteria API permite construir consultas SELECT, UPDATE y DELETE de manera programática.
+- **Condiciones Dinámicas**: Permite agregar condiciones dinámicas a las consultas utilizando métodos como `where`, `and`, `or`, etc.
+- **Ordenación y Agrupación**: Permite agregar ordenación y agrupación a las consultas utilizando métodos como `orderBy` y `groupBy`.
+- **Subconsultas**: Permite construir subconsultas de manera programática.
+- **Uniones**: Permite realizar uniones entre entidades utilizando métodos como `join`.
+
+Ejemplo de una consulta dinámica utilizando Criteria API:
+
+```java
+@Service
+public class UserService {
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public List<User> findUsersByCriteria(String role, String userName) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> query = cb.createQuery(User.class);
+        Root<User> user = query.from(User.class);
+        
+        List<Predicate> predicates = new ArrayList<>();
+        if (role != null) {
+            predicates.add(cb.equal(user.get("role"), role));
+        }
+        if (userName != null) {
+            predicates.add(cb.like(user.get("userName"), "%" + userName + "%"));
+        }
+        
+        query.select(user).where(predicates.toArray(new Predicate[0]));
+        return entityManager.createQuery(query).getResultList();
+    }
+}
+```
+
+En este ejemplo, se construye una consulta dinámica que busca usuarios por rol y nombre de usuario. Las condiciones se agregan a la consulta de manera programática utilizando `CriteriaBuilder` y `Predicate`.
+
+### Beneficios de Usar Criteria API
+
+- **Simplicidad**: Permite construir consultas complejas de manera sencilla y programática.
+- **Flexibilidad**: Permite agregar condiciones dinámicas a las consultas.
+- **Mantenimiento**: Las consultas son más fáciles de mantener y refactorizar.
+
+### Actividad Práctica
+
+- **Crear Consultas Dinámicas con Criteria API**:
+      - Definir consultas dinámicas en el servicio `UserService`.
+      - Probar las consultas dinámicas utilizando una herramienta como Postman.
 
 ### Beneficios de Usar Spring Data JPA
 

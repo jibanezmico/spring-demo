@@ -60,9 +60,17 @@ El archivo `pom.xml` es utilizado por Maven para gestionar las dependencias del 
 
 ### Uso de Logger en Spring Boot
 
-El uso de un Logger es esencial para registrar eventos importantes y errores en la aplicación. Spring Boot utiliza `SLF4J` como interfaz de registro y `Logback` como implementación predeterminada. Aquí se muestra cómo configurar y usar un Logger en una clase de servicio:
+Logger es una herramienta clave en el desarrollo de aplicaciones, ya que permite registrar eventos importantes, diagnósticos y errores. En Spring Boot, el sistema de registro predeterminado utiliza SLF4J como interfaz y Logback como implementación predeterminada.
 
-- **Agregar la dependencia de SLF4J en `pom.xml`**:
+No es necesario agregar explícitamente las dependencias de SLF4J y Logback en el archivo pom.xml cuando trabajas con Spring Boot. Estas ya están incluidas automáticamente a través de los starters. Por ejemplo, al agregar el siguiente starter:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+Spring Boot incluirá de manera transitiva:
 ```xml
 <dependency>
     <groupId>org.slf4j</groupId>
@@ -73,6 +81,7 @@ El uso de un Logger es esencial para registrar eventos importantes y errores en 
     <artifactId>logback-classic</artifactId>
 </dependency>
 ```
+Los starters simplifican la gestión de dependencias, aseguran compatibilidad entre librerías relacionadas y ofrecen flexibilidad para cambiar implementaciones según las necesidades del proyecto.
 
 - **Configurar el Logger en una clase de servicio**:
 ```java
@@ -98,13 +107,26 @@ public class ExampleService {
 
 ### Configuración de Niveles de Registro en `application.properties`
 
-Para configurar diferentes niveles de registro (INFO, DEBUG, ERROR) en `application.properties`, se pueden añadir las siguientes propiedades:
+Spring Boot utiliza SLF4J como interfaz de registro y Logback como la implementación predeterminada. Puedes configurar los niveles de registro para diferentes paquetes y clases en el archivo `application.properties`. Los niveles de registro disponibles son: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `FATAL`, y `OFF`.
+
+Para configurar diferentes niveles de registro en `application.properties`, añade las siguientes propiedades:
 
 ```properties
+# Configura el nivel de registro global para toda la aplicación
 logging.level.root=INFO
+
+# Configura el nivel de registro para un paquete específico
 logging.level.com.example.springdemo=DEBUG
+
+# Configura el archivo donde se almacenarán los registros
 logging.file.name=logs/spring-demo.log
 ```
+
+- `logging.level.root=INFO`: Establece el nivel de registro global en `INFO`. Esto significa que todos los mensajes de registro con un nivel de `INFO` o superior (WARN, ERROR) serán registrados.
+- `logging.level.com.example.springdemo=DEBUG`: Establece el nivel de registro para el paquete `com.example.springdemo` en `DEBUG`. Esto es útil para obtener más detalles durante el desarrollo y la depuración.
+- `logging.file.name=logs/spring-demo.log`: Especifica el archivo donde se almacenarán los registros. En este caso, los registros se guardarán en `logs/spring-demo.log`.
+
+Estas configuraciones te permiten controlar la cantidad de información de registro generada por tu aplicación y dirigirla a archivos específicos para su análisis.
 
 ### Ejemplos de Pruebas Unitarias
 

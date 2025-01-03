@@ -143,6 +143,12 @@ public class ComplexController {
 - **Probar el Controlador RESTful**:
       - Iniciar la aplicación Spring Boot.
       - Utilizar una herramienta como Postman para enviar una solicitud POST a `http://localhost:8080/api/process` con un parámetro `param` y un cuerpo JSON.
+```json
+{
+    "key1": "value1",
+    "key2": "value2"
+}
+```
       - Verificar que la respuesta incluya tanto el parámetro como el cuerpo de la solicitud.
 
 ### Beneficios de Usar Spring Web
@@ -200,6 +206,25 @@ public class User {
     // Getters y setters...
 }
 ```
+Para este ejemplo es necesario que se incluya también en el `pom.xml` el módulo de Spring Data y la configuración de conexión a BBDD (esto se explicará en el siguiente capítulo):
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.mariadb.jdbc</groupId>
+    <artifactId>mariadb-java-client</artifactId>
+</dependency>
+```
+```properties
+spring.datasource.url=jdbc:mariadb://localhost:3306/demo_db
+spring.datasource.username=mariadbuser
+spring.datasource.password=mariadbpass
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+```
+También se puede eliminar el código relacionado con JPA y la BBDD para este ejemplo.
 
 #### Validaciones en Controladores
 
@@ -227,6 +252,33 @@ public class UserController {
 }
 ```
 
+### Prueba con Postman
+
+Para probar el controlador `UserController` con Postman:
+
+1. Iniciar la aplicación Spring Boot.
+2. Abrir Postman y crear una nueva solicitud POST.
+3. Configurar la URL de la solicitud a `http://localhost:8080/api/users`.
+4. En la pestaña "Headers", añadir el encabezado `Content-Type` con el valor `application/json`.
+5. En la pestaña "Body", seleccionar "raw" y "JSON" y añadir el siguiente JSON:
+```json
+{
+    "userName": "testuser",
+    "password": "password123",
+    "role": "USER"
+}
+```
+6. Enviar la solicitud y verificar que la respuesta sea el objeto `User` creado.
+7. Probar con datos inválidos para verificar que las validaciones funcionan correctamente, por ejemplo, con un nombre de usuario vacío:
+```json
+{
+    "userName": "",
+    "password": "password123",
+    "role": "USER"
+}
+```
+8. Verificar que la respuesta sea un error de validación.
+
 #### Validaciones en Servicios
 
 Las validaciones también se pueden aplicar en los servicios utilizando la anotación `@Validated`. Aquí hay un ejemplo de cómo validar un objeto `User` en un servicio:
@@ -247,6 +299,57 @@ public class UserService {
 }
 ```
 
+### Prueba del Servicio `UserService` con Postman
+
+Para probar el servicio `UserService` con Postman y asegurar que la validación se realiza en el servicio:
+
+1. Iniciar la aplicación Spring Boot.
+2. Abrir Postman y crear una nueva solicitud POST.
+3. Configurar la URL de la solicitud a `http://localhost:8080/api/users`.
+4. En la pestaña "Headers", añadir el encabezado `Content-Type` con el valor `application/json`.
+5. En la pestaña "Body", seleccionar "raw" y "JSON" y añadir el siguiente JSON:
+```json
+{
+    "userName": "testuser",
+    "password": "password123",
+    "role": "USER"
+}
+```
+6. Enviar la solicitud y verificar que la respuesta sea el objeto `User` creado.
+7. Probar con datos inválidos para verificar que las validaciones funcionan correctamente, por ejemplo, con un nombre de usuario vacío:
+```json
+{
+    "userName": "",
+    "password": "password123",
+    "role": "USER"
+}
+```
+8. Verificar que la respuesta sea un error de validación.
+
+### Asegurar que la Validación se Realiza en el Servicio
+
+Para asegurar que la validación se realiza en el servicio y no en el controlador, se puede modificar el controlador para que no realice la validación y dejar que el servicio maneje la validación:
+
+```java
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        logger.info("createUser endpoint llamado con datos: {}", user);
+        User savedUser = userService.saveUser(user);
+        return ResponseEntity.ok(savedUser);
+    }
+}
+```
+
+Con esta configuración, la validación se realizará únicamente en el servicio `UserService` y no en el controlador `UserController`.
+
 #### Explicación del Código
 
 - `@NotNull`, `@Size`, `@Email`: Anotaciones de validación que se utilizan para validar los campos de una entidad.
@@ -254,6 +357,16 @@ public class UserService {
 - `BindingResult`: Objeto que contiene los resultados de la validación.
 - `@Validated`: Anotación que se utiliza para habilitar la validación en un servicio.
 - `Logger`: Utilizado para registrar eventos importantes y errores en la aplicación.
+
+#### Repositorio de Usuarios
+
+Para completar el ejemplo, es necesario definir un repositorio para la entidad `User`. Aquí hay un ejemplo de cómo crear un repositorio utilizando Spring Data JPA:
+
+```java
+public interface UserRepository extends JpaRepository<User, Long> {
+    // Métodos de consulta personalizados pueden ser añadidos aquí
+}
+```
 
 #### Beneficios de Usar Validaciones en Spring Boot
 

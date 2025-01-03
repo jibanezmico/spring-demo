@@ -107,19 +107,20 @@ Spring Cloud extiende las funcionalidades de Spring para abordar los desafíos d
 
 ### Configuración Avanzada de Spring Boot
 
-Spring Boot permite configurar perfiles para gestionar diferentes configuraciones en distintos entornos (desarrollo, producción, etc.). Aquí se explica cómo configurar perfiles y propiedades externas.
+Spring Boot permite configurar perfiles y gestionar propiedades externas, adaptándose a diferentes entornos (desarrollo, producción, etc.). Estas configuraciones avanzadas facilitan el despliegue y la administración de aplicaciones.
 
 #### Configuración de Perfiles
+Los perfiles permiten personalizar la configuración según el entorno.
 
-- **Crear Archivos de Configuración por Perfil**:
-      - Crear archivos de configuración específicos para cada perfil, como `application-dev.properties` y `application-prod.properties`.
-
+- **Archivos de Configuración por Perfil**:
+      - Cada perfil tiene su propio archivo, como application-dev.properties y application-prod.properties. Ejemplo:
+	- Archivo para desarrollo (application-dev.properties):
 ```properties
 # application-dev.properties
 server.port=8081
 spring.datasource.url=jdbc:h2:mem:devdb
 ```
-
+	- Archivo para producción (application-prod.properties):
 ```properties
 # application-prod.properties
 server.port=8080
@@ -127,8 +128,7 @@ spring.datasource.url=jdbc:mysql://localhost/proddb
 ```
 
 - **Activar un Perfil**:
-      - Activar un perfil específico utilizando la propiedad `spring.profiles.active` en el archivo `application.properties` o mediante una variable de entorno.
-
+      - Selecciona el perfil deseado configurando la propiedad `spring.profiles.active` en el archivo `application.properties` o mediante una variable de entorno.
 ```properties
 # application.properties
 spring.profiles.active=dev
@@ -162,7 +162,6 @@ Spring Boot Actuator proporciona funcionalidades para monitorear y gestionar apl
 
 - **Agregar la Dependencia de Actuator**:
       - Añadir la dependencia `spring-boot-starter-actuator` en el archivo `pom.xml`.
-
 ```xml
 <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -172,7 +171,6 @@ Spring Boot Actuator proporciona funcionalidades para monitorear y gestionar apl
 
 - **Configurar Actuator**:
       - Configurar Actuator en el archivo `application.properties`.
-
 ```properties
 management.endpoints.web.exposure.include=*
 management.endpoint.health.show-details=always
