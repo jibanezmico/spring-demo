@@ -89,8 +89,8 @@ public class ExampleController {
 
 ### Actividad Práctica
 
-1. **Crear un servicio REST "Hola Mundo"**:
-   - Crear un controlador RESTful que maneje una solicitud GET y devuelva un mensaje "Hola Mundo".
+- **Crear un servicio REST "Hola Mundo"**:
+      - Crear un controlador RESTful que maneje una solicitud GET y devuelva un mensaje "Hola Mundo".
 
 ```java
 @RestController
@@ -108,8 +108,8 @@ public class HolaMundoController {
 
 ### Ejemplo Práctico
 
-1. **Crear un controlador RESTful que maneje una solicitud POST con parámetros y cuerpo**:
-   - Crear un controlador RESTful que maneje una solicitud POST, reciba parámetros en la URL y un cuerpo en la solicitud.
+- **Crear un controlador RESTful que maneje una solicitud POST con parámetros y cuerpo**:
+      - Crear un controlador RESTful que maneje una solicitud POST, reciba parámetros en la URL y un cuerpo en la solicitud.
 
 ```java
 @RestController
@@ -140,10 +140,10 @@ public class ComplexController {
 
 ### Actividad Práctica
 
-1. **Probar el Controlador RESTful**:
-   - Iniciar la aplicación Spring Boot.
-   - Utilizar una herramienta como Postman para enviar una solicitud POST a `http://localhost:8080/api/process` con un parámetro `param` y un cuerpo JSON.
-   - Verificar que la respuesta incluya tanto el parámetro como el cuerpo de la solicitud.
+- **Probar el Controlador RESTful**:
+      - Iniciar la aplicación Spring Boot.
+      - Utilizar una herramienta como Postman para enviar una solicitud POST a `http://localhost:8080/api/process` con un parámetro `param` y un cuerpo JSON.
+      - Verificar que la respuesta incluya tanto el parámetro como el cuerpo de la solicitud.
 
 ### Beneficios de Usar Spring Web
 
@@ -153,10 +153,10 @@ public class ComplexController {
 
 ### Actividad Práctica
 
-1. **Probar el Servicio REST "Hola Mundo"**:
-   - Iniciar la aplicación Spring Boot.
-   - Utilizar un navegador web o una herramienta como Postman para enviar una solicitud GET a `http://localhost:8080/api/hola`.
-   - Verificar que la respuesta sea "Hola Mundo".
+- **Probar el Servicio REST "Hola Mundo"**:
+      - Iniciar la aplicación Spring Boot.
+      - Utilizar un navegador web o una herramienta como Postman para enviar una solicitud GET a `http://localhost:8080/api/hola`.
+      - Verificar que la respuesta sea "Hola Mundo".
 
 ### Validaciones en Spring Boot
 
@@ -263,16 +263,16 @@ public class UserService {
 
 #### Actividad Práctica
 
-1. **Aplicar Validaciones a una Entidad**:
-   - Añadir anotaciones de validación a la entidad `User`.
-   - Crear un controlador y un servicio que utilicen las validaciones.
-   - Probar las validaciones utilizando una herramienta como Postman.
+- **Aplicar Validaciones a una Entidad**:
+      - Añadir anotaciones de validación a la entidad `User`.
+      - Crear un controlador y un servicio que utilicen las validaciones.
+      - Probar las validaciones utilizando una herramienta como Postman.
 
 ### Posibles Errores Comunes
 
-1. **Errores de Validación**:
-   - **Solución**: Verificar que los datos de entrada cumplen con las reglas de validación definidas en las anotaciones.
+- **Errores de Validación**:
+      - **Solución**: Verificar que los datos de entrada cumplen con las reglas de validación definidas en las anotaciones.
 
-2. **Dependencias**:
-   - **Solución**: Asegurarse de que la dependencia `spring-boot-starter-validation` esté incluida en el archivo `pom.xml` y ejecutar `mvn clean install` para actualizar el proyecto.
+- **Dependencias**:
+      - **Solución**: Asegurarse de que la dependencia `spring-boot-starter-validation` esté incluida en el archivo `pom.xml` y ejecutar `mvn clean install` para actualizar el proyecto.
 

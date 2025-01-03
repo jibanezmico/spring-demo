@@ -10,8 +10,8 @@ La implementación de un servicio de envío de correos electrónicos se realiza 
 
 ### Actividad Práctica
 
-1. **Configurar las Dependencias de JavaMailSender**:
-   - Añadir las dependencias necesarias en el archivo `pom.xml`:
+- **Configurar las Dependencias de JavaMailSender**:
+      - Añadir las dependencias necesarias en el archivo `pom.xml`:
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -19,8 +19,8 @@ La implementación de un servicio de envío de correos electrónicos se realiza 
 </dependency>
 ```
 
-2. **Configurar las Propiedades del Correo Electrónico**:
-   - Configurar las propiedades del correo electrónico en el archivo `application.properties`:
+- **Configurar las Propiedades del Correo Electrónico**:
+      - Configurar las propiedades del correo electrónico en el archivo `application.properties`:
 ```properties
 spring.mail.host=smtp.mailtrap.io
 spring.mail.port=2525
@@ -30,8 +30,8 @@ spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 ```
 
-3. **Crear el Servicio de Envío de Correos Electrónicos**:
-   - Crear una clase `EmailService` en el paquete `service`:
+- **Crear el Servicio de Envío de Correos Electrónicos**:
+      - Crear una clase `EmailService` en el paquete `service`:
 ```java
 @Service
 public class EmailService {
@@ -87,14 +87,14 @@ public class EmailService {
 
 Mailtrap es una herramienta que permite probar el envío de correos electrónicos sin necesidad de configurar un servidor SMTP real. Aquí se explica cómo configurarlo:
 
-1. **Crear una Cuenta en Mailtrap**:
-   - Regístrate en [Mailtrap](https://mailtrap.io/) y crea un inbox.
+- **Crear una Cuenta en Mailtrap**:
+      - Regístrate en [Mailtrap](https://mailtrap.io/) y crea un inbox.
 
-2. **Obtener las Credenciales SMTP**:
-   - En el dashboard de Mailtrap, selecciona el inbox y copia las credenciales SMTP (host, puerto, nombre de usuario y contraseña).
+- **Obtener las Credenciales SMTP**:
+      - En el dashboard de Mailtrap, selecciona el inbox y copia las credenciales SMTP (host, puerto, nombre de usuario y contraseña).
 
-3. **Configurar las Propiedades del Correo Electrónico**:
-   - Configura las propiedades del correo electrónico en el archivo `application.properties` utilizando las credenciales de Mailtrap:
+- **Configurar las Propiedades del Correo Electrónico**:
+      - Configura las propiedades del correo electrónico en el archivo `application.properties` utilizando las credenciales de Mailtrap:
 ```properties
 spring.mail.host=smtp.mailtrap.io
 spring.mail.port=2525
@@ -112,8 +112,8 @@ spring.mail.properties.mail.smtp.starttls.enable=true
 
 ### Actividad Práctica
 
-1. **Enviar un Correo Electrónico de Prueba**:
-   - Crear un controlador REST para probar el envío de correos electrónicos:
+- **Enviar un Correo Electrónico de Prueba**:
+      - Crear un controlador REST para probar el envío de correos electrónicos:
 ```java
 @RestController
 @RequestMapping("/api/email")
@@ -135,14 +135,14 @@ public class EmailController {
 }
 ```
 
-2. **Probar el Envío de Correos Electrónicos**:
-   - Iniciar la aplicación Spring Boot.
-   - Utilizar una herramienta como Postman para enviar una solicitud POST a `http://localhost:8080/api/email/send` con los parámetros `to`, `subject` y `text`.
-   - Verificar que el correo electrónico se envía correctamente.
+- **Probar el Envío de Correos Electrónicos**:
+      - Iniciar la aplicación Spring Boot.
+      - Utilizar una herramienta como Postman para enviar una solicitud POST a `http://localhost:8080/api/email/send` con los parámetros `to`, `subject` y `text`.
+      - Verificar que el correo electrónico se envía correctamente.
 
-3. **Probar el Envío de Correos Electrónicos con Archivos Adjuntos**:
-   - Utilizar una herramienta como Postman para enviar una solicitud POST a `http://localhost:8080/api/email/sendWithAttachment` con los parámetros `to`, `subject`, `text` y `pathToAttachment`.
-   - Verificar que el correo electrónico con el archivo adjunto se envía correctamente.
+- **Probar el Envío de Correos Electrónicos con Archivos Adjuntos**:
+      - Utilizar una herramienta como Postman para enviar una solicitud POST a `http://localhost:8080/api/email/sendWithAttachment` con los parámetros `to`, `subject`, `text` y `pathToAttachment`.
+      - Verificar que el correo electrónico con el archivo adjunto se envía correctamente.
 
 ### Manejo de Errores Comunes
 

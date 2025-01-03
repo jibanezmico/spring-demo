@@ -10,8 +10,8 @@ La configuración de Swagger se realiza en una clase anotada con `@Configuration
 
 ### Actividad Práctica
 
-1. **Configurar Swagger**:
-   - Crear una clase de configuración para Swagger en el paquete `config`.
+- **Configurar Swagger**:
+      - Crear una clase de configuración para Swagger en el paquete `config`.
 
 ```java
 @Configuration
@@ -97,14 +97,14 @@ En este ejemplo:
 
 Swagger también permite generar clientes API automáticamente desde la documentación. Aquí hay un ejemplo de cómo hacerlo:
 
-1. **Acceder a la Interfaz de Usuario de Swagger**:
-   - Inicia la aplicación Spring Boot.
-   - Abre un navegador web y navega a `http://localhost:8080/swagger-ui.html`.
+- **Acceder a la Interfaz de Usuario de Swagger**:
+      - Inicia la aplicación Spring Boot.
+      - Abre un navegador web y navega a `http://localhost:8080/swagger-ui.html`.
 
-2. **Generar el Cliente API**:
-   - En la interfaz de usuario de Swagger, haz clic en el botón "Generate Client".
-   - Selecciona el lenguaje de programación deseado (por ejemplo, Java, Python, etc.).
-   - Descarga el código del cliente API generado.
+- **Generar el Cliente API**:
+      - En la interfaz de usuario de Swagger, haz clic en el botón "Generate Client".
+      - Selecciona el lenguaje de programación deseado (por ejemplo, Java, Python, etc.).
+      - Descarga el código del cliente API generado.
 
 Este cliente API puede ser utilizado para interactuar con la API documentada sin necesidad de escribir código adicional para las solicitudes HTTP.
 
@@ -126,8 +126,8 @@ Este cliente API puede ser utilizado para interactuar con la API documentada sin
 
 ### Actividad Práctica
 
-1. **Acceder a la Interfaz de Usuario de Swagger**:
-   - Una vez configurado Swagger, inicia la aplicación Spring Boot.
-   - Abre un navegador web y navega a `http://localhost:8080/swagger-ui.html`.
-   - Explora la interfaz de usuario de Swagger para ver y probar los endpoints de la API.
+- **Acceder a la Interfaz de Usuario de Swagger**:
+      - Una vez configurado Swagger, inicia la aplicación Spring Boot.
+      - Abre un navegador web y navega a `http://localhost:8080/swagger-ui.html`.
+      - Explora la interfaz de usuario de Swagger para ver y probar los endpoints de la API.
 

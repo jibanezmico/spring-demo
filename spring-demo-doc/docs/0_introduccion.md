@@ -41,16 +41,16 @@ public class HelloWorldApplication {
 
 Spring Initializr es una herramienta que permite generar proyectos Spring Boot con las dependencias necesarias. Aquí se explica cómo utilizar Spring Initializr para crear un nuevo proyecto:
 
-1. **Acceder a Spring Initializr**:
-   - Abre un navegador web y navega a [Spring Initializr](https://start.spring.io/).
+- **Acceder a Spring Initializr**:
+      - Abre un navegador web y navega a [Spring Initializr](https://start.spring.io/).
 
-2. **Configurar el Proyecto**:
-   - Selecciona las opciones de configuración del proyecto, como el nombre del grupo, el nombre del artefacto, la versión de Java, etc.
-   - Añade las dependencias necesarias, como `Spring Web`, `Spring Data JPA`, `Spring Boot DevTools`, etc. Por ahora basta con Spring Web.
+- **Configurar el Proyecto**:
+      - Selecciona las opciones de configuración del proyecto, como el nombre del grupo, el nombre del artefacto, la versión de Java, etc.
+      - Añade las dependencias necesarias, como `Spring Web`, `Spring Data JPA`, `Spring Boot DevTools`, etc. Por ahora basta con Spring Web.
 
-3. **Generar el Proyecto**:
-   - Haz clic en el botón "Generate" para descargar el proyecto generado.
-   - Descomprime el archivo descargado y abre el proyecto en tu IDE favorito.
+- **Generar el Proyecto**:
+      - Haz clic en el botón "Generate" para descargar el proyecto generado.
+      - Descomprime el archivo descargado y abre el proyecto en tu IDE favorito.
 
 ## Principales Proyectos de Spring
 
@@ -111,8 +111,8 @@ Spring Boot permite configurar perfiles para gestionar diferentes configuracione
 
 #### Configuración de Perfiles
 
-1. **Crear Archivos de Configuración por Perfil**:
-   - Crear archivos de configuración específicos para cada perfil, como `application-dev.properties` y `application-prod.properties`.
+- **Crear Archivos de Configuración por Perfil**:
+      - Crear archivos de configuración específicos para cada perfil, como `application-dev.properties` y `application-prod.properties`.
 
 ```properties
 # application-dev.properties
@@ -126,8 +126,8 @@ server.port=8080
 spring.datasource.url=jdbc:mysql://localhost/proddb
 ```
 
-2. **Activar un Perfil**:
-   - Activar un perfil específico utilizando la propiedad `spring.profiles.active` en el archivo `application.properties` o mediante una variable de entorno.
+- **Activar un Perfil**:
+      - Activar un perfil específico utilizando la propiedad `spring.profiles.active` en el archivo `application.properties` o mediante una variable de entorno.
 
 ```properties
 # application.properties
@@ -138,16 +138,16 @@ spring.profiles.active=dev
 
 Spring Boot permite cargar propiedades desde archivos externos o variables de entorno.
 
-1. **Cargar Propiedades desde un Archivo Externo**:
-   - Especificar la ubicación del archivo de propiedades externo utilizando la propiedad `spring.config.location`.
+- **Cargar Propiedades desde un Archivo Externo**:
+      - Especificar la ubicación del archivo de propiedades externo utilizando la propiedad `spring.config.location`.
 
 ```properties
 # application.properties
 spring.config.location=classpath:/config/application-external.properties
 ```
 
-2. **Utilizar Variables de Entorno**:
-   - Definir variables de entorno en el sistema operativo y acceder a ellas en el archivo de configuración.
+- **Utilizar Variables de Entorno**:
+      - Definir variables de entorno en el sistema operativo y acceder a ellas en el archivo de configuración.
 
 ```properties
 # application.properties
@@ -160,8 +160,8 @@ Spring Boot Actuator proporciona funcionalidades para monitorear y gestionar apl
 
 #### Habilitar Actuator
 
-1. **Agregar la Dependencia de Actuator**:
-   - Añadir la dependencia `spring-boot-starter-actuator` en el archivo `pom.xml`.
+- **Agregar la Dependencia de Actuator**:
+      - Añadir la dependencia `spring-boot-starter-actuator` en el archivo `pom.xml`.
 
 ```xml
 <dependency>
@@ -170,8 +170,8 @@ Spring Boot Actuator proporciona funcionalidades para monitorear y gestionar apl
 </dependency>
 ```
 
-2. **Configurar Actuator**:
-   - Configurar Actuator en el archivo `application.properties`.
+- **Configurar Actuator**:
+      - Configurar Actuator en el archivo `application.properties`.
 
 ```properties
 management.endpoints.web.exposure.include=*
@@ -182,17 +182,17 @@ management.endpoint.health.show-details=always
 
 Actuator proporciona un endpoint `/actuator/health` para monitorear la salud de la aplicación.
 
-1. **Acceder al Endpoint de Salud**:
-   - Iniciar la aplicación Spring Boot.
-   - Acceder al endpoint de salud en `http://localhost:8080/actuator/health`.
+- **Acceder al Endpoint de Salud**:
+      - Iniciar la aplicación Spring Boot.
+      - Acceder al endpoint de salud en `http://localhost:8080/actuator/health`.
 
 #### Métricas de Rendimiento
 
 Actuator proporciona un endpoint `/actuator/metrics` para acceder a métricas de rendimiento.
 
-1. **Acceder al Endpoint de Métricas**:
-   - Iniciar la aplicación Spring Boot.
-   - Acceder al endpoint de métricas en `http://localhost:8080/actuator/metrics`.
+- **Acceder al Endpoint de Métricas**:
+      - Iniciar la aplicación Spring Boot.
+      - Acceder al endpoint de métricas en `http://localhost:8080/actuator/metrics`.
 
 #### Explicación del Código
 
@@ -209,12 +209,12 @@ Actuator proporciona un endpoint `/actuator/metrics` para acceder a métricas de
 
 #### Actividad Práctica
 
-1. **Configurar Perfiles en Spring Boot**:
-   - Crear archivos de configuración específicos para cada perfil.
-   - Activar un perfil específico utilizando la propiedad `spring.profiles.active`.
+- **Configurar Perfiles en Spring Boot**:
+      - Crear archivos de configuración específicos para cada perfil.
+      - Activar un perfil específico utilizando la propiedad `spring.profiles.active`.
 
-2. **Habilitar y Configurar Actuator**:
-   - Añadir la dependencia `spring-boot-starter-actuator`.
-   - Configurar Actuator en el archivo `application.properties`.
-   - Acceder a los endpoints de salud y métricas para monitorear la aplicación.
+- **Habilitar y Configurar Actuator**:
+      - Añadir la dependencia `spring-boot-starter-actuator`.
+      - Configurar Actuator en el archivo `application.properties`.
+      - Acceder a los endpoints de salud y métricas para monitorear la aplicación.
 

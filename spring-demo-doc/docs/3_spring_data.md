@@ -67,7 +67,7 @@ public class Order {
 
 Además de las operaciones CRUD estándar, Spring Data JPA permite definir consultas personalizadas utilizando la anotación `@Query`. Aquí hay un ejemplo de cómo definir y utilizar consultas personalizadas en un repositorio:
 
-1. **Definir una Consulta Personalizada**:
+- **Definir una Consulta Personalizada**:
 ```java
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -86,7 +86,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
    - `@Query("SELECT u FROM User u WHERE u.userName LIKE %:userName%")`: Define una consulta personalizada que selecciona usuarios cuyo nombre de usuario contiene una cadena específica.
    - `@Param("role")` y `@Param("userName")`: Vinculan los parámetros de la consulta a los parámetros del método.
 
-2. **Utilizar la Consulta Personalizada en un Servicio**:
+- **Utilizar la Consulta Personalizada en un Servicio**:
 ```java
 @Service
 public class UserService {
@@ -116,7 +116,7 @@ public class UserService {
 
 Spring Data JPA permite definir consultas nativas y utilizar Criteria API para consultas dinámicas.
 
-1. **Consultas Nativas**:
+- **Consultas Nativas**:
 ```java
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -125,7 +125,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 }
 ```
 
-2. **Criteria API**:
+- **Criteria API**:
 ```java
 @Service
 public class UserService {
@@ -157,10 +157,10 @@ public class UserService {
 
 ### Actividad Práctica
 
-1. **Definir Consultas Personalizadas**:
-   - Añadir consultas personalizadas en el repositorio `UserRepository`.
-   - Utilizar las consultas personalizadas en el servicio `UserService`.
-   - Probar las consultas personalizadas utilizando una herramienta como Postman.
+- **Definir Consultas Personalizadas**:
+      - Añadir consultas personalizadas en el repositorio `UserRepository`.
+      - Utilizar las consultas personalizadas en el servicio `UserService`.
+      - Probar las consultas personalizadas utilizando una herramienta como Postman.
 
 ### Lógica de Negocio en Servicios
 
@@ -172,11 +172,11 @@ Los servicios contienen la lógica de negocio de la aplicación y se implementan
 
 Antes de probar el repositorio, es necesario configurar una base de datos local. A continuación, se muestran los pasos para configurar una base de datos MariaDB utilizando Docker:
 
-1. **Instalar Docker**:
-   - Seguir las instrucciones de instalación en [Docker Downloads](https://www.docker.com/products/docker-desktop).
+- **Instalar Docker**:
+      - Seguir las instrucciones de instalación en [Docker Downloads](https://www.docker.com/products/docker-desktop).
 
-2. **Configurar y ejecutar el contenedor MariaDB**:
-   - Clonar el repositorio que contiene el archivo `docker-compose.yml`:
+- **Configurar y ejecutar el contenedor MariaDB**:
+      - Clonar el repositorio que contiene el archivo `docker-compose.yml`:
 ```sh
 git clone https://github.com/jibanezmico/DockerUtils.git
 cd DockerUtils/MariaDB
@@ -186,10 +186,10 @@ cd DockerUtils/MariaDB
 docker-compose up -d
 ```
 
-3. **Verificar que el contenedor está en ejecución**:
-   - Usar el comando `docker ps` para asegurarse de que el contenedor MariaDB está en ejecución.
+- **Verificar que el contenedor está en ejecución**:
+      - Usar el comando `docker ps` para asegurarse de que el contenedor MariaDB está en ejecución.
 
-4. **Configurar el archivo `application.properties`**:
+- **Configurar el archivo `application.properties`**:
 ```properties
 spring.datasource.url=jdbc:mariadb://localhost:3306/demo_db
 spring.datasource.username=mariadbuser
@@ -198,10 +198,10 @@ spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-5. **Probar la conexión**:
-   - Ejecutar la aplicación Spring Boot y verificar que se conecta correctamente a la base de datos.
+- **Probar la conexión**:
+      - Ejecutar la aplicación Spring Boot y verificar que se conecta correctamente a la base de datos.
 
-1. **Crear la entidad `User`**:
+- **Crear la entidad `User`**:
 ```java
 @Entity
 public class User {
@@ -225,7 +225,7 @@ public class User {
 ```
    Esta clase `User` representa una entidad en la base de datos. La anotación `@Entity` indica que esta clase es una entidad JPA. La anotación `@Id` se utiliza para especificar el identificador de la entidad, y `@GeneratedValue` se utiliza para generar automáticamente el valor del identificador.
 
-2. **Crear el repositorio `UserRepository`**:
+- **Crear el repositorio `UserRepository`**:
 ```java
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -240,7 +240,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 ```
    Esta interfaz `UserRepository` extiende `JpaRepository`, lo que proporciona métodos CRUD estándar para la entidad `User`. Además, se define un método personalizado `findByUserName` para buscar usuarios por nombre de usuario y consultas personalizadas `findUsersByRole` y `findUsersByUserNameContaining` para buscar usuarios por rol y por nombre de usuario, respectivamente.
 
-3. **Configurar el archivo `application.properties`**:
+- **Configurar el archivo `application.properties`**:
 ```properties
 spring.datasource.url=jdbc:mariadb://localhost:3306/demo_db
 spring.datasource.username=mariadbuser
@@ -250,7 +250,7 @@ spring.jpa.hibernate.ddl-auto=update
 ```
    Este archivo `application.properties` contiene la configuración de la base de datos. Se especifica la URL de la base de datos, el nombre de usuario, la contraseña y el controlador JDBC. La propiedad `spring.jpa.hibernate.ddl-auto=update` indica que Hibernate debe actualizar el esquema de la base de datos en función de las entidades definidas.
 
-4. **Crear el servicio `UserService`**:
+- **Crear el servicio `UserService`**:
 ```java
 @Service
 @Validated
@@ -309,8 +309,8 @@ public class UserService implements UserDetailsService {
 
 Spring Data JPA proporciona soporte para auditoría de entidades, permitiendo rastrear cambios en los datos. Para habilitar la auditoría, se deben seguir los siguientes pasos:
 
-1. **Habilitar la Auditoría**:
-   - Añadir la anotación `@EnableJpaAuditing` en una clase de configuración.
+- **Habilitar la Auditoría**:
+      - Añadir la anotación `@EnableJpaAuditing` en una clase de configuración.
 
 ```java
 @Configuration
@@ -320,8 +320,8 @@ public class JpaConfig {
 }
 ```
 
-2. **Configurar las Entidades para Auditoría**:
-   - Añadir las anotaciones `@CreatedDate`, `@LastModifiedDate`, `@CreatedBy` y `@LastModifiedBy` en las entidades.
+- **Configurar las Entidades para Auditoría**:
+      - Añadir las anotaciones `@CreatedDate`, `@LastModifiedDate`, `@CreatedBy` y `@LastModifiedBy` en las entidades.
 
 ```java
 @Entity
@@ -351,7 +351,7 @@ public class User {
 
 Spring Data JPA proporciona la interfaz `Specification` para crear consultas dinámicas.
 
-1. **Definir una Especificación**:
+- **Definir una Especificación**:
 ```java
 public class UserSpecification {
     public static Specification<User> hasRole(String role) {
@@ -364,14 +364,14 @@ public class UserSpecification {
 }
 ```
 
-2. **Utilizar la Especificación en un Repositorio**:
+- **Utilizar la Especificación en un Repositorio**:
 ```java
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 }
 ```
 
-3. **Utilizar la Especificación en un Servicio**:
+- **Utilizar la Especificación en un Servicio**:
 ```java
 @Service
 public class UserService {
@@ -398,13 +398,13 @@ public class UserService {
 
 ### Actividad Práctica
 
-1. **Configurar la Auditoría en una Entidad**:
-   - Añadir las anotaciones de auditoría a la entidad `User`.
-   - Habilitar la auditoría en una clase de configuración.
-   - Probar la auditoría creando y modificando entidades `User`.
+- **Configurar la Auditoría en una Entidad**:
+      - Añadir las anotaciones de auditoría a la entidad `User`.
+      - Habilitar la auditoría en una clase de configuración.
+      - Probar la auditoría creando y modificando entidades `User`.
 
-2. **Crear Consultas Dinámicas con Specification**:
-   - Definir especificaciones en la clase `UserSpecification`.
-   - Utilizar las especificaciones en el servicio `UserService`.
-   - Probar las consultas dinámicas utilizando una herramienta como Postman.
+- **Crear Consultas Dinámicas con Specification**:
+      - Definir especificaciones en la clase `UserSpecification`.
+      - Utilizar las especificaciones en el servicio `UserService`.
+      - Probar las consultas dinámicas utilizando una herramienta como Postman.
 

@@ -10,7 +10,7 @@ La configuración de seguridad se realiza en una clase anotada con `@Configurati
 
 ### Actividad Práctica
 
-1. **Configurar Spring Security**:
+- **Configurar Spring Security**:
 ```java
 @Configuration
 @EnableWebSecurity
@@ -101,7 +101,7 @@ La implementación de cifrado de contraseñas y datos se realiza utilizando Spri
 
 ### Actividad Práctica
 
-1. **Implementar cifrado de contraseñas**:
+- **Implementar cifrado de contraseñas**:
 ```java
 @Bean
 public PasswordEncoder passwordEncoder() {
@@ -113,9 +113,9 @@ public PasswordEncoder passwordEncoder() {
 
 Para gestionar los JWT, necesitamos tres clases en el paquete `security.jwt`:
 
-1. **JwtTokenProvider**: Provee métodos para generar y validar tokens JWT.
-2. **JwtTokenFilter**: Filtro que intercepta las solicitudes HTTP para validar el token JWT.
-3. **JwtAuthenticationEntryPoint**: Maneja los errores de autenticación.
+- **JwtTokenProvider**: Provee métodos para generar y validar tokens JWT.
+- **JwtTokenFilter**: Filtro que intercepta las solicitudes HTTP para validar el token JWT.
+- **JwtAuthenticationEntryPoint**: Maneja los errores de autenticación.
 
 #### Ejemplo de `JwtTokenProvider`
 
@@ -287,7 +287,7 @@ La implementación de JWT en Spring Security incluye la creación de un proveedo
 
 ### Actividad Práctica
 
-1. **Crear el proveedor de JWT `JwtProvider`**:
+- **Crear el proveedor de JWT `JwtProvider`**:
 ```java
 @Component
 public class JwtProvider {
@@ -345,8 +345,8 @@ public class JwtProvider {
 
 Para proteger endpoints con roles, se pueden utilizar las anotaciones `@PreAuthorize` o `@Secured`. A continuación se muestra un ejemplo de cómo proteger un endpoint utilizando `@PreAuthorize`:
 
-1. **Habilitar la Seguridad basada en Anotaciones**:
-   - Añadir la anotación `@EnableGlobalMethodSecurity` en la clase de configuración de seguridad:
+- **Habilitar la Seguridad basada en Anotaciones**:
+      - Añadir la anotación `@EnableGlobalMethodSecurity` en la clase de configuración de seguridad:
 ```java
 @Configuration
 @EnableWebSecurity
@@ -356,8 +356,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-2. **Proteger un Endpoint con `@PreAuthorize`**:
-   - Utilizar la anotación `@PreAuthorize` en el controlador para proteger un endpoint:
+- **Proteger un Endpoint con `@PreAuthorize`**:
+      - Utilizar la anotación `@PreAuthorize` en el controlador para proteger un endpoint:
 ```java
 @RestController
 @RequestMapping("/api/admin")
@@ -380,10 +380,10 @@ En este ejemplo, el endpoint `/api/admin/dashboard` solo será accesible para us
 
 ### Actividad Práctica
 
-1. **Proteger un Endpoint con Roles**:
-   - Añadir la anotación `@EnableGlobalMethodSecurity(prePostEnabled = true)` en la clase de configuración de seguridad.
-   - Utilizar la anotación `@PreAuthorize` en un controlador para proteger un endpoint con un rol específico.
-   - Probar el acceso al endpoint con diferentes usuarios para verificar que solo los usuarios con el rol adecuado pueden acceder.
+- **Proteger un Endpoint con Roles**:
+      - Añadir la anotación `@EnableGlobalMethodSecurity(prePostEnabled = true)` en la clase de configuración de seguridad.
+      - Utilizar la anotación `@PreAuthorize` en un controlador para proteger un endpoint con un rol específico.
+      - Probar el acceso al endpoint con diferentes usuarios para verificar que solo los usuarios con el rol adecuado pueden acceder.
 
 ### Validaciones en el Controlador `UserController`
 

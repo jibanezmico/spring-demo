@@ -6,13 +6,13 @@ Spring Boot es un framework que facilita la creación de aplicaciones Java basad
 
 ### Actividad Práctica
 
-1. **Crear un proyecto Spring Boot**:
-   - Utiliza Spring Initializr para crear un nuevo proyecto llamado "spring-demo" con las dependencias necesarias, por ejemplo, puedes añadir Spring Web.
+- **Crear un proyecto Spring Boot**:
+      - Utiliza Spring Initializr para crear un nuevo proyecto llamado "spring-demo" con las dependencias necesarias, por ejemplo, puedes añadir Spring Web.
 
-2. **Estructura del Proyecto y Explicación de Componentes**:
-   - **src/main/java**: Contiene el código fuente de la aplicación.
-     - **com.example.springdemo**: Paquete base donde se encuentra la clase principal.
-       - **SpringDemoApplication.java**: Clase principal de la aplicación con la anotación `@SpringBootApplication`.
+- **Estructura del Proyecto y Explicación de Componentes**:
+      - **src/main/java**: Contiene el código fuente de la aplicación.
+        - **com.example.springdemo**: Paquete base donde se encuentra la clase principal.
+        - **SpringDemoApplication.java**: Clase principal de la aplicación con la anotación `@SpringBootApplication`.
 ```java
 @SpringBootApplication
 public class SpringDemoApplication {
@@ -49,9 +49,9 @@ spring.application.name=spring-demo
 ```
 El archivo `pom.xml` es utilizado por Maven para gestionar las dependencias del proyecto. En este ejemplo, se incluye la dependencia `spring-boot-starter-web` para añadir soporte para aplicaciones web.
 
-3. **Poner en ejecución el proyecto**:
-  - Abre una terminal en el directorio raíz del proyecto.
-  - Ejecuta el siguiente comando para compilar y ejecutar la aplicación:
+- **Poner en ejecución el proyecto**:
+     - Abre una terminal en el directorio raíz del proyecto.
+     - Ejecuta el siguiente comando para compilar y ejecutar la aplicación:
 
 ```sh
 ./mvnw spring-boot:run
@@ -62,7 +62,7 @@ El archivo `pom.xml` es utilizado por Maven para gestionar las dependencias del 
 
 El uso de un Logger es esencial para registrar eventos importantes y errores en la aplicación. Spring Boot utiliza `SLF4J` como interfaz de registro y `Logback` como implementación predeterminada. Aquí se muestra cómo configurar y usar un Logger en una clase de servicio:
 
-1. **Agregar la dependencia de SLF4J en `pom.xml`**:
+- **Agregar la dependencia de SLF4J en `pom.xml`**:
 ```xml
 <dependency>
     <groupId>org.slf4j</groupId>
@@ -74,7 +74,7 @@ El uso de un Logger es esencial para registrar eventos importantes y errores en 
 </dependency>
 ```
 
-2. **Configurar el Logger en una clase de servicio**:
+- **Configurar el Logger en una clase de servicio**:
 ```java
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,7 +110,7 @@ logging.file.name=logs/spring-demo.log
 
 Las pruebas unitarias son esenciales para asegurar que el código funcione correctamente y para detectar errores de manera temprana. Aquí se muestra cómo escribir y ejecutar pruebas unitarias en Spring Boot:
 
-1. **Agregar Dependencias de Pruebas en `pom.xml`**:
+- **Agregar Dependencias de Pruebas en `pom.xml`**:
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -119,7 +119,7 @@ Las pruebas unitarias son esenciales para asegurar que el código funcione corre
 </dependency>
 ```
 
-2. **Escribir una Prueba Unitaria para un Controlador**:
+- **Escribir una Prueba Unitaria para un Controlador**:
 ```java
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,7 +145,7 @@ public class HolaMundoControllerTest {
 }
 ```
 
-3. **Escribir una Prueba Unitaria para un Servicio**:
+- **Escribir una Prueba Unitaria para un Servicio**:
 ```java
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,15 +185,15 @@ public class ExampleServiceTest {
 
 ### Actividad Práctica
 
-1. **Explorar la Estructura del Proyecto**:
-   - Navegar por los directorios y archivos del proyecto para familiarizarse con la estructura del proyecto Spring Boot.
-   - Revisar el archivo `application.properties` y agregar configuraciones adicionales según sea necesario.
+- **Explorar la Estructura del Proyecto**:
+      - Navegar por los directorios y archivos del proyecto para familiarizarse con la estructura del proyecto Spring Boot.
+      - Revisar el archivo `application.properties` y agregar configuraciones adicionales según sea necesario.
 
 ### Posibles Errores Comunes
 
-1. **Error de Conexión al Servidor**:
-   - **Solución**: Verificar que el puerto configurado en `application.properties` no esté en uso por otra aplicación.
+- **Error de Conexión al Servidor**:
+      - **Solución**: Verificar que el puerto configurado en `application.properties` no esté en uso por otra aplicación.
 
-2. **Dependencias**:
-   - **Solución**: Asegurarse de que todas las dependencias necesarias estén incluidas en el archivo `pom.xml` y ejecutar `mvn clean install` para actualizar el proyecto.
+- **Dependencias**:
+      - **Solución**: Asegurarse de que todas las dependencias necesarias estén incluidas en el archivo `pom.xml` y ejecutar `mvn clean install` para actualizar el proyecto.
 
