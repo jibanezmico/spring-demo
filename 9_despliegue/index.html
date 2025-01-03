@@ -1,0 +1,996 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentación sobre la demo de Spring">
+      
+      
+        <meta name="author" content="Javi Ibáñez">
+      
+      
+        <link rel="canonical" href="https://jibanezmico.github.io/spring-demo/9_despliegue/">
+      
+      
+        <link rel="prev" href="../8_distribuida/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Despliegue de Aplicaciones Spring Boot en Entornos de Producción - Spring Demo Doc</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../styles/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#despliegue-de-aplicaciones-spring-boot-en-entornos-de-produccion" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Spring Demo Doc" class="md-header__button md-logo" aria-label="Spring Demo Doc" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Spring Demo Doc
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Despliegue de Aplicaciones Spring Boot en Entornos de Producción
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jibanezmico/spring-demo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    spring-demo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Spring Demo Doc" class="md-nav__button md-logo" aria-label="Spring Demo Doc" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Spring Demo Doc
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jibanezmico/spring-demo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    spring-demo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0_introduccion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introducción a Spring Boot y conceptos clave
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_configuracion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuración del Proyecto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_spring_web/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introducción a Spring Web
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_spring_data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gestión de Datos y Lógica de Negocio con Spring Data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_spring_security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Seguridad con Spring Security y JWT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_swagger/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Documentación con Swagger
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_servcios_red/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Implementación de Servicios en Red
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7_test/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pruebas y Depuración
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8_distribuida/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introducción a la programación distribuida
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Despliegue de Aplicaciones Spring Boot en Entornos de Producción
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Despliegue de Aplicaciones Spring Boot en Entornos de Producción
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#preparacion-para-el-despliegue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preparación para el Despliegue
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparación para el Despliegue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#construccion-del-paquete-jar-o-war" class="md-nav__link">
+    <span class="md-ellipsis">
+      Construcción del paquete (JAR o WAR)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracion-para-produccion-propiedades-perfiles-y-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración para producción: propiedades, perfiles y logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#despliegue-en-servidores-locales" class="md-nav__link">
+    <span class="md-ellipsis">
+      Despliegue en Servidores Locales
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Despliegue en Servidores Locales">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uso-de-apache-tomcat-o-jetty" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uso de Apache Tomcat o Jetty
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejecucion-como-aplicacion-standalone" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ejecución como aplicación standalone
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#despliegue-en-la-nube" class="md-nav__link">
+    <span class="md-ellipsis">
+      Despliegue en la Nube
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Despliegue en la Nube">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduccion-a-plataformas-cloud-aws-gcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducción a plataformas cloud (AWS, GCP)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contenedores-con-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contenedores con Docker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contenedores con Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crear-un-dockerfile-para-la-aplicacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Crear un Dockerfile para la aplicación
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#despliegue-de-contenedores-con-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Despliegue de contenedores con Docker Compose
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitorizacion-y-escalabilidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitorización y Escalabilidad
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitorización y Escalabilidad">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#herramientas-como-spring-boot-actuator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Herramientas como Spring Boot Actuator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escalado-horizontal-y-vertical" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escalado horizontal y vertical
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#preparacion-para-el-despliegue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preparación para el Despliegue
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Preparación para el Despliegue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#construccion-del-paquete-jar-o-war" class="md-nav__link">
+    <span class="md-ellipsis">
+      Construcción del paquete (JAR o WAR)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuracion-para-produccion-propiedades-perfiles-y-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuración para producción: propiedades, perfiles y logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#despliegue-en-servidores-locales" class="md-nav__link">
+    <span class="md-ellipsis">
+      Despliegue en Servidores Locales
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Despliegue en Servidores Locales">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uso-de-apache-tomcat-o-jetty" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uso de Apache Tomcat o Jetty
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejecucion-como-aplicacion-standalone" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ejecución como aplicación standalone
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#despliegue-en-la-nube" class="md-nav__link">
+    <span class="md-ellipsis">
+      Despliegue en la Nube
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Despliegue en la Nube">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduccion-a-plataformas-cloud-aws-gcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introducción a plataformas cloud (AWS, GCP)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contenedores-con-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contenedores con Docker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contenedores con Docker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crear-un-dockerfile-para-la-aplicacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Crear un Dockerfile para la aplicación
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#despliegue-de-contenedores-con-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Despliegue de contenedores con Docker Compose
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitorizacion-y-escalabilidad" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitorización y Escalabilidad
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitorización y Escalabilidad">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#herramientas-como-spring-boot-actuator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Herramientas como Spring Boot Actuator
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escalado-horizontal-y-vertical" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escalado horizontal y vertical
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/jibanezmico/spring-demo/edit/main/spring-demo-doc/docs/9_despliegue.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/jibanezmico/spring-demo/raw/main/spring-demo-doc/docs/9_despliegue.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="despliegue-de-aplicaciones-spring-boot-en-entornos-de-produccion">Despliegue de Aplicaciones Spring Boot en Entornos de Producción<a class="headerlink" href="#despliegue-de-aplicaciones-spring-boot-en-entornos-de-produccion" title="Permanent link">&para;</a></h1>
+<h2 id="preparacion-para-el-despliegue">Preparación para el Despliegue<a class="headerlink" href="#preparacion-para-el-despliegue" title="Permanent link">&para;</a></h2>
+<h3 id="construccion-del-paquete-jar-o-war">Construcción del paquete (JAR o WAR)<a class="headerlink" href="#construccion-del-paquete-jar-o-war" title="Permanent link">&para;</a></h3>
+<p>Para desplegar una aplicación Spring Boot, primero necesitas construir el paquete de tu aplicación. Esto puede ser un archivo JAR (Java ARchive) o un archivo WAR (Web Application Archive). Utiliza herramientas de construcción como Maven o Gradle para este propósito.</p>
+<p>Con Maven, puedes construir el paquete ejecutando el siguiente comando en la raíz de tu proyecto:
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mvn<span class="w"> </span>clean<span class="w"> </span>package
+</span></code></pre></div>
+Este comando limpiará cualquier construcción previa y empaquetará tu aplicación en un archivo JAR o WAR, dependiendo de tu configuración.</p>
+<p>Con Gradle, el comando equivalente es:
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./gradlew<span class="w"> </span>build
+</span></code></pre></div>
+Este comando también limpiará y construirá tu proyecto, generando el archivo JAR o WAR en el directorio <code>build/libs</code>.</p>
+<h3 id="configuracion-para-produccion-propiedades-perfiles-y-logs">Configuración para producción: propiedades, perfiles y logs<a class="headerlink" href="#configuracion-para-produccion-propiedades-perfiles-y-logs" title="Permanent link">&para;</a></h3>
+<p>Es crucial configurar tu aplicación adecuadamente para el entorno de producción. Esto incluye la configuración de propiedades, perfiles y logs.</p>
+<ul>
+<li>
+<p><strong>Propiedades</strong>: Crea un archivo <code>application-prod.properties</code> en el directorio <code>src/main/resources</code>. Este archivo contendrá las propiedades específicas para el entorno de producción, como configuraciones de base de datos, URLs de servicios externos, etc.</p>
+</li>
+<li>
+<p><strong>Perfiles</strong>: Utiliza perfiles para separar las configuraciones de desarrollo y producción. Puedes activar el perfil de producción añadiendo el parámetro <code>--spring.profiles.active=prod</code> al comando de ejecución de tu aplicación.</p>
+</li>
+<li>
+<p><strong>Logs</strong>: Configura los logs para producción asegurándote de que se capturen errores y eventos importantes. Puedes configurar el nivel de log y los appenders en el archivo <code>logback-spring.xml</code> o <code>application-prod.properties</code>.</p>
+</li>
+</ul>
+<h2 id="despliegue-en-servidores-locales">Despliegue en Servidores Locales<a class="headerlink" href="#despliegue-en-servidores-locales" title="Permanent link">&para;</a></h2>
+<h3 id="uso-de-apache-tomcat-o-jetty">Uso de Apache Tomcat o Jetty<a class="headerlink" href="#uso-de-apache-tomcat-o-jetty" title="Permanent link">&para;</a></h3>
+<p>Si decides empaquetar tu aplicación como un archivo WAR, puedes desplegarla en servidores de aplicaciones como Apache Tomcat o Jetty.</p>
+<ul>
+<li>Empaqueta tu aplicación como un archivo WAR utilizando Maven o Gradle.</li>
+<li>Copia el archivo WAR generado en el directorio <code>webapps</code> de tu instalación de Tomcat o Jetty.</li>
+<li>Inicia el servidor y tu aplicación estará disponible en el contexto configurado.</li>
+</ul>
+<h3 id="ejecucion-como-aplicacion-standalone">Ejecución como aplicación standalone<a class="headerlink" href="#ejecucion-como-aplicacion-standalone" title="Permanent link">&para;</a></h3>
+<p>Otra opción es empaquetar tu aplicación como un archivo JAR y ejecutarla como una aplicación standalone.</p>
+<ol>
+<li>Empaqueta tu aplicación como un archivo JAR utilizando Maven o Gradle.</li>
+<li>Ejecuta el archivo JAR usando el siguiente comando:
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>java<span class="w"> </span>-jar<span class="w"> </span>tu-aplicacion.jar
+</span></code></pre></div>
+Esto iniciará un servidor embebido (como Tomcat o Jetty) y tu aplicación estará disponible en el puerto configurado (por defecto, el puerto 8080).</li>
+</ol>
+<h2 id="despliegue-en-la-nube">Despliegue en la Nube<a class="headerlink" href="#despliegue-en-la-nube" title="Permanent link">&para;</a></h2>
+<h3 id="introduccion-a-plataformas-cloud-aws-gcp">Introducción a plataformas cloud (AWS, GCP)<a class="headerlink" href="#introduccion-a-plataformas-cloud-aws-gcp" title="Permanent link">&para;</a></h3>
+<p>Desplegar aplicaciones en la nube ofrece ventajas como escalabilidad, alta disponibilidad y gestión simplificada. Algunas de las plataformas cloud más populares son AWS y GCP.</p>
+<ul>
+<li><strong>AWS (Amazon Web Services)</strong>: Ofrece una amplia gama de servicios para el despliegue y escalado de aplicaciones, incluyendo EC2, Elastic Beanstalk, y RDS.</li>
+<li><strong>GCP (Google Cloud Platform)</strong>: Proporciona herramientas y servicios para desplegar aplicaciones en la nube, como Google App Engine, Kubernetes Engine, y Cloud SQL.</li>
+</ul>
+<h2 id="contenedores-con-docker">Contenedores con Docker<a class="headerlink" href="#contenedores-con-docker" title="Permanent link">&para;</a></h2>
+<h3 id="crear-un-dockerfile-para-la-aplicacion">Crear un Dockerfile para la aplicación<a class="headerlink" href="#crear-un-dockerfile-para-la-aplicacion" title="Permanent link">&para;</a></h3>
+<p>Docker permite empaquetar tu aplicación y sus dependencias en un contenedor, asegurando que se ejecute de manera consistente en cualquier entorno. Para crear un contenedor Docker para tu aplicación Spring Boot, necesitas definir un Dockerfile.</p>
+<p>Ejemplo básico de Dockerfile:
+<div class="language-Dockerfile highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">openjdk:11-jre-slim</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">COPY</span><span class="w"> </span>target/tu-aplicacion.jar<span class="w"> </span>app.jar
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;java&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-jar&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/app.jar&quot;</span><span class="p">]</span>
+</span></code></pre></div>
+Este Dockerfile utiliza una imagen base de OpenJDK 11, copia el archivo JAR de tu aplicación en el contenedor y define el comando de entrada para ejecutar la aplicación.</p>
+<h3 id="despliegue-de-contenedores-con-docker-compose">Despliegue de contenedores con Docker Compose<a class="headerlink" href="#despliegue-de-contenedores-con-docker-compose" title="Permanent link">&para;</a></h3>
+<p>Docker Compose permite definir y ejecutar aplicaciones multi-contenedor. Puedes definir un archivo <code>docker-compose.yml</code> para gestionar múltiples contenedores.</p>
+<p>Ejemplo básico de <code>docker-compose.yml</code>:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3&#39;</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">app</span><span class="p">:</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tu-imagen</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8080:8080&quot;</span>
+</span></code></pre></div>
+Este archivo define un servicio llamado <code>app</code> que utiliza la imagen de tu aplicación y expone el puerto 8080.</p>
+<h2 id="monitorizacion-y-escalabilidad">Monitorización y Escalabilidad<a class="headerlink" href="#monitorizacion-y-escalabilidad" title="Permanent link">&para;</a></h2>
+<h3 id="herramientas-como-spring-boot-actuator">Herramientas como Spring Boot Actuator<a class="headerlink" href="#herramientas-como-spring-boot-actuator" title="Permanent link">&para;</a></h3>
+<p>Spring Boot Actuator añade endpoints de monitorización a tu aplicación, permitiéndote obtener información sobre su estado y métricas. Para habilitar Actuator, añade la dependencia en tu <code>pom.xml</code> o <code>build.gradle</code>.</p>
+<p>Ejemplo de configuración en <code>pom.xml</code>:
+<div class="language-xml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">&lt;dependency&gt;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-actuator<span class="nt">&lt;/artifactId&gt;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></div>
+Configura los endpoints en tu archivo <code>application.properties</code> o <code>application.yml</code>. Por ejemplo, para habilitar el endpoint de salud:
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="na">management.endpoints.web.exposure.include</span><span class="o">=</span><span class="s">health</span>
+</span></code></pre></div>
+Accede al endpoint <code>/actuator/health</code> para verificar el estado de la aplicación.</p>
+<h3 id="escalado-horizontal-y-vertical">Escalado horizontal y vertical<a class="headerlink" href="#escalado-horizontal-y-vertical" title="Permanent link">&para;</a></h3>
+<p>El escalado es crucial para manejar el aumento de tráfico y mejorar el rendimiento de tu aplicación.</p>
+<ul>
+<li><strong>Escalado horizontal</strong>: Añade más instancias de tu aplicación para distribuir la carga. Esto se puede lograr fácilmente en plataformas cloud y con herramientas de orquestación de contenedores como Kubernetes.</li>
+<li><strong>Escalado vertical</strong>: Aumenta los recursos (CPU, memoria) de la instancia existente para mejorar el rendimiento. Esto puede ser útil para aplicaciones que requieren más recursos en lugar de más instancias.</li>
+</ul>
+<p>Implementar estrategias de escalado adecuadas asegurará que tu aplicación pueda manejar el crecimiento y mantener un rendimiento óptimo.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.select"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>

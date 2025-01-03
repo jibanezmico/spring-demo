@@ -439,6 +439,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#personalizacion-avanzada-de-la-documentacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Personalización Avanzada de la Documentación
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#generar-un-cliente-api-desde-la-documentacion-swagger" class="md-nav__link">
     <span class="md-ellipsis">
       Generar un Cliente API desde la Documentación Swagger
@@ -499,6 +508,66 @@
   
   <span class="md-ellipsis">
     Implementación de Servicios en Red
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7_test/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pruebas y Depuración
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8_distribuida/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introducción a la programación distribuida
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9_despliegue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Despliegue de Aplicaciones Spring Boot en Entornos de Producción
   </span>
   
 
@@ -572,6 +641,15 @@
   <a href="#personalizacion-de-swagger-para-mostrar-ejemplos-especificos" class="md-nav__link">
     <span class="md-ellipsis">
       Personalización de Swagger para Mostrar Ejemplos Específicos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#personalizacion-avanzada-de-la-documentacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Personalización Avanzada de la Documentación
     </span>
   </a>
   
@@ -734,6 +812,41 @@
 - <code>@ApiOperation</code> describe la operación del endpoint.
 - <code>@ApiResponses</code> define las posibles respuestas del endpoint, incluyendo códigos de estado y mensajes.
 - <code>Logger</code>: Utilizado para registrar eventos importantes y errores en la aplicación.</p>
+<h3 id="personalizacion-avanzada-de-la-documentacion">Personalización Avanzada de la Documentación<a class="headerlink" href="#personalizacion-avanzada-de-la-documentacion" title="Permanent link">&para;</a></h3>
+<p>Swagger permite una personalización avanzada de la documentación mediante el uso de anotaciones adicionales y configuraciones específicas. Aquí hay algunos ejemplos:</p>
+<ul>
+<li><strong>Incluir Ejemplos Detallados</strong>:
+  Utiliza la anotación <code>@ApiModelProperty</code> para incluir ejemplos detallados en los modelos de datos.</li>
+</ul>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">User</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nd">@ApiModelProperty</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ID del usuario&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">example</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nd">@ApiModelProperty</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Nombre del usuario&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">example</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Juan Perez&quot;</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nd">@ApiModelProperty</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Correo electrónico del usuario&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">example</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;juan.perez@example.com&quot;</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">email</span><span class="p">;</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="c1">// ...existing code...</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li><strong>Agregar Descripciones a los Parámetros</strong>:
+  Utiliza la anotación <code>@ApiParam</code> para agregar descripciones a los parámetros de los métodos del controlador.</li>
+</ul>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@GetMapping</span><span class="p">(</span><span class="s">&quot;/{id}&quot;</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nd">@ApiOperation</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Obtener usuario por ID&quot;</span><span class="p">)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nd">@ApiResponses</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nd">@ApiResponse</span><span class="p">(</span><span class="n">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Usuario obtenido con éxito&quot;</span><span class="p">),</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nd">@ApiResponse</span><span class="p">(</span><span class="n">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">404</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Usuario no encontrado&quot;</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">})</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="kd">public</span><span class="w"> </span><span class="n">ResponseEntity</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">getUserById</span><span class="p">(</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">        </span><span class="nd">@ApiParam</span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ID del usuario&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">required</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="n">example</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="p">)</span><span class="w"> </span><span class="nd">@PathVariable</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;getUserById endpoint llamado con ID: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="c1">// ...existing code...</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">}</span>
+</span></code></pre></div>
 <h3 id="generar-un-cliente-api-desde-la-documentacion-swagger">Generar un Cliente API desde la Documentación Swagger<a class="headerlink" href="#generar-un-cliente-api-desde-la-documentacion-swagger" title="Permanent link">&para;</a></h3>
 <p>Swagger también permite generar clientes API automáticamente desde la documentación. Aquí hay un ejemplo de cómo hacerlo:</p>
 <ul>
