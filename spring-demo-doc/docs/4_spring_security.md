@@ -3,6 +3,20 @@
 En esta sección se describe la configuración de seguridad de la aplicación mediante **Spring Security**,
 incluyendo la gestión de autenticación y autorización basada en tokens JWT.
 
+Para ello debemos añadir en nuestro pom.xml las siguientes dependencias:
+
+```xml
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+```
+
 ## Configuración de Spring Security
 
 La clase `SecurityConfig` define las reglas de seguridad de la aplicación, gestionando la autenticación
