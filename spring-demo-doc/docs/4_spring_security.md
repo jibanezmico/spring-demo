@@ -8,13 +8,25 @@ Spring Security es un framework que proporciona autenticación y autorización e
 
 La configuración de seguridad se realiza en una clase anotada con `@Configuration`. Esta clase extiende `WebSecurityConfigurerAdapter` y sobreescribe métodos para definir cómo se gestionará la seguridad en la aplicación.
 
+### Dependencias
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt</artifactId>
+    <version>0.9.1</version>
+</dependency>
+```
+
 ### Actividad Práctica
 
 - **Configurar Spring Security**:
 ```java
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Autowired
