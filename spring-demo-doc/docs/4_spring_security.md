@@ -1,246 +1,68 @@
-## Capítulo 4: Seguridad con Spring Security y JWT
+# Configuración de Seguridad en Spring Security
 
-### Introducción a Spring Security
+En esta sección se describe la configuración de seguridad de la aplicación mediante **Spring Security**,
+incluyendo la gestión de autenticación y autorización basada en tokens JWT.
 
-Spring Security es un framework que proporciona autenticación y autorización en aplicaciones Java. Permite proteger aplicaciones contra amenazas comunes como ataques de fuerza bruta, CSRF y XSS, y gestionar roles y permisos de usuarios.
+## Configuración de Spring Security
 
-### Configuración de Seguridad
-
-La configuración de seguridad se realiza en una clase anotada con `@Configuration`. Esta clase extiende `WebSecurityConfigurerAdapter` y sobreescribe métodos para definir cómo se gestionará la seguridad en la aplicación.
-
-### Actividad Práctica
-
-- **Configurar Spring Security**:
-```java
-@Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
-
-    @Autowired
-    private JwtEntryPoint jwtEntryPoint;
-
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
-    }
-
-    /**
-    * Configura el AuthenticationManagerBuilder con el UserDetailsService y el PasswordEncoder.
-    * @param auth el AuthenticationManagerBuilder
-    * @throws Exception en caso de error
-    */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        logger.info("Configurando AuthenticationManagerBuilder");
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-
-    /**
-    * Configura la seguridad HTTP, deshabilitando CSRF, permitiendo el acceso público a las rutas de autenticación,
-    * y requiriendo autenticación para otras rutas. También configura el manejo de excepciones y la política de creación de sesiones.
-    * @param http el HttpSecurity
-    * @throws Exception en caso de error
-    */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        logger.info("Configurando HttpSecurity");
-        http.csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/auth/**").permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
-            .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
-
-    /**
-    * Define el PasswordEncoder que se utilizará para codificar las contraseñas.
-    * @return el PasswordEncoder
-    */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    /**
-    * Define el AuthenticationManager que se utilizará para la autenticación.
-    * @return el AuthenticationManager
-    * @throws Exception en caso de error
-    */
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-}
-```
-
-Esta clase `SecurityConfig` extiende `WebSecurityConfigurerAdapter` y se encarga de la configuración de seguridad de la aplicación. Aquí se configuran varios aspectos importantes y se utiliza un Logger para registrar eventos importantes:
-
-- `configure(AuthenticationManagerBuilder auth)`: Configura el `AuthenticationManagerBuilder` con el `UserDetailsService` y el `PasswordEncoder`. Esto asegura que el `AuthenticationManagerBuilder` pueda autenticar usuarios utilizando el `UserDetailsService` y el `PasswordEncoder` configurados.
-- `configure(HttpSecurity http)`: Configura la seguridad HTTP, deshabilitando CSRF, permitiendo el acceso público a las rutas de autenticación, y requiriendo autenticación para otras rutas. También configura el manejo de excepciones y la política de creación de sesiones. Esto garantiza que las rutas de autenticación sean accesibles públicamente, mientras que otras rutas requieren autenticación.
-- `passwordEncoder()`: Define el `PasswordEncoder` que se utilizará para codificar las contraseñas. Esto asegura que las contraseñas se codifiquen de manera segura antes de almacenarse.
-- `authenticationManagerBean()`: Define el `AuthenticationManager` que se utilizará para la autenticación. Esto garantiza que el `AuthenticationManager` esté disponible como un bean en el contexto de la aplicación.
-
-### Criptografía y Cifrado de Contraseñas
-
-### Introducción a la Criptografía
-
-La criptografía es la práctica y el estudio de técnicas para asegurar la comunicación y proteger la información. En el contexto de aplicaciones web, se utiliza para proteger datos sensibles como contraseñas y tokens de autenticación.
-
-### Implementación de Cifrado de Contraseñas y Datos
-
-La implementación de cifrado de contraseñas y datos se realiza utilizando Spring Security y BCrypt. BCrypt es un algoritmo de hashing que incluye un factor de trabajo, lo que lo hace más seguro contra ataques de fuerza bruta.
-
-### Actividad Práctica
-
-- **Implementar cifrado de contraseñas**:
-```java
-@Bean
-public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-}
-```
-
-### Gestión de JWT
-
-Para gestionar los JWT, necesitamos tres clases en el paquete `security.jwt`:
-
-- **JwtTokenProvider**: Provee métodos para generar y validar tokens JWT.
-- **JwtTokenFilter**: Filtro que intercepta las solicitudes HTTP para validar el token JWT.
-- **JwtAuthenticationEntryPoint**: Maneja los errores de autenticación.
-
-#### Ejemplo de `JwtTokenProvider`
+La clase `SecurityConfig` define las reglas de seguridad de la aplicación, gestionando la autenticación
+y autorización de las rutas.
 
 ```java
-package com.example.security.jwt;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
-
 /**
- * Proveedor de JWT que genera y valida tokens JWT.
+ * Filtro de autenticación JWT que se ejecuta una vez por solicitud.
  */
-@Component
-public class JwtTokenProvider {
-
-    @Value("${jwt.secret}")
-    private String secretKey;
-
-    @Value("${jwt.expiration}")
-    private long validityInMilliseconds;
-
-    /**
-     * Genera un token JWT basado en la autenticación del usuario.
-     *
-     * @param authentication la autenticación del usuario
-     * @return el token JWT
-     */
-    public String createToken(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
-    }
-
-    /**
-     * Valida el token JWT.
-     *
-     * @param token el token JWT
-     * @return true si el token es válido, false en caso contrario
-     */
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    /**
-     * Extrae el nombre de usuario del token JWT.
-     *
-     * @param token el token JWT
-     * @return el nombre de usuario
-     */
-    public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-    }
-}
-```
-
-Esta clase `JwtTokenProvider` se encarga de generar y validar tokens JWT. Utiliza la biblioteca `io.jsonwebtoken` para crear y analizar los tokens. Los métodos principales son `createToken`, que genera un token basado en la autenticación del usuario, y `validateToken`, que valida el token.
-
-#### Ejemplo de `JwtTokenFilter`
-
-```java
-package com.example.security.jwt;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-/**
- * Filtro que intercepta las solicitudes HTTP para validar el token JWT.
- */
-@Component
-public class JwtTokenFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
+    private JwtProvider jwtProvider;
     @Autowired
     private UserDetailsService userDetailsService;
 
+    /**
+     * Método que filtra cada solicitud para autenticar el usuario basado en el token JWT.
+     *
+     * @param request     El objeto HttpServletRequest.
+     * @param response    El objeto HttpServletResponse.
+     * @param filterChain La cadena de filtros.
+     * @throws ServletException en caso de error en el servlet.
+     * @throws IOException      en caso de error de E/S.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String token = resolveToken(request);
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            String username = jwtTokenProvider.getUsername(token);
+        // Obtener el token JWT de la solicitud
+        String jwt = getJwtFromRequest(request);
+
+        // Validar el token JWT
+        if (jwt != null && jwtProvider.validateToken(jwt)) {
+            // Obtener el nombre de usuario del token JWT
+            String username = jwtProvider.extractUsername(jwt);
+
+            // Cargar los detalles del usuario
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            // Crear la autenticación basada en el token JWT
             if (userDetails != null) {
-                JwtAuthenticationToken authentication = new JwtAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // Establecer la autenticación en el contexto de seguridad
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
+
+        // Continuar con la cadena de filtros
         filterChain.doFilter(request, response);
     }
 
-    private String resolveToken(HttpServletRequest request) {
+    /**
+     * Obtiene el token JWT de la solicitud.
+     *
+     * @param request El objeto HttpServletRequest.
+     * @return El token JWT si está presente, de lo contrario null.
+     */
+    private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
@@ -248,524 +70,450 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         return null;
     }
 }
+
 ```
 
-Esta clase `JwtTokenFilter` extiende `OncePerRequestFilter` y se encarga de interceptar las solicitudes HTTP para validar el token JWT. Si el token es válido, se establece la autenticación en el contexto de seguridad de Spring.
+### Explicación:
 
-#### Ejemplo de `JwtAuthenticationEntryPoint`
+- **Filtro de autenticación JWT:** Se encarga de interceptar y validar tokens en cada solicitud.
+- **Gestión de credenciales:** Extrae el token JWT de la cabecera de autorización y valida su autenticidad.
+- **Autenticación en el contexto de seguridad:** Establece la autenticación si el token es válido.
+
+## Punto de Entrada de Autenticación
+
+La clase `JwtEntryPoint` maneja los errores de autenticación y envía respuestas adecuadas cuando el usuario no está autorizado.
 
 ```java
-package com.example.security.jwt;
-
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 /**
- * Punto de entrada de autenticación que maneja los errores de autenticación.
+ * Punto de entrada de autenticación JWT que se ejecuta cuando se produce un error de autenticación.
  */
 @Component
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class JwtEntryPoint implements AuthenticationEntryPoint {
 
+    /**
+     * Método que se ejecuta cuando se produce un error de autenticación.
+     *
+     * @param request       El objeto HttpServletRequest.
+     * @param response      El objeto HttpServletResponse.
+     * @param authException La excepción de autenticación.
+     * @throws IOException      en caso de error de E/S.
+     * @throws ServletException en caso de error en el servlet.
+     */
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-            throws IOException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        // Obtener la URL completa de la solicitud
+        String urlRequest = SecurityUtils.getFullURL(request);
+        // Obtener la IP del cliente
+        String ip = SecurityUtils.getClientIP(request);
+
+        // Manejar diferentes tipos de excepciones de autenticación
+        if (authException instanceof BadCredentialsException || authException instanceof InternalAuthenticationServiceException) {
+            // El token no es válido. Puede añadirse un control para bloquear la IP.
+            System.err.println("Error de autenticación. IP: " + ip + ". Request URL: " + urlRequest);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Credenciales erróneas");
+        } else {
+            // No autorizado
+            System.err.println("Error de petición. IP: " + ip + ". Request URL: " + urlRequest);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No autorizado");
+        }
     }
 }
+
 ```
 
-Esta clase `JwtAuthenticationEntryPoint` implementa `AuthenticationEntryPoint` y se encarga de manejar los errores de autenticación. Si una solicitud no autenticada intenta acceder a un recurso protegido, se devuelve un error 401 (Unauthorized).
+### Explicación:
 
-### Implementación de JWT en Spring Security
+- **Gestión de errores:** Se encarga de devolver un error 401 cuando no se proporciona una autenticación válida.
+- **Mensajes personalizados:** Devuelve mensajes específicos dependiendo del tipo de error.
 
-La implementación de JWT en Spring Security incluye la creación de un proveedor de JWT, un filtro de autenticación y un punto de entrada de autenticación. Estos componentes se integran en la configuración de seguridad de Spring Security para proporcionar autenticación basada en tokens JWT.
+## Proveedor de Tokens JWT
 
-### Actividad Práctica
+La clase `JwtProvider` se encarga de la generación y validación de tokens JWT para autenticar usuarios.
 
-- **Crear el proveedor de JWT `JwtProvider`**:
 ```java
+/**
+ * Proveedor de JWT que maneja la generación y validación de tokens JWT.
+ */
 @Component
 public class JwtProvider {
-    private String secret = "secret";
 
+    // Clave secreta para firmar el token JWT
+    @Value("${jwt.secret}")
+    private String secret;
+    @Value("${jwt.expiration}")
+    private int expiration;
+
+    /**
+     * Genera un token JWT basado en la autenticación.
+     *
+     * @param authentication La autenticación del usuario.
+     * @return El token JWT generado.
+     */
     public String generateToken(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 horas de expiración
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000)) // 10 horas de expiración
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
+    /**
+     * Extrae el nombre de usuario del token JWT.
+     *
+     * @param token El token JWT.
+     * @return El nombre de usuario extraído del token.
+     */
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
+    /**
+     * Extrae la fecha de expiración del token JWT.
+     *
+     * @param token El token JWT.
+     * @return La fecha de expiración del token.
+     */
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    /**
+     * Extrae un reclamo específico del token JWT.
+     *
+     * @param token El token JWT.
+     * @param claimsResolver La función para resolver el reclamo.
+     * @param <T> El tipo del reclamo.
+     * @return El reclamo extraído.
+     */
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
+    /**
+     * Extrae todos los reclamos del token JWT.
+     *
+     * @param token El token JWT.
+     * @return Los reclamos extraídos del token.
+     */
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
+    /**
+     * Verifica si el token JWT ha expirado.
+     *
+     * @param token El token JWT.
+     * @return true si el token ha expirado, false en caso contrario.
+     */
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
+    /**
+     * Valida el token JWT.
+     *
+     * @param token El token JWT.
+     * @return true si el token es válido, false en caso contrario.
+     */
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            System.err.println("Token JWT inválido");
+        } catch (MalformedJwtException e) {
+            System.err.println("token mal formado");
+        } catch (UnsupportedJwtException e) {
+            System.err.println("token no soportado");
+        } catch (ExpiredJwtException e) {
+            System.err.println("token expirado");
+        } catch (IllegalArgumentException e) {
+            System.err.println("token vacío");
         }
         return false;
     }
 
+    /**
+     * Valida el token JWT contra los detalles del usuario.
+     *
+     * @param token El token JWT.
+     * @param userDetails Los detalles del usuario.
+     * @return true si el token es válido y coincide con los detalles del usuario, false en caso contrario.
+     */
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
+
 ```
 
-### Proteger Endpoints con Roles
+### Explicación:
 
-Para proteger endpoints con roles, se pueden utilizar las anotaciones `@PreAuthorize` o `@Secured`. A continuación se muestra un ejemplo de cómo proteger un endpoint utilizando `@PreAuthorize`:
+- **Generación de tokens:** Crea tokens JWT válidos con información del usuario autenticado.
+- **Validación de tokens:** Verifica la autenticidad de un token recibido.
+- **Extracción de usuario:** Obtiene el nombre de usuario a partir del token JWT.
 
-- **Habilitar la Seguridad basada en Anotaciones**:
-      - Añadir la anotación `@EnableGlobalMethodSecurity` en la clase de configuración de seguridad:
+## Controlador de Usuarios
+
+La clase `UserController` proporciona los endpoints necesarios para la gestión de usuarios.
+
 ```java
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    // ...existing code...
-}
-```
-
-- **Proteger un Endpoint con `@PreAuthorize`**:
-      - Utilizar la anotación `@PreAuthorize` en el controlador para proteger un endpoint:
-```java
+/**
+ * Controlador que maneja las solicitudes relacionadas con los usuarios.
+ */
 @RestController
-@RequestMapping("/api/admin")
-public class AdminController {
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/dashboard")
-    public String getAdminDashboard() {
-        return "Admin Dashboard";
-    }
-}
-```
-
-En este ejemplo, el endpoint `/api/admin/dashboard` solo será accesible para usuarios con el rol `ADMIN`.
-
-### Explicación del Código
-
-- `@EnableGlobalMethodSecurity(prePostEnabled = true)`: Habilita la seguridad basada en anotaciones en la aplicación.
-- `@PreAuthorize("hasRole('ADMIN')")`: Protege el endpoint para que solo sea accesible para usuarios con el rol `ADMIN`.
-
-### Actividad Práctica
-
-- **Proteger un Endpoint con Roles**:
-      - Añadir la anotación `@EnableGlobalMethodSecurity(prePostEnabled = true)` en la clase de configuración de seguridad.
-      - Utilizar la anotación `@PreAuthorize` en un controlador para proteger un endpoint con un rol específico.
-      - Probar el acceso al endpoint con diferentes usuarios para verificar que solo los usuarios con el rol adecuado pueden acceder.
-
-### Validaciones en el Controlador `UserController`
-
-Para agregar validaciones en el controlador `UserController`, se pueden utilizar anotaciones de validación en los métodos del controlador. A continuación se muestra un ejemplo de cómo agregar validaciones en el controlador `UserController`:
-
-```java
-package com.example.controller;
-
-import com.example.model.User;
-import com.example.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.util.List;
-
-@RestController
-@RequestMapping("/users")
-@Validated
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.ok(createdUser);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
-        User updatedUser = userService.updateUser(id, user);
-        if (updatedUser != null) {
-            return ResponseEntity.ok(updatedUser);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        boolean deleted = userService.deleteUser(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    /**
+     * Endpoint para obtener la lista de todos los usuarios.
+     *
+     * @return ResponseEntity con la lista de usuarios y el estado HTTP OK.
+     */
+    @GetMapping("/list")
+    public ResponseEntity<List<User>> getAllUsers() {
+        // Obtener la lista de todos los usuarios
+        List<User> usuarios = userService.getAllUsers();
+        // Devolver la lista de usuarios con el estado HTTP OK
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(usuarios);
     }
 }
+
 ```
 
-En este ejemplo, se utilizan las anotaciones `@Valid` y `@Validated` para habilitar la validación de los datos de entrada en los métodos del controlador. La anotación `@Valid` se utiliza en los parámetros de los métodos para indicar que los datos de entrada deben ser validados. La anotación `@Validated` se utiliza en la clase del controlador para habilitar la validación a nivel de clase.
+### Explicación:
 
-Además, se pueden agregar anotaciones de validación en el modelo `User` para definir las reglas de validación. A continuación se muestra un ejemplo de cómo agregar anotaciones de validación en el modelo `User`:
+- **Operaciones CRUD:** Permite la obtención de usuarios a través de su ID.
+- **Uso de `UserService`:** Delegación de la lógica de negocio al servicio correspondiente.
 
-```java
-package com.example.model;
+## Servicio de Usuarios
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-public class User {
-
-    private Long id;
-
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(max = 50, message = "El nombre no puede tener más de 50 caracteres")
-    private String name;
-
-    @NotBlank(message = "El correo electrónico es obligatorio")
-    @Email(message = "El correo electrónico debe ser válido")
-    private String email;
-
-    // Getters y setters
-}
-```
-
-En este ejemplo, se utilizan las anotaciones `@NotBlank`, `@Size` y `@Email` para definir las reglas de validación en los campos del modelo `User`. Estas anotaciones aseguran que los datos de entrada cumplan con las reglas de validación antes de ser procesados por el controlador.
-
-### Implementación de Sistemas de Autenticación y Autorización Complejos
-
-En aplicaciones más complejas, es común tener la necesidad de gestionar roles y permisos de manera dinámica. Esto implica que los roles y permisos pueden cambiar en tiempo de ejecución y deben ser almacenados y gestionados en una base de datos.
-
-#### Gestión Dinámica de Roles y Permisos
-
-Para gestionar roles y permisos de manera dinámica, se pueden seguir los siguientes pasos:
-
-- **Definir las Entidades de Roles y Permisos**:
-    - Crear entidades JPA para representar los roles y permisos en la base de datos.
+La clase `UserService` implementa la lógica de negocio relacionada con los usuarios.
 
 ```java
-package com.example.model;
-
-import javax.persistence.*;
-import java.util.Set;
-
-@Entity
-public class Role {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String name;
-
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "roles_permissions",
-        joinColumns = @JoinColumn(name = "role_id"),
-        inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    private Set<Permission> permissions;
-
-    // Getters y setters
-}
-
-@Entity
-public class Permission {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String name;
-
-    @ManyToMany(mappedBy = "permissions")
-    private Set<Role> roles;
-
-    // Getters y setters
-}
-```
-
-- **Actualizar la Entidad de Usuario**:
-    - Modificar la entidad `User` para incluir una relación con los roles.
-
-```java
-package com.example.model;
-
-import javax.persistence.*;
-import java.util.Set;
-
-@Entity
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String username;
-
-    @Column(nullable = false)
-    private String password;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "users_roles",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles;
-
-    // Getters y setters
-}
-```
-
-- **Configurar el Servicio de Detalles de Usuario**:
-    - Implementar `UserDetailsService` para cargar los usuarios y sus roles desde la base de datos.
-
-```java
-package com.example.service;
-
-import com.example.model.User;
-import com.example.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-
-import java.util.Set;
-import java.util.stream.Collectors;
-
+/**
+ * Servicio para manejar las operaciones relacionadas con los usuarios.
+ */
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Carga un usuario por su nombre de usuario.
+     *
+     * @param username El nombre de usuario.
+     * @return Los detalles del usuario.
+     * @throws UsernameNotFoundException si el usuario no se encuentra.
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        // Buscar el usuario por nombre de usuario en el repositorio
+        User user = userRepository.findByUserName(username)
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-        Set<GrantedAuthority> authorities = user.getRoles().stream()
-                .flatMap(role -> role.getPermissions().stream())
-                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
-                .collect(Collectors.toSet());
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        // Crear y devolver un objeto UserDetails con el nombre de usuario, contraseña y rol del usuario
+        return new org.springframework.security.core.userdetails.User(
+            user.getUserName(),
+            user.getPassword(),
+            Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
+        );
     }
+
+    /**
+     * Obtiene todos los usuarios.
+     *
+     * @return Una lista de todos los usuarios.
+     */
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    /**
+     * Guarda un usuario.
+     *
+     * @param user El usuario a guardar.
+     * @return El usuario guardado.
+     */
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    /**
+     * Obtiene un usuario por su nombre de usuario.
+     *
+     * @param userName El nombre de usuario.
+     * @return Un Optional que contiene el usuario encontrado, o vacío si no se encuentra.
+     */
+    public Optional<User> getByUserName(String userName) {
+        return userRepository.findByUserName(userName);
+    }
+}
+
+```
+
+### Explicación:
+
+- **Gestión de usuarios:** Permite obtener y manipular los datos de usuarios.
+- **Interacción con la base de datos:** Se apoya en `UserRepository` para realizar operaciones de persistencia.
+
+## Repositorio de Usuarios
+
+La interfaz `UserRepository` define las operaciones de acceso a la base de datos utilizando Spring Data JPA.
+
+```java
+package com.demospring.security.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.demospring.security.entity.User;
+
+/**
+ * Repositorio para la entidad User.
+ * 
+ * Proporciona métodos para realizar operaciones CRUD en la entidad User.
+ */
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    /**
+     * Encuentra un usuario por su identificador.
+     *
+     * @param id El identificador del usuario.
+     * @return El usuario encontrado.
+     */
+    public User findById(long id);
+
+    /**
+     * Encuentra un usuario por su nombre de usuario.
+     *
+     * @param userName El nombre de usuario.
+     * @return Un Optional que contiene el usuario encontrado, o vacío si no se encuentra.
+     */
+    public Optional<User> findByUserName(String userName);
+
+}
+
+```
+
+### Explicación:
+
+- **Persistencia:** Proporciona métodos automáticos para la manipulación de la entidad usuario.
+- **Uso de JPA:** Define operaciones de base de datos de forma declarativa.
+
+## Contenido avanzado
+
+En este apartado se amplían algunos conceptos avanzados de seguridad en **Spring Security** y **JWT**, abordando aspectos adicionales como:
+
+### Seguridad basada en roles y permisos
+
+Spring Security permite definir y controlar accesos a nivel de métodos mediante anotaciones como:
+
+```java
+@PreAuthorize("hasRole('ADMIN')")
+@GetMapping("/admin")
+public String adminAccess() {
+    return "Acceso permitido solo para administradores.";
 }
 ```
 
-- **Actualizar la Configuración de Seguridad**:
-    - Modificar la configuración de seguridad para utilizar el servicio de detalles de usuario y gestionar roles y permisos.
+Con la anotación `@EnableGlobalMethodSecurity(prePostEnabled = true)` en la clase de configuración de seguridad, se pueden proteger métodos específicos según los roles de los usuarios.
+
+### Seguridad con OAuth2 y OpenID Connect
+
+Además de JWT, **OAuth2** y **OpenID Connect** son estándares ampliamente utilizados para la autenticación federada y delegada. Spring Security proporciona integración con estos estándares mediante la dependencia:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-client</artifactId>
+</dependency>
+```
+
+Para configurar un cliente OAuth2 en `application.properties`:
+
+```properties
+spring.security.oauth2.client.registration.google.client-id=TU_CLIENT_ID
+spring.security.oauth2.client.registration.google.client-secret=TU_CLIENT_SECRET
+spring.security.oauth2.client.registration.google.redirect-uri=http://localhost:8080/login/oauth2/code/google
+spring.security.oauth2.client.registration.google.scope=openid,profile,email
+```
+
+### Seguridad con CORS
+
+CORS (Cross-Origin Resource Sharing) permite el acceso de aplicaciones web desde dominios distintos. Para habilitar CORS en Spring Security:
 
 ```java
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    // ...existing code...
+public class CorsConfig {
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowCredentials(true);
+            }
+        };
     }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        // ...existing code...
-    }
-
-    // ...existing code...
 }
 ```
 
-- **Proteger Endpoints con Roles y Permisos**:
-    - Utilizar anotaciones como `@PreAuthorize` para proteger los endpoints basados en roles y permisos.
+### Seguridad con cabeceras HTTP
+
+Spring Security permite configurar la seguridad mediante cabeceras HTTP, como por ejemplo:
 
 ```java
-@RestController
-@RequestMapping("/api/admin")
-public class AdminController {
+http
+    .headers(headers -> headers
+        .frameOptions().disable()  // Permitir iframes desde el mismo origen
+        .contentSecurityPolicy("script-src 'self'")  // Política de seguridad de contenido
+        .xssProtection().block(true)  // Protección contra ataques XSS
+    );
+```
 
-    @PreAuthorize("hasAuthority('ADMIN_DASHBOARD')")
-    @GetMapping("/dashboard")
-    public String getAdminDashboard() {
-        return "Admin Dashboard";
+### Auditoría y registro de eventos de seguridad
+
+Para registrar eventos de seguridad como inicios de sesión exitosos o fallidos, se puede implementar un auditor personalizado:
+
+```java
+@Component
+public class SecurityEventListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityEventListener.class);
+
+    @EventListener
+    public void onAuthenticationSuccess(AuthenticationSuccessEvent event) {
+        logger.info("Inicio de sesión exitoso para el usuario: {}", event.getAuthentication().getName());
+    }
+
+    @EventListener
+    public void onAuthenticationFailure(AuthenticationFailureBadCredentialsEvent event) {
+        logger.warn("Intento de inicio de sesión fallido con usuario: {}", event.getAuthentication().getName());
     }
 }
 ```
 
-### Explicación del Código
+### Actividad práctica
 
-- **Entidades de Roles y Permisos**: Definen las relaciones entre usuarios, roles y permisos en la base de datos.
-- **Servicio de Detalles de Usuario**: Carga los usuarios y sus roles desde la base de datos y convierte los roles en autoridades de Spring Security.
-- **Configuración de Seguridad**: Configura Spring Security para utilizar el servicio de detalles de usuario y gestionar roles y permisos.
-- **Protección de Endpoints**: Utiliza anotaciones para proteger los endpoints basados en roles y permisos.
+- Configurar una aplicación de prueba que incluya:
+  - Protección de rutas mediante roles y permisos con anotaciones.
+  - Integración con OAuth2 utilizando Google como proveedor de autenticación.
+  - Configuración de CORS para permitir solicitudes desde un frontend React.
+  - Implementación de auditoría para registrar eventos de autenticación.
 
-### Actividad Práctica
-
-- **Implementar la Gestión Dinámica de Roles y Permisos**:
-    - Definir las entidades de roles y permisos.
-    - Actualizar la entidad de usuario para incluir una relación con los roles.
-    - Implementar el servicio de detalles de usuario para cargar los usuarios y sus roles desde la base de datos.
-    - Modificar la configuración de seguridad para utilizar el servicio de detalles de usuario y gestionar roles y permisos.
-    - Proteger los endpoints utilizando anotaciones basadas en roles y permisos.
-
-### Implementación de SSL/TLS
-
-SSL/TLS (Secure Sockets Layer / Transport Layer Security) es un protocolo de seguridad que proporciona comunicaciones seguras a través de una red. Para configurar SSL/TLS en una aplicación Spring Boot, se deben seguir los siguientes pasos:
-
-- **Generar un Certificado SSL**:
-   - Utilizar `keytool` para generar un certificado SSL autofirmado:
-     ```sh
-     keytool -genkeypair -alias myalias -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore keystore.p12 -validity 3650
-     ```
-
-- **Configurar el Certificado en Spring Boot**:
-   - Añadir las siguientes propiedades en el archivo `application.properties`:
-     ```properties
-     server.port=8443
-     server.ssl.key-store=classpath:keystore.p12
-     server.ssl.key-store-password=yourpassword
-     server.ssl.keyStoreType=PKCS12
-     server.ssl.keyAlias=myalias
-     ```
-
-- **Redirigir el Tráfico HTTP a HTTPS**:
-   - Configurar un redireccionamiento de HTTP a HTTPS en una clase de configuración:
-     ```java
-     @Configuration
-     public class HttpsRedirectConfig {
-
-         @Bean
-         public EmbeddedServletContainerCustomizer containerCustomizer() {
-             return container -> {
-                 if (container instanceof TomcatEmbeddedServletContainerFactory) {
-                     TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
-                     tomcat.addAdditionalTomcatConnectors(createHttpConnector());
-                 }
-             };
-         }
-
-         private Connector createHttpConnector() {
-             Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-             connector.setScheme("http");
-             connector.setPort(8080);
-             connector.setSecure(false);
-             connector.setRedirectPort(8443);
-             return connector;
-         }
-     }
-     ```
-
-### Prácticas de Programación Segura
-
-Además de utilizar Spring Security y JWT, es importante seguir prácticas de programación segura para proteger las aplicaciones contra amenazas comunes. A continuación se presentan algunas prácticas recomendadas:
-
-- **Validación de Entradas**:
-   - Validar todas las entradas del usuario para evitar inyecciones y otros ataques.
-   - Utilizar anotaciones de validación en los modelos y controladores:
-     ```java
-     @NotBlank(message = "El nombre es obligatorio")
-     @Size(max = 50, message = "El nombre no puede tener más de 50 caracteres")
-     private String name;
-     ```
-
-- **Protección contra CSRF**:
-   - Habilitar la protección CSRF en la configuración de seguridad:
-     ```java
-     @Override
-     protected void configure(HttpSecurity http) throws Exception {
-         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-         // ...existing code...
-     }
-     ```
-
-- **Protección contra XSS**:
-   - Escapar y sanitizar todas las entradas y salidas para evitar ataques XSS.
-   - Utilizar bibliotecas como `Jsoup` para sanitizar entradas HTML:
-     ```java
-     String safeHtml = Jsoup.clean(unsafeHtml, Whitelist.basic());
-     ```
-
-- **Gestión Segura de Datos Sensibles**:
-   - No almacenar datos sensibles en texto plano.
-   - Utilizar algoritmos de hashing y cifrado para proteger datos sensibles como contraseñas y tokens.
-   - Configurar el cifrado de datos en tránsito utilizando SSL/TLS.
-
-### Actividad Práctica
-
-- **Configurar SSL/TLS**:
-  - Generar un certificado SSL y configurarlo en la aplicación Spring Boot.
-  - Configurar el redireccionamiento de HTTP a HTTPS.
-  - Verificar que las comunicaciones se realizan de manera segura utilizando HTTPS.
-
-- **Implementar Prácticas de Programación Segura**:
-  - Añadir validaciones en los modelos y controladores.
-  - Habilitar la protección CSRF en la configuración de seguridad.
-  - Escapar y sanitizar entradas y salidas para proteger contra XSS.
-  - Configurar el cifrado de datos sensibles y utilizar SSL/TLS para proteger datos en tránsito.
+Este apartado proporciona conocimientos avanzados sobre la seguridad en aplicaciones Spring Boot, ayudando a fortalecer la protección de los recursos y garantizar la seguridad de los datos.
