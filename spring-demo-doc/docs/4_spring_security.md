@@ -612,7 +612,9 @@ Las rutas protegidas requieren que se envíe el token JWT obtenido en el paso 1 
 Si el token es válido, se recibirá una respuesta con los datos protegidos. En caso contrario, se recibirá un error 401 Unauthorized.
 
 **4. Intentar acceder a una ruta protegida sin token**
+
 Si intentamos acceder a una ruta protegida sin enviar el token, se recibirá un error de autenticación.
+
 **Pasos:**
 1.  Seleccionar el método GET.
 2.  Introducir la URL de la ruta protegida, por ejemplo:
