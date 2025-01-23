@@ -1592,13 +1592,17 @@ y autorización de las rutas.</p>
 <p>Si el token es válido, se recibirá una respuesta con los datos protegidos. En caso contrario, se recibirá un error 401 Unauthorized.</p>
 <p><strong>4. Intentar acceder a una ruta protegida sin token</strong></p>
 <p>Si intentamos acceder a una ruta protegida sin enviar el token, se recibirá un error de autenticación.</p>
-<p><strong>Pasos:</strong>
-1.  Seleccionar el método GET.
-2.  Introducir la URL de la ruta protegida, por ejemplo:
+<p><strong>Pasos:</strong></p>
+<ol>
+<li>Seleccionar el método GET.</li>
+<li>Introducir la URL de la ruta protegida, por ejemplo:</li>
+</ol>
 <div class="language-html highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>http://localhost:8080/user/list
 </span></code></pre></div>
-3.  No incluir ningún valor en la cabecera de autorización.
-4.  Hacer clic en Send.</p>
+<ol>
+<li>No incluir ningún valor en la cabecera de autorización.</li>
+<li>Hacer clic en Send.</li>
+</ol>
 <p><strong>Respuesta esperada:</strong></p>
 <div class="codehilite"><pre><span></span><code>Error 401.
 </code></pre></div>
