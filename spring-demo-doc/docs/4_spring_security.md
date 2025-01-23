@@ -349,6 +349,13 @@ public class JwtProvider {
 
 ```
 
+Las propiedades inyectadas con `@Value` deben introducirse en el fichero properties:
+
+```proprties
+jwt.secret=secret
+jwt.expiration=36000
+```
+
 ### Explicación:
 
 - **Generación de tokens:** Crea tokens JWT válidos con información del usuario autenticado.
@@ -511,6 +518,109 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 - **Persistencia:** Proporciona métodos automáticos para la manipulación de la entidad usuario.
 - **Uso de JPA:** Define operaciones de base de datos de forma declarativa.
+
+## Probando el servicio
+
+  
+En esta sección se describen los pasos para probar la configuración de seguridad de la aplicación utilizando **Postman**. A continuación, se explicarán las diferentes pruebas que se pueden realizar, incluyendo la autenticación con JWT y el acceso a rutas protegidas.
+
+**1. Iniciar sesión y obtener un token JWT**
+
+  
+
+Para obtener un token JWT válido que permita acceder a las rutas protegidas, se debe realizar una solicitud **POST** al endpoint de autenticación.
+
+
+
+**Pasos:**
+
+1.  Abrir Postman y seleccionar el método POST.
+
+2.  Introducir la URL de autenticación:
+```html
+http://localhost:8080/auth/login
+```
+1.  Ir a la pestaña Body y seleccionar raw con formato JSON.
+2.  Introducir las credenciales en el cuerpo de la petición, por ejemplo:
+
+```json
+{
+    "nombreUsuario": "user497",
+    "password": "password"
+}
+```
+3.  Hacer clic en el botón Send.
+4.  Verificar que la respuesta contiene el token JWT, que se verá como:
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyNDk3IiwiZXhwIjoxNjk3MTY0Mzg3fQ.MEQCIQCy4B...",
+    "nombreUsuario": "user497",
+    "authorities": [
+        {
+            "authority": "ROLE_USER"
+        }
+    ],
+    "bearer": "Bearer"
+}
+```
+5.  Copiar el valor del token para utilizarlo en las siguientes solicitudes.
+
+**2. Acceder a una ruta pública**
+
+Las rutas públicas no requieren autenticación, por lo que se pueden acceder sin necesidad de enviar un token en la cabecera de autorización.
+
+**Pasos:**
+
+1.  Seleccionar el método GET.
+
+2.  Introducir la URL de una ruta pública:
+```html
+http://localhost:8080/public/list
+```
+3.  Hacer clic en Send y verificar que la respuesta devuelva datos de usuarios sin restricciones:
+```json
+[
+    {
+        "id": 1,
+        "userName": "user497",
+        "password": "$2a$10$ZHRNUE1onM08B...",
+        "role": "USER"
+    },
+    {
+        "id": 2,
+        "userName": "user615",
+        "password": "$2a$10$ZHRNUE1onM08B...",
+        "role": "USER"
+    }
+]
+````
+**3. Acceder a una ruta protegida con el token JWT**
+Las rutas protegidas requieren que se envíe el token JWT obtenido en el paso 1 en la cabecera de autorización.
+**Pasos:**
+1.  Seleccionar el método GET.
+2.  Introducir la URL de la ruta protegida, por ejemplo:
+  ```html
+  http://localhost:8080/user/list
+  ```
+1. Ir a la pestaña Authorization y seleccionar el tipo Bearer Token. En la casilla Token, introducir el token obtenido previamente.
+2.  Hacer clic en Send.  
+
+Si el token es válido, se recibirá una respuesta con los datos protegidos. En caso contrario, se recibirá un error 401 Unauthorized.
+
+**4. Intentar acceder a una ruta protegida sin token**
+Si intentamos acceder a una ruta protegida sin enviar el token, se recibirá un error de autenticación.
+**Pasos:**
+1.  Seleccionar el método GET.
+2.  Introducir la URL de la ruta protegida, por ejemplo:
+```html
+http://localhost:8080/user/list
+```
+3.  No incluir ningún valor en la cabecera de autorización.
+4.  Hacer clic en Send.
+
+**Respuesta esperada:**
+
+    Error 401. 
 
 ## Contenido avanzado
 
