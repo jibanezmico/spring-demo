@@ -593,7 +593,7 @@ http://localhost:8080/public/list
         "role": "USER"
     }
 ]
-````
+```
 **3. Acceder a una ruta protegida con el token JWT**
 Las rutas protegidas requieren que se envíe el token JWT obtenido en el paso 1 en la cabecera de autorización.
 **Pasos:**
