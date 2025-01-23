@@ -594,16 +594,20 @@ http://localhost:8080/public/list
     }
 ]
 ```
+
 **3. Acceder a una ruta protegida con el token JWT**
+
 Las rutas protegidas requieren que se envíe el token JWT obtenido en el paso 1 en la cabecera de autorización.
+
 **Pasos:**
+
 1.  Seleccionar el método GET.
 2.  Introducir la URL de la ruta protegida, por ejemplo:
   ```html
   http://localhost:8080/user/list
   ```
-1. Ir a la pestaña Authorization y seleccionar el tipo Bearer Token. En la casilla Token, introducir el token obtenido previamente.
-2.  Hacer clic en Send.  
+3. Ir a la pestaña Authorization y seleccionar el tipo Bearer Token. En la casilla Token, introducir el token obtenido previamente.
+4.  Hacer clic en Send.  
 
 Si el token es válido, se recibirá una respuesta con los datos protegidos. En caso contrario, se recibirá un error 401 Unauthorized.
 
