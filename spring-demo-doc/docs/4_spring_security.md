@@ -24,6 +24,93 @@ y autorización de las rutas.
 
 ```java
 /**
+ * Clase de configuración de seguridad. Se definen las reglas de seguridad.
+ * SecurityConfig
+ */
+@Configuration
+public class SecurityConfig {
+
+    // Inyección de dependencias para manejar errores de autenticación
+    @Autowired
+    private JwtEntryPoint jwtEntryPoint;
+
+    // Definición del filtro de autenticación JWT como un bean
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
+
+    /**
+     * Configuración de la cadena de filtros de seguridad.
+     *
+     * @param http Objeto HttpSecurity para configurar la seguridad HTTP.
+     * @return SecurityFilterChain configurado.
+     * @throws Exception en caso de error en la configuración de seguridad.
+     */
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            // Desactivar CSRF para simplificar la configuración
+            .csrf(csrf -> csrf.disable())
+            // Configuración de las reglas de autorización
+            .authorizeHttpRequests(auth -> auth
+                // Permitir acceso a rutas públicas
+                .requestMatchers("/public/**").permitAll()
+                // Permitir acceso a rutas de autenticación
+                .requestMatchers("/auth/**").permitAll()
+                // Requerir autenticación para cualquier otra ruta
+                .anyRequest().authenticated()
+            )
+            // Manejar errores de autenticación con JwtEntryPoint
+            .exceptionHandling(exception -> exception
+                .authenticationEntryPoint(jwtEntryPoint)
+            )
+            // Añadir el filtro de autenticación JWT antes del filtro de autenticación de usuario y contraseña
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            // Configuración de la página de inicio de sesión personalizada (opcional)
+            .formLogin(form -> form
+                .loginPage("/login")
+                .permitAll()
+            );
+        return http.build();
+    }
+
+    /**
+     * Definición del bean AuthenticationManager para manejar la autenticación.
+     *
+     * @param authenticationConfiguration Objeto AuthenticationConfiguration para configurar el AuthenticationManager.
+     * @return AuthenticationManager configurado.
+     * @throws Exception en caso de error en la configuración del AuthenticationManager.
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    /**
+     * Definición del bean PasswordEncoder para codificar las contraseñas.
+     *
+     * @return PasswordEncoder configurado.
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+````
+
+### Explicación:
+
+- **Filtro de autenticación JWT:** Se encarga de interceptar y validar tokens en cada solicitud.
+- **Gestión de credenciales:** Extrae el token JWT de la cabecera de autorización y valida su autenticidad.
+- **Autenticación en el contexto de seguridad:** Establece la autenticación si el token es válido.
+
+##JwtAuthenticationFilter
+
+La clase `JwtAuthenticationFilter` es un filtro de Spring Security que intercepta las solicitudes HTTP para validar tokens JWT. Su función es extraer el token de la cabecera de autorización, validarlo mediante JwtProvider y, si es correcto, establecer la autenticación del usuario en el contexto de seguridad de Spring. Se ejecuta antes del filtro de autenticación estándar, garantizando que solo las solicitudes autenticadas accedan a los recursos protegidos.
+
+```java
+/**
  * Filtro de autenticación JWT que se ejecuta una vez por solicitud.
  */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -88,10 +175,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 ```
 
 ### Explicación:
-
-- **Filtro de autenticación JWT:** Se encarga de interceptar y validar tokens en cada solicitud.
-- **Gestión de credenciales:** Extrae el token JWT de la cabecera de autorización y valida su autenticidad.
-- **Autenticación en el contexto de seguridad:** Establece la autenticación si el token es válido.
+- **Extracción del token JWT:** Se obtiene el token de la cabecera de autorización.
+- **Validación del token:** Se verifica la autenticidad del token recibido.
+- **Establecimiento de la autenticación:** Si el token es válido, se autentica al usuario en el contexto de seguridad de Spring.
 
 ## Punto de Entrada de Autenticación
 
