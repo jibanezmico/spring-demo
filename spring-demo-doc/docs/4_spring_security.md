@@ -616,11 +616,14 @@ Si el token es válido, se recibirá una respuesta con los datos protegidos. En 
 Si intentamos acceder a una ruta protegida sin enviar el token, se recibirá un error de autenticación.
 
 **Pasos:**
+
 1.  Seleccionar el método GET.
 2.  Introducir la URL de la ruta protegida, por ejemplo:
+
 ```html
 http://localhost:8080/user/list
 ```
+
 3.  No incluir ningún valor en la cabecera de autorización.
 4.  Hacer clic en Send.
 
