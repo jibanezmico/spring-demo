@@ -2,171 +2,155 @@
 
 ### Introducción a Swagger
 
-Swagger es una herramienta para documentar y probar APIs RESTful. Proporciona una interfaz de usuario interactiva que permite a los desarrolladores explorar y probar los endpoints de la API de manera sencilla. Swagger facilita la creación de documentación detallada y actualizada de las APIs, lo que mejora la comunicación entre los equipos de desarrollo y otros stakeholders.
+En este capítulo se aborda la configuración y personalización de Swagger, una herramienta ampliamente utilizada para documentar y probar APIs RESTful en Spring Boot. Swagger proporciona una interfaz de usuario interactiva que facilita la exploración de los endpoints disponibles, mejorando la comunicación entre los equipos de desarrollo y otros stakeholders. A través de este capítulo, se presentarán los conceptos clave, la configuración básica en un proyecto Spring Boot, la personalización avanzada de la documentación y la generación automática de clientes API a partir de la documentación generada.
 
 ### Configuración de Swagger en Spring Boot
 
-La configuración de Swagger se realiza en una clase anotada con `@Configuration`. Esta clase define un bean `Docket` que configura Swagger para escanear los controladores y generar la documentación de la API.
+Para integrar Swagger en una aplicación Spring Boot, es necesario agregar la dependencia correspondiente y configurar las rutas de acceso.
 
-### Actividad Práctica
+Agregar la dependencia en pom.xml:
 
-- **Configurar Swagger**:
-      - Crear una clase de configuración para Swagger en el paquete `config`.
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.8.3</version>
+</dependency>
+```
 
+Configurar las rutas en application.properties:
+
+```properties
+springdoc.swagger-ui.path=/swagger-ui.html
+springdoc.api-docs.path=/v3/api-docs
+```
+
+Definir la configuración en OpenAPIConfig.java (esta configuración no es imprescindible para el funcionamiento):
 ```java
 @Configuration
-@EnableSwagger2
-public class SwaggerConfig {
-    private static final Logger logger = LoggerFactory.getLogger(SwaggerConfig.class);
-
+public class OpenAPIConfig {
     @Bean
-    public Docket api() {
-        logger.info("Configurando Swagger Docket");
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.demospring.security.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo());
-    }
-
-    private ApiInfo apiInfo() {
-        logger.debug("Configurando ApiInfo");
-        return new ApiInfoBuilder()
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+            .info(new Info()
                 .title("API de Seguridad")
-                .description("Documentación de la API de Seguridad con Spring Boot y Swagger")
                 .version("1.0.0")
-                .build();
+                .description("Documentación de la API de Seguridad")
+            );
     }
 }
 ```
+Configurar la seguridad en SecurityConfig.java para permitir el acceso:
+```java
+.authorizeHttpRequests(auth -> auth
+                // Permitir acceso a rutas públicas
+                .requestMatchers("/public/**").permitAll()
+                // Permitir acceso a rutas de autenticación
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui.html").permitAll()
+                // Requerir autenticación para cualquier otra ruta
+                .anyRequest().authenticated()
+            )
+```
 
-   En esta configuración:
-   - La anotación `@EnableSwagger2` habilita Swagger en la aplicación.
-   - El método `api()` define un bean `Docket` que configura Swagger para escanear los controladores en el paquete `com.demospring.security.controller`.
-   - El método `select()` permite personalizar qué controladores y rutas se incluirán en la documentación de Swagger.
-   - `apis(RequestHandlerSelectors.basePackage("com.demospring.security.controller"))` especifica que solo se escanearán los controladores en el paquete `com.demospring.security.controller`.
-   - `paths(PathSelectors.any())` indica que se incluirán todas las rutas en la documentación.
-   - `apiInfo()` proporciona información adicional sobre la API, como el título, la descripción y la versión.
-   - Se utiliza un Logger para registrar eventos importantes durante la configuración de Swagger.
+Una vez configurado, la interfaz de usuario de Swagger estará disponible en la ruta: http://localhost:8080/swagger-ui/index.html, donde se podrán visualizar y probar los endpoints disponibles.
 
-   Una vez configurado, Swagger generará automáticamente la documentación de la API y proporcionará una interfaz de usuario interactiva en la ruta `/swagger-ui.html`.
+### Personalización de la documentación
 
-### Personalización de Swagger para Mostrar Ejemplos Específicos
+Swagger permite personalizar la documentación utilizando anotaciones específicas en los controladores. Estas anotaciones permiten describir los endpoints, definir ejemplos de respuestas y proporcionar detalles sobre los parámetros de entrada.
 
-Para personalizar Swagger y mostrar ejemplos específicos en los endpoints, se pueden utilizar anotaciones como `@ApiOperation` y `@ApiResponses` en los controladores. Aquí hay un ejemplo:
+#### Personalización con anotaciones
+
+En la clase UserController, se pueden añadir anotaciones como @Operation y @ApiResponse para documentar de manera detallada cada endpoint:
 
 ```java
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/user")
 public class UserController {
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @ApiOperation(value = "Obtener todos los usuarios", response = List.class)
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Usuarios obtenidos con éxito"),
-        @ApiResponse(code = 401, message = "No autorizado"),
-        @ApiResponse(code = 403, message = "Prohibido"),
-        @ApiResponse(code = 404, message = "No encontrado")
-    })
-    @GetMapping
+    @Autowired
+    private UserService userService;
+
+    @Operation(summary = "Obtener todos los usuarios", description = "Devuelve la lista de usuarios")
+    @ApiResponse(responseCode = "200", description = "Usuarios obtenidos con éxito")
+    @GetMapping("/list")
     public ResponseEntity<List<User>> getAllUsers() {
-        logger.info("getAllUsers endpoint llamado");
-        // ...existing code...
+        List<User> usuarios = userService.getAllUsers();
+        return ResponseEntity.status(HttpStatus.OK).body(usuarios);
     }
 
-    @ApiOperation(value = "Crear un nuevo usuario")
-    @ApiResponses(value = {
-        @ApiResponse(code = 201, message = "Usuario creado con éxito"),
-        @ApiResponse(code = 400, message = "Solicitud incorrecta")
-    })
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        logger.info("createUser endpoint llamado con datos: {}", user);
-        // ...existing code...
+    @Operation(summary = "Crear un nuevo usuario", description = "Crea un nuevo usuario en el sistema")
+    @ApiResponse(responseCode = "201", description = "Usuario creado con éxito")
+    @PostMapping("/create")
+    public ResponseEntity<String> createUser(@RequestBody String user) {
+        return ResponseEntity.ok("Usuario creado: " + user);
     }
 }
 ```
 
-En este ejemplo:
-- `@ApiOperation` describe la operación del endpoint.
-- `@ApiResponses` define las posibles respuestas del endpoint, incluyendo códigos de estado y mensajes.
-- `Logger`: Utilizado para registrar eventos importantes y errores en la aplicación.
+**Incluir ejemplos en modelos de datos**
 
-### Personalización Avanzada de la Documentación
-
-Swagger permite una personalización avanzada de la documentación mediante el uso de anotaciones adicionales y configuraciones específicas. Aquí hay algunos ejemplos:
-
-- **Incluir Ejemplos Detallados**:
-  Utiliza la anotación `@ApiModelProperty` para incluir ejemplos detallados en los modelos de datos.
+Swagger permite añadir ejemplos dentro de los modelos de datos utilizando la anotación @Schema:
 
 ```java
+@Entity
 public class User {
-    @ApiModelProperty(value = "ID del usuario", example = "1")
+
+    // Identificador único del usuario
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Schema(description = "ID del usuario", example = "1")
     private Long id;
 
-    @ApiModelProperty(value = "Nombre del usuario", example = "Juan Perez")
-    private String name;
-
-    @ApiModelProperty(value = "Correo electrónico del usuario", example = "juan.perez@example.com")
-    private String email;
-
-    // ...existing code...
-}
+    // Nombre de usuario
+    @Schema(description = "Nombre del usuario", example = "Juan Perez")
+    private String userName;
+[...]
 ```
 
-- **Agregar Descripciones a los Parámetros**:
-  Utiliza la anotación `@ApiParam` para agregar descripciones a los parámetros de los métodos del controlador.
+**Descripción de parámetros en los controladores**
+
+Para mejorar la documentación de los parámetros de entrada, se puede utilizar la anotación @Parameter en los métodos del controlador:
 
 ```java
-@GetMapping("/{id}")
-@ApiOperation(value = "Obtener usuario por ID")
-@ApiResponses(value = {
-    @ApiResponse(code = 200, message = "Usuario obtenido con éxito"),
-    @ApiResponse(code = 404, message = "Usuario no encontrado")
-})
-public ResponseEntity<User> getUserById(
-        @ApiParam(value = "ID del usuario", required = true, example = "1") @PathVariable Long id) {
-    logger.info("getUserById endpoint llamado con ID: {}", id);
-    // ...existing code...
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    /**
+     * Endpoint para obtener la lista de todos los usuarios.
+     *
+     * @return ResponseEntity con la lista de usuarios y el estado HTTP OK.
+     */
+    @Operation(summary = "Obtener todos los usuarios", description = "Devuelve una lista de usuarios registrados")
+    @ApiResponse(responseCode = "200", description = "Usuarios obtenidos con éxito")
+    @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    @GetMapping("/list")
+    public ResponseEntity<List<User>> getAllUsers() {
+        // Obtener la lista de todos los usuarios
+        List<User> usuarios = userService.getAllUsers();
+        // Devolver la lista de usuarios con el estado HTTP OK
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(usuarios);
+    }
+
+    @Operation(summary = "Crear un nuevo usuario")
+    @ApiResponse(responseCode = "201", description = "Usuario creado con éxito")
+    @PostMapping("/create")
+    public ResponseEntity<String> createUser(@RequestBody String user) {
+        return ResponseEntity.ok("Usuario creado: " + user);
+    }
 }
 ```
 
-### Generar un Cliente API desde la Documentación Swagger
+### Beneficios de utilizar Swagger
 
-Swagger también permite generar clientes API automáticamente desde la documentación. Aquí hay un ejemplo de cómo hacerlo:
+El uso de Swagger en un proyecto Spring Boot aporta múltiples ventajas, entre las cuales destacan:
 
-- **Acceder a la Interfaz de Usuario de Swagger**:
-      - Inicia la aplicación Spring Boot.
-      - Abre un navegador web y navega a `http://localhost:8080/swagger-ui.html`.
-
-- **Generar el Cliente API**:
-      - En la interfaz de usuario de Swagger, haz clic en el botón "Generate Client".
-      - Selecciona el lenguaje de programación deseado (por ejemplo, Java, Python, etc.).
-      - Descarga el código del cliente API generado.
-
-Este cliente API puede ser utilizado para interactuar con la API documentada sin necesidad de escribir código adicional para las solicitudes HTTP.
-
-### Explicación del Código
-
-- `@Configuration`: Indica que esta clase es una clase de configuración de Spring.
-- `@EnableSwagger2`: Habilita Swagger en la aplicación.
-- `Docket api()`: Define un bean `Docket` que configura Swagger para escanear los controladores y generar la documentación de la API.
-- `select()`: Permite personalizar qué controladores y rutas se incluirán en la documentación de Swagger.
-- `apis(RequestHandlerSelectors.basePackage("com.demospring.security.controller"))`: Especifica que solo se escanearán los controladores en el paquete `com.demospring.security.controller`.
-- `paths(PathSelectors.any())`: Indica que se incluirán todas las rutas en la documentación.
-
-### Beneficios de Usar Swagger
-
-- **Documentación Automática**: Swagger genera automáticamente la documentación de la API basada en los controladores y métodos definidos en el código.
-- **Interfaz de Usuario Interactiva**: Proporciona una interfaz de usuario interactiva que permite a los desarrolladores explorar y probar los endpoints de la API.
-- **Mejora la Comunicación**: Facilita la comunicación entre los equipos de desarrollo y otros stakeholders al proporcionar una documentación clara y actualizada de la API.
-- **Facilita el Desarrollo**: Permite a los desarrolladores probar rápidamente los endpoints de la API sin necesidad de escribir código adicional para las pruebas.
-
-### Actividad Práctica
-
-- **Acceder a la Interfaz de Usuario de Swagger**:
-      - Una vez configurado Swagger, inicia la aplicación Spring Boot.
-      - Abre un navegador web y navega a `http://localhost:8080/swagger-ui.html`.
-      - Explora la interfaz de usuario de Swagger para ver y probar los endpoints de la API.
+- Documentación automática: Se genera a partir de los controladores de la aplicación.
+- Interfaz interactiva: Permite probar los endpoints sin necesidad de herramientas adicionales.
+- Mejora de la comunicación: Facilita la colaboración entre equipos de desarrollo y otros stakeholders.
+- Facilita el desarrollo: Proporciona una forma rápida de probar funcionalidades sin escribir código adicional.
 
