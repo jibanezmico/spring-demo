@@ -623,11 +623,6 @@ public class UserService implements UserDetailsService {
 }
 ```
 
-### Explicación:
-
-- **Gestión de usuarios:** Permite obtener y manipular los datos de usuarios.
-- **Interacción con la base de datos:** Se apoya en `UserRepository` para realizar operaciones de persistencia.
-
 ## Repositorio de Usuarios
 
 La interfaz `UserRepository` extiende `JpaRepository` y proporciona métodos de acceso a la base de datos para la entidad `User`, permitiendo realizar operaciones CRUD de manera sencilla y eficiente gracias a la integración con Spring Data JPA. Además de los métodos heredados de `JpaRepository`, define dos métodos personalizados: `findById(long id)`, que permite recuperar un usuario a partir de su identificador único, y `findByUserName(String userName)`, que devuelve un objeto `Optional<User>` basado en el nombre de usuario, lo que facilita la gestión de casos en los que el usuario no exista. Esta interfaz es utilizada en la capa de servicio, concretamente en `UserService`, donde se encapsulan las reglas de negocio relacionadas con la gestión de usuarios y se proporcionan a los controladores para manejar las peticiones HTTP.
@@ -1141,6 +1136,109 @@ http://localhost:8080/user/list
 
     Error 401. 
 
+
+## Seguridad basada en roles y permisos
+
+La implementación de control de acceso basado en roles en Spring Security permite restringir el acceso a ciertos endpoints según los permisos de los usuarios. Esto se logra utilizando la anotación `@PreAuthorize`, que facilita la definición de restricciones a nivel de método, asegurando un control preciso sobre qué usuarios pueden acceder a qué funcionalidades.
+
+Para utilizar esta funcionalidad, es necesario habilitar la anotación `@EnableMethodSecurity` en la clase de configuración de seguridad, `SecurityConfig`. Esto permite que Spring Security procese las anotaciones de autorización en los métodos de los controladores.
+
+```java
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+public class SecurityConfig {
+    // Configuración de seguridad aquí...
+}
+```
+
+Con esta configuración habilitada, se pueden utilizar anotaciones como `@PreAuthorize` para definir el acceso a los métodos en función del rol del usuario autenticado. Por ejemplo, en la clase `AdminController`, se restringe el acceso al método `adminAccess()` solo a usuarios con el rol `ADMIN`:
+
+```java
+@RestController
+@RequestMapping("/admin")
+public class AdminController {
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/dashboard")
+    public ResponseEntity<String> adminAccess() {
+        return ResponseEntity.ok("Acceso permitido solo para administradores.");
+    }
+}
+```
+
+En este caso, antes de que el método `adminAccess` se ejecute, Spring Security verifica si el usuario autenticado posee el rol `ADMIN`. Si el usuario tiene el rol requerido, se le concede acceso; de lo contrario, se devuelve un error `403 (Forbidden)`, indicando que el acceso está restringido.
+
+Para facilitar las pruebas, se ha añadido un nuevo endpoint en la clase `PublicController` que permite crear usuarios con el rol de administrador de forma aleatoria:
+
+```java
+    /**
+     * Endpoint para crear un nuevo usuario aleatorio y devolver la lista actualizada de usuarios.
+     *
+     * @return ResponseEntity con la lista actualizada de usuarios y el estado HTTP OK.
+     */
+    @GetMapping("/newrandomadmin")
+    public ResponseEntity<List<User>> newRandomadmin() {
+        // Crear un nuevo usuario con un nombre de usuario aleatorio y una contraseña codificada
+        User user = new User();
+        user.setUserName("user" + (int)(Math.random() * 1000));
+        user.setPassword(passwordEncoder.encode("password"));
+        user.setRole("ADMIN");
+
+        // Guardar el nuevo usuario en la base de datos
+        userService.saveUser(user);
+
+        // Obtener la lista actualizada de todos los usuarios
+        List<User> usuarios = userService.getAllUsers();
+        // Devolver la lista actualizada de usuarios con el estado HTTP OK
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(usuarios);
+    }
+```
+
+Para probar la configuración de seguridad, se pueden seguir los siguientes pasos:
+
+1.	Crear un usuario administrador:
+Realizar una solicitud GET al endpoint http://localhost:8080/public/newrandomadmin. Esto generará un usuario con rol ADMIN y lo almacenará en la base de datos.
+2.	Autenticarse como administrador:
+Enviar una solicitud POST a http://localhost:8080/auth/login con las credenciales del usuario recién creado para obtener un token JWT válido.
+3.	Acceder al endpoint protegido:
+Usar el token recibido para realizar una solicitud GET al endpoint protegido http://localhost:8080/admin/dashboard, incluyéndolo en la cabecera de autorización con formato Bearer <token>.
+
+Si el usuario cuenta con el rol adecuado, se recibirá una respuesta con el mensaje "Acceso permitido solo para administradores.". En caso contrario, se devolverá un error HTTP 403 indicando que el acceso no está autorizado.
+
+## Auditoría y registro de eventos de seguridad
+
+Para mejorar la seguridad de la aplicación, es importante llevar un registro de eventos clave relacionados con la autenticación, como inicios de sesión exitosos o intentos fallidos de acceso. Spring Security permite registrar estos eventos mediante la escucha de eventos de seguridad.
+
+Se puede implementar una clase de auditoría utilizando la anotación @EventListener para capturar eventos de autenticación y registrarlos en los logs del sistema:
+
+```java
+@Component
+public class SecurityEventListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityEventListener.class);
+
+    @EventListener
+    public void onAuthenticationSuccess(AuthenticationSuccessEvent event) {
+        logger.info("Inicio de sesión exitoso para el usuario: {}", event.getAuthentication().getName());
+    }
+
+    @EventListener
+    public void onAuthenticationFailure(AuthenticationFailureBadCredentialsEvent event) {
+        logger.warn("Intento de inicio de sesión fallido con usuario: {}", event.getAuthentication().getName());
+    }
+}
+```
+
+- Registro de inicios de sesión exitosos:
+Cuando un usuario se autentica correctamente, el evento AuthenticationSuccessEvent se dispara y el sistema registra un mensaje con el nombre de usuario.
+- Registro de intentos de acceso fallidos:
+Si un usuario introduce credenciales incorrectas, el evento AuthenticationFailureBadCredentialsEvent es capturado y se registra un intento fallido con el nombre de usuario.
+
+Para comprobar esta nueva funcionalidad, podemos realizar diferentes llamadas al servicio de login `localhost:8080/auth/login` tanto con un login correcto como con uno incorrecto y comprobar el mensaje que aparece en el log.
+
 ## Contenido avanzado
 
 En este apartado se amplían algunos conceptos avanzados de seguridad en **Spring Security** y **JWT**, abordando aspectos adicionales como roles y permisos, integración con **OAuth2/OpenID Connect**, configuración de **CORS**, seguridad con cabeceras HTTP y auditoría de eventos de seguridad.
@@ -1215,109 +1313,19 @@ public class SecurityConfig {
 }
 ```
 
-**Seguridad basada en roles y permisos**
 
-La implementación de control de acceso basado en roles en Spring Security permite restringir el acceso a ciertos endpoints según los permisos de los usuarios. Esto se logra utilizando la anotación `@PreAuthorize`, que facilita la definición de restricciones a nivel de método, asegurando un control preciso sobre qué usuarios pueden acceder a qué funcionalidades.
 
-Para utilizar esta funcionalidad, es necesario habilitar la anotación `@EnableMethodSecurity` en la clase de configuración de seguridad, `SecurityConfig`. Esto permite que Spring Security procese las anotaciones de autorización en los métodos de los controladores.
-
-```java
-@Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
-public class SecurityConfig {
-    // Configuración de seguridad aquí...
-}
-```
-
-Con esta configuración habilitada, se pueden utilizar anotaciones como `@PreAuthorize` para definir el acceso a los métodos en función del rol del usuario autenticado. Por ejemplo, en la clase `AdminController`, se restringe el acceso al método `adminAccess()` solo a usuarios con el rol `ADMIN`:
-
-```java
-@RestController
-@RequestMapping("/admin")
-public class AdminController {
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/dashboard")
-    public ResponseEntity<String> adminAccess() {
-        return ResponseEntity.ok("Acceso permitido solo para administradores.");
-    }
-}
-```
-
-En este caso, antes de que el método `adminAccess` se ejecute, Spring Security verifica si el usuario autenticado posee el rol `ADMIN`. Si el usuario tiene el rol requerido, se le concede acceso; de lo contrario, se devuelve un error `403 (Forbidden)`, indicando que el acceso está restringido.
-
-Para facilitar las pruebas, se ha añadido un nuevo endpoint en la clase `PublicController` que permite crear usuarios con el rol de administrador de forma aleatoria:
-
-```java
-    /**
-     * Endpoint para crear un nuevo usuario aleatorio y devolver la lista actualizada de usuarios.
-     *
-     * @return ResponseEntity con la lista actualizada de usuarios y el estado HTTP OK.
-     */
-    @GetMapping("/newrandomadmin")
-    public ResponseEntity<List<User>> newRandomadmin() {
-        // Crear un nuevo usuario con un nombre de usuario aleatorio y una contraseña codificada
-        User user = new User();
-        user.setUserName("user" + (int)(Math.random() * 1000));
-        user.setPassword(passwordEncoder.encode("password"));
-        user.setRole("ADMIN");
-
-        // Guardar el nuevo usuario en la base de datos
-        userService.saveUser(user);
-
-        // Obtener la lista actualizada de todos los usuarios
-        List<User> usuarios = userService.getAllUsers();
-        // Devolver la lista actualizada de usuarios con el estado HTTP OK
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(usuarios);
-    }
-```
-
-Para probar la configuración de seguridad, se pueden seguir los siguientes pasos:
-
-1.	Crear un usuario administrador:
-Realizar una solicitud GET al endpoint http://localhost:8080/public/newrandomadmin. Esto generará un usuario con rol ADMIN y lo almacenará en la base de datos.
-2.	Autenticarse como administrador:
-Enviar una solicitud POST a http://localhost:8080/auth/login con las credenciales del usuario recién creado para obtener un token JWT válido.
-3.	Acceder al endpoint protegido:
-Usar el token recibido para realizar una solicitud GET al endpoint protegido http://localhost:8080/admin/dashboard, incluyéndolo en la cabecera de autorización con formato Bearer <token>.
-
-Si el usuario cuenta con el rol adecuado, se recibirá una respuesta con el mensaje "Acceso permitido solo para administradores.". En caso contrario, se devolverá un error HTTP 403 indicando que el acceso no está autorizado.
-
-**Seguridad con CORS**
+### Seguridad con CORS
 
 El Cross-Origin Resource Sharing (CORS) es un mecanismo de seguridad que permite a las aplicaciones web en un dominio realizar solicitudes a recursos alojados en otro dominio. De forma predeterminada, los navegadores restringen las solicitudes de origen cruzado por motivos de seguridad, pero en aplicaciones modernas, como aquellas con frontend y backend separados, es fundamental habilitar CORS correctamente.
 
 Spring Security permite configurar CORS de manera detallada para controlar qué orígenes pueden acceder a los recursos de la aplicación, qué métodos HTTP están permitidos y si se deben enviar credenciales en las solicitudes.
 
-### Configuración de CORS en Spring Security
+**Configuración de CORS en Spring Security**
 
 Para permitir solicitudes desde un frontend alojado en un dominio diferente, es necesario configurar CORS en la clase de configuración de seguridad. Esto se puede hacer agregando una política de CORS en la definición de SecurityFilterChain de la clase SecurityConfig:
 
 ```java
-package com.demospring.security.configuration;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import com.demospring.security.jwt.JwtAuthenticationFilter;
-import com.demospring.security.jwt.JwtEntryPoint;
-
 /**
  * Clase de configuración de seguridad. Se definen las reglas de seguridad.
  * SecurityConfig
@@ -1590,39 +1598,3 @@ Content-Security-Policy: script-src 'self'
 Estas configuraciones permiten asegurar que la aplicación web cumple con buenas prácticas de seguridad, mitigando ataques comunes relacionados con la manipulación de contenido y la ejecución de código no autorizado.
 
 Spring Security proporciona un conjunto de protecciones por defecto que cubren la mayoría de los escenarios de seguridad, reduciendo la necesidad de configuraciones adicionales. Sin embargo, en aplicaciones con requisitos más estrictos, es recomendable revisar las políticas de seguridad y ajustarlas según las necesidades específicas del proyecto.
-
-### Auditoría y registro de eventos de seguridad
-
-Para mejorar la seguridad de la aplicación, es importante llevar un registro de eventos clave relacionados con la autenticación, como inicios de sesión exitosos o intentos fallidos de acceso. Spring Security permite registrar estos eventos mediante la escucha de eventos de seguridad.
-
-Se puede implementar una clase de auditoría utilizando la anotación @EventListener para capturar eventos de autenticación y registrarlos en los logs del sistema:
-
-```java
-@Component
-public class SecurityEventListener {
-
-    private static final Logger logger = LoggerFactory.getLogger(SecurityEventListener.class);
-
-    @EventListener
-    public void onAuthenticationSuccess(AuthenticationSuccessEvent event) {
-        logger.info("Inicio de sesión exitoso para el usuario: {}", event.getAuthentication().getName());
-    }
-
-    @EventListener
-    public void onAuthenticationFailure(AuthenticationFailureBadCredentialsEvent event) {
-        logger.warn("Intento de inicio de sesión fallido con usuario: {}", event.getAuthentication().getName());
-    }
-}
-```
-
-- Registro de inicios de sesión exitosos:
-Cuando un usuario se autentica correctamente, el evento AuthenticationSuccessEvent se dispara y el sistema registra un mensaje con el nombre de usuario.
-- Registro de intentos de acceso fallidos:
-Si un usuario introduce credenciales incorrectas, el evento AuthenticationFailureBadCredentialsEvent es capturado y se registra un intento fallido con el nombre de usuario.
-
-Para comprobar esta nueva funcionalidad, podemos realizar diferentes llamadas al servicio de login `localhost:8080/auth/login` tanto con un login correcto como con uno incorrecto y comprobar el mensaje que aparece en el log.
-
-
-
-
-
