@@ -1241,7 +1241,7 @@ Para comprobar esta nueva funcionalidad, podemos realizar diferentes llamadas al
 
 ## Contenido avanzado
 
-En este apartado se amplían algunos conceptos avanzados de seguridad en **Spring Security** y **JWT**, abordando aspectos adicionales como roles y permisos, integración con **OAuth2/OpenID Connect**, configuración de **CORS**, seguridad con cabeceras HTTP y auditoría de eventos de seguridad.
+En este apartado se exploran configuraciones avanzadas de seguridad en Spring Security, proporcionando un enfoque detallado sobre dos formas principales de configuración: la automática, que permite una implementación rápida con valores predeterminados adecuados para aplicaciones simples, y la configuración personalizada, que brinda un control granular sobre la autenticación y autorización. Además, se profundiza en aspectos esenciales como la gestión de CORS (Cross-Origin Resource Sharing) para permitir solicitudes entre dominios de manera segura, la implementación de cabeceras HTTP de seguridad para proteger la aplicación contra ataques comunes como Clickjacking o inyección de contenido, y las mejores prácticas para garantizar un entorno seguro y robusto en aplicaciones empresariales.
 
 ### Configuración de seguridad en Spring
 
