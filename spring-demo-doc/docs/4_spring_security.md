@@ -16,6 +16,22 @@ Para ello debemos añadir en nuestro pom.xml las siguientes dependencias, que so
 		</dependency>
 ```
 
+En determinadas versiones de jjwt (como la 0.9.1), la biblioteca depende de `javax.xml.bind.DatatypeConverter`, una clase que formaba parte de JAXB y que fue eliminada a partir de Java 11. Esto provoca errores como `NoClassDefFoundError` o `ClassNotFoundException` cuando se ejecuta la aplicación en un entorno con JDK 11 o superior.
+
+Para evitar estos errores y garantizar la compatibilidad con esta versión de jjwt, es necesario incluir explícitamente la dependencia de JAXB en el pom.xml::
+
+```xml
+        <dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+		</dependency>
+```
+
 La dependencia `spring-boot-starter-security` proporciona la integración de Spring Security, facilitando la gestión de autenticación y autorización mediante configuraciones predeterminadas que incluyen la protección contra ataques comunes como CSRF y XSS. Esta dependencia permite la implementación de autenticación basada en sesiones, roles y personalización de accesos.
 
 Por otro lado, la dependencia `jjwt` (Java JWT) permite la generación, firma y validación de tokens JWT en la aplicación. Con ella, es posible crear tokens seguros mediante algoritmos de cifrado como HS256, además de extraer información del token, como el nombre de usuario o la fecha de expiración, para su validación y uso dentro del sistema.
